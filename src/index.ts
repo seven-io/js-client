@@ -5,14 +5,14 @@ export type SmsParams = {
 }
 
 export class Sms77Client {
-    constructor(protected apiKey: string) {
+    constructor(protected apiKey: string, protected sendWith: string = 'js') {
     }
 
     async post(endpoint: string, data?: any): Promise<any> {
         const params = {
             ...data,
             p: this.apiKey,
-            sendWith: 'js',
+            sendWith: this.sendWith,
         };
 
         const queryString = Object.keys(params).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`).join('&');
