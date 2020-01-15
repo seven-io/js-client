@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "module": "umd",
+    "preserveConstEnums": true,
+    "pretty": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "strict": true
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ],
+  "include": [
+    "src/**/*"
+  ]
+}
