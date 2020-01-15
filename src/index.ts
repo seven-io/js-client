@@ -8,21 +8,23 @@ export class Sms77Client {
     constructor(protected apiKey: string) {
     }
 
-    async post(endpoint: string, body?: any): Promise<any> {
-        const url = `https://gateway.sms77.io/api/${endpoint}`;
+    async post(endpoint: string, data?: any): Promise<any> {
+        const params = {
+            ...data,
+            p: this.apiKey,
+            sendWith: 'js',
+        };
+
+        const queryString = Object.keys(params).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`).join('&');
 
         const cfg = {
-            body: {
-                ...body,
-                p: this.apiKey,
-                sendWith: 'js',
-            },
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
             method: 'POST',
-            url,
         };
+
+        const url = `https://gateway.sms77.io/api/${endpoint}?${queryString}`;
 
         const res = await fetch(url, cfg);
 
