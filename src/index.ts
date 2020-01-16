@@ -1,106 +1,22 @@
-export type ContactsParams = {
-    action: 'del' | 'read' | 'write'
-    email?: string
-    empfaenger?: string
-    id?: number
-    json?: boolean
-    nick?: string
-}
+import {
+    ContactsParams,
+    ContactsResponse,
+    LookupParams,
+    LookupResponse,
+    PricingParams,
+    PricingResponse,
+    SmsParams,
+    StatusParams,
+    StatusResponse,
+    ValidateForVoiceParams,
+    ValidateForVoiceResponse,
+    VoiceParams,
+    VoiceResponse,
+} from './types';
 
-export type ContactsResponse = {
-    email: string
-    id: number
-    nick: string,
-    number: string,
-}[] | string | number
-
-export type PricingParams = {
-    type?: 'direct' | 'economy'
-    country?: string
-    format?: 'json' | 'csv'
-}
-
-export type PricingResponse = {
-    countCountries: number
-    countNetworks: number
-    countries: {
-        countryCode: string
-        countryName: string
-        countryPrefix: string
-        networks: {
-            mcc: string
-            mncs: string[]
-            networkName: string
-            price: number
-            features: string[]
-            comment: string
-        }[]
-    }[]
-}
-
-export type SmsParams = {
-    text: string
-    to: string
-    debug?: boolean
-    delay?: string
-    details?: boolean
-    flash?: boolean
-    from?: string
-    label?: string
-    json?: boolean
-    no_reload?: boolean
-    unicode?: boolean
-    udh?: string
-    utf8?: boolean
-    ttl?: string
-    performance_tracking?: boolean
-    return_msg_id?: boolean
-}
-
-export type StatusParams = {
-    msg_id: string
-}
-
-export type StatusResponse = {
-    report: 'DELIVERED' | 'NOTDELIVERED' | 'BUFFERED' | 'TRANSMITTED' | 'ACCEPTED' | 'EXPIRED' | 'REJECTED' | 'FAILED' | 'UNKNOWN'
-    timestamp: string
-}
-
-export type ValidateForVoiceParams = {
-    number: string
-    callback?: string
-}
-
-export type ValidateForVoiceResponse = {
-    error: string
-    success: boolean
-    code?: string
-    formatted_output?: null
-    id?: null | number
-    sender?: string
-    voice?: boolean
-}
-
-export type VoiceParams = {
-    text: string
-    to: string
-    xml?: boolean
-    from?: string
-}
-
-export type VoiceResponse = {
-    code: number
-    cost: number
-    id: number
-}
-
+export {GSM_CODES} from './GSM_CODES';
+export * from './types';
 export const BASE_URL = 'https://gateway.sms77.io/api';
-
-export const SUCCESS_CODES = new Map([
-    [151, 'Contacts updated/created/deleted with CSV response.'],
-    [152, 'Contacts updated/created/deleted with JSON response.'],
-]);
-
 export const ERROR_CODES = new Map([
     [201, 'Country code invalid.'],
     [202, 'Recipient number invalid.'],
@@ -123,6 +39,10 @@ export const ERROR_CODES = new Map([
     [901, 'Wrong message ID.'],
     [902, 'API deactivated.'],
     [903, 'IP not allowed.'],
+]);
+export const SUCCESS_CODES = new Map([
+    [151, 'Contacts updated/created/deleted with CSV response.'],
+    [152, 'Contacts updated/created/deleted with JSON response.'],
 ]);
 
 const splitByLine = (str: string): string[] => str.split('\n');
@@ -160,7 +80,7 @@ export class Sms77Client {
         }
 
         try {
-            return JSON.parse(text)
+            return JSON.parse(text);
         } catch (e) {
         }
 
@@ -189,6 +109,24 @@ export class Sms77Client {
         }
 
         throw new Error(res);
+    }
+
+    async lookup(params: LookupParams): Promise<LookupResponse> {
+        const res = await this.post('lookup', params);
+
+        const isValidResponse = (str: string) => 100 === Number.parseInt(str);
+
+        if ('string' === typeof res) {
+            if (!isValidResponse(res)) {
+                throw new Error(res);
+            }
+        } else if (res.code) {
+            if (!isValidResponse(res.code)) {
+                throw new Error(res);
+            }
+        }
+
+        return res;
     }
 
     async pricing(params: PricingParams): Promise<PricingResponse> {
