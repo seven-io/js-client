@@ -1,13 +1,26 @@
 export type SmsParams = {
-    from?: string
     text: string
     to: string
+    debug?: boolean
+    delay?: string
+    details?: boolean
+    flash?: boolean
+    from?: string
+    label?: string
+    json?: boolean
+    no_reload?: boolean
+    unicode?: boolean
+    udh?: string
+    utf8?: boolean
+    ttl?: string
+    performance_tracking?: boolean
+    return_msg_id?: boolean
 }
 
 export const errorCodes = [
     '201: Country code invalid.',
     '202: Recipient number invalid.',
-    '300: Authentification missing.',
+    '300: Authentication missing.',
     '301: Parameter to missing.',
     '304: Parameter type missing.',
     '305: Parameter text missing.',
