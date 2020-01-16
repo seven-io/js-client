@@ -26,6 +26,21 @@ export type StatusResponse = {
     timestamp: string
 }
 
+export type ValidateForVoiceParams = {
+    number: string
+    callback?: string
+}
+
+export type ValidateForVoiceResponse = {
+    error: string
+    success: boolean
+    code?: string
+    formatted_output?: null
+    id?: null | number
+    sender?: string
+    voice?: boolean
+}
+
 export const errorCodes = new Map([
     [201, 'Country code invalid.'],
     [202, 'Recipient number invalid.'],
@@ -103,6 +118,10 @@ export class Sms77Client {
         const [report, timestamp] = res.split('\n');
 
         return {report, timestamp};
+    }
+
+    async validateForVoice(params: ValidateForVoiceParams): Promise<ValidateForVoiceResponse> {
+        return await this.post('validate_for_voice', params);
     }
 }
 
