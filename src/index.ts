@@ -17,6 +17,15 @@ export type SmsParams = {
     return_msg_id?: boolean
 }
 
+export type StatusParams = {
+    msg_id: string
+}
+
+export type StatusResponse = {
+    report: 'DELIVERED' | 'NOTDELIVERED' | 'BUFFERED' | 'TRANSMITTED' | 'ACCEPTED' | 'EXPIRED' | 'REJECTED' | 'FAILED' | 'UNKNOWN'
+    timestamp: string
+}
+
 export const errorCodes = [
     '201: Country code invalid.',
     '202: Recipient number invalid.',
@@ -86,6 +95,14 @@ export class Sms77Client {
 
     async sms(params: SmsParams): Promise<any> {
         return await this.post('sms', params);
+    }
+
+    async status(params: StatusParams): Promise<StatusResponse> {
+        const res = await this.post('status', params);
+
+        const [report, timestamp] = res.split('\n');
+
+        return {report, timestamp};
     }
 }
 
