@@ -1,3 +1,27 @@
+export type PricingParams = {
+    type?: 'direct' | 'economy'
+    country?: string
+    format?: 'json' | 'csv'
+}
+
+export type PricingResponse = {
+    countCountries: number
+    countNetworks: number
+    countries: {
+        countryCode: string
+        countryName: string
+        countryPrefix: string
+        networks: {
+            mcc: string
+            mncs:  string[]
+            networkName: string
+            price: number
+            features: string[]
+            comment: string
+        }[]
+    }[]
+}
+
 export type SmsParams = {
     text: string
     to: string
@@ -121,6 +145,10 @@ export class Sms77Client {
 
     async balance(): Promise<number> {
         return Number.parseFloat(await this.post('balance'));
+    }
+
+    async pricing(params: PricingParams): Promise<PricingResponse> {
+        return await this.post('pricing', params);
     }
 
     async sms(params: SmsParams): Promise<any> {
