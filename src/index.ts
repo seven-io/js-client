@@ -41,6 +41,19 @@ export type ValidateForVoiceResponse = {
     voice?: boolean
 }
 
+export type VoiceParams = {
+    text: string
+    to: string
+    xml?: boolean
+    from?: string
+}
+
+export type VoiceResponse = {
+    code: number
+    cost: number
+    id: number
+}
+
 export const errorCodes = new Map([
     [201, 'Country code invalid.'],
     [202, 'Recipient number invalid.'],
@@ -64,6 +77,8 @@ export const errorCodes = new Map([
     [902, 'API deactivated.'],
     [903, 'IP not allowed.'],
 ]);
+
+const splitByLine = (str: string): string[] => str.split('\n');
 
 export class Sms77Client {
     constructor(protected apiKey: string, protected sendWith: string = 'js') {
@@ -115,13 +130,21 @@ export class Sms77Client {
     async status(params: StatusParams): Promise<StatusResponse> {
         const res = await this.post('status', params);
 
-        const [report, timestamp] = res.split('\n');
+        const [report, timestamp] = splitByLine(res);
 
-        return {report, timestamp};
+        return {report: report as StatusResponse['report'], timestamp};
     }
 
     async validateForVoice(params: ValidateForVoiceParams): Promise<ValidateForVoiceResponse> {
         return await this.post('validate_for_voice', params);
+    }
+
+    async voice(params: VoiceParams): Promise<VoiceResponse> {
+        const res = await this.post('voice', params);
+
+        const [code, id, cost] = splitByLine(res);
+
+        return {code: Number.parseInt(code), id: Number.parseInt(id), cost: Number.parseFloat(cost)};
     }
 }
 
