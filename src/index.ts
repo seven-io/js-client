@@ -30,6 +30,11 @@ export class Sms77Client {
 
         const text = await res.text();
 
+        const errorCode = ['900: Wrong API key!'].find(s => Number.parseInt(text) === Number.parseInt(s));
+        if (errorCode) {
+            return Promise.reject(errorCode);
+        }
+
         try {
             return JSON.parse(text)
         } catch (e) {
@@ -39,7 +44,7 @@ export class Sms77Client {
     }
 
     async balance(): Promise<any> {
-        return await this.post('balance');
+        return Number.parseFloat(await this.post('balance'));
     }
 
     async sms(params: SmsParams): Promise<any> {
