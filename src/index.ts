@@ -1,3 +1,19 @@
+export type ContactsParams = {
+    action: 'del' | 'read' | 'write'
+    email?: string
+    empfaenger?: string
+    id?: number
+    json?: boolean
+    nick?: string
+}
+
+export type ContactsResponse = {
+    email: string
+    id: number
+    nick: string,
+    number: string,
+}[] | string | number
+
 export type PricingParams = {
     type?: 'direct' | 'economy'
     country?: string
@@ -13,7 +29,7 @@ export type PricingResponse = {
         countryPrefix: string
         networks: {
             mcc: string
-            mncs:  string[]
+            mncs: string[]
             networkName: string
             price: number
             features: string[]
@@ -78,7 +94,14 @@ export type VoiceResponse = {
     id: number
 }
 
-export const errorCodes = new Map([
+export const BASE_URL = 'https://gateway.sms77.io/api';
+
+export const SUCCESS_CODES = new Map([
+    [151, 'Contacts updated/created/deleted with CSV response.'],
+    [152, 'Contacts updated/created/deleted with JSON response.'],
+]);
+
+export const ERROR_CODES = new Map([
     [201, 'Country code invalid.'],
     [202, 'Recipient number invalid.'],
     [300, 'Authentication missing.'],
@@ -108,14 +131,17 @@ export class Sms77Client {
     constructor(protected apiKey: string, protected sendWith: string = 'js') {
     }
 
-    async post(endpoint: string, data?: any): Promise<any> {
-        const params = {
+    async post(endpoint: string, data?: { [key: string]: any }): Promise<any> {
+        const params: { [key: string]: any } = {
             ...data,
             p: this.apiKey,
             sendWith: this.sendWith,
         };
 
-        const queryString = Object.keys(params).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`).join('&');
+        const boolToNumber = (v: any) => 'boolean' === typeof v ? v ? 1 : 0 : v;
+
+        const queryString = Object.entries(params).map(([k, v]) =>
+            `${encodeURIComponent(k)}=${encodeURIComponent(boolToNumber(v))}`).join('&');
 
         const cfg = {
             headers: {
@@ -124,15 +150,13 @@ export class Sms77Client {
             method: 'POST',
         };
 
-        const url = `https://gateway.sms77.io/api/${endpoint}?${queryString}`;
-
-        const res = await fetch(url, cfg);
+        const res = await fetch(`${BASE_URL}/${endpoint}?${queryString}`, cfg);
 
         const text = await res.text();
 
         const code = Number.parseInt(text);
-        if (errorCodes.has(code)) {
-            return Promise.reject(`${code}: ${errorCodes.get(code)}`);
+        if (ERROR_CODES.has(code)) {
+            throw new Error(`${code}: ${ERROR_CODES.get(code)}`);
         }
 
         try {
@@ -145,6 +169,26 @@ export class Sms77Client {
 
     async balance(): Promise<number> {
         return Number.parseFloat(await this.post('balance'));
+    }
+
+    async contacts(p: ContactsParams): Promise<ContactsResponse> {
+        const res = await this.post('contacts', p);
+
+        if ('string' === typeof res) { //return CSV if ContactsParams.json was set to 0
+            return res;
+        } else if (Array.isArray(res)) {
+            return res;
+        }
+
+        if (SUCCESS_CODES.has(Number.parseInt(res.return))) {
+            if (res.id) {
+                return Number.parseInt(res.id);
+            } else if (p.id) {
+                return p.id;
+            }
+        }
+
+        throw new Error(res);
     }
 
     async pricing(params: PricingParams): Promise<PricingResponse> {
