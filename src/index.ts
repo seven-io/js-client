@@ -4,6 +4,30 @@ export type SmsParams = {
     to: string
 }
 
+export const errorCodes = [
+    '201: Country code invalid.',
+    '202: Recipient number invalid.',
+    '300: Authentification missing.',
+    '301: Parameter to missing.',
+    '304: Parameter type missing.',
+    '305: Parameter text missing.',
+    '306: Sender invalid.',
+    '307: Parameter url missing.',
+    '400: Invalid type.',
+    '401: Parameter text too long.',
+    '402: Reload lock.',
+    '500: Not enough credits.',
+    '600: Carrier failed.',
+    '700: Unknown error.',
+    '801: Logo file missing.',
+    '802: Logo file not existent.',
+    '803: Ring tone missing.',
+    '900: Wrong API key!',
+    '901: Wrong message ID.',
+    '902: API deactivated.',
+    '903: IP not allowed.',
+];
+
 export class Sms77Client {
     constructor(protected apiKey: string, protected sendWith: string = 'js') {
     }
@@ -30,7 +54,7 @@ export class Sms77Client {
 
         const text = await res.text();
 
-        const errorCode = ['900: Wrong API key!'].find(s => Number.parseInt(text) === Number.parseInt(s));
+        const errorCode = errorCodes.find(s => Number.parseInt(text) === Number.parseInt(s));
         if (errorCode) {
             return Promise.reject(errorCode);
         }
@@ -43,7 +67,7 @@ export class Sms77Client {
         return text;
     }
 
-    async balance(): Promise<any> {
+    async balance(): Promise<number> {
         return Number.parseFloat(await this.post('balance'));
     }
 
