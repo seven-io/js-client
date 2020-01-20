@@ -7,11 +7,11 @@ So in order to to use it with node u may need to install [isomorphic-fetch](http
 ## Installation
 Via Yarn
 ```shell script
-yarn add https://github.com/sms77io/js-client
+yarn add sms77-client
 ```
 Via NPM
 ```shell script
-npm install --save https://github.com/sms77io/js-client
+npm install --save sms77-client
 ```
 
 ### Example

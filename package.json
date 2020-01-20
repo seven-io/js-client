@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "API client for the  sms77.io gateway",
   "main": "dist/index.js",
-  "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/sms77io/js-client",
   "author": "sms77 e.K.",
@@ -15,6 +14,6 @@
     "isomorphic-fetch": "^2.2.1"
   },
   "scripts": {
-    "prepublish": "tsc"
+    "prepublishOnly": "tsc"
   }
 }
