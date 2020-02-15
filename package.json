@@ -1,19 +1,25 @@
 {
-  "name": "sms77-client",
-  "version": "1.1.0",
-  "description": "API client for the  sms77.io gateway",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "repository": "https://github.com/sms77io/js-client",
   "author": "sms77 e.K.",
-  "license": "MIT",
+  "description": "API client for the sms77.io SMS gateway",
   "devDependencies": {
+    "browserify": "^16.5.0",
+    "tsify": "^4.0.1",
     "typescript": "^3.7.5"
   },
+  "files": ["dist/Sms77Client.umd.js", "dist/constants/*.d.ts", "dist/*.d.ts"],
+  "keywords": ["sms"],
+  "license": "MIT",
+  "main": "dist/Sms77Client.umd.js",
+  "name": "sms77-client",
   "optionalDependencies": {
     "isomorphic-fetch": "^2.2.1"
   },
+  "repository": "https://github.com/sms77io/js-client",
   "scripts": {
-    "prepublishOnly": "tsc"
-  }
+    "build": "tsc && npm run bundle",
+    "bundle": "node build/build.js > dist/Sms77Client.umd.js",
+    "prepublishOnly": "npm run build"
+  },
+  "types": "dist/Sms77Client.d.ts",
+  "version": "1.4.0"
 }

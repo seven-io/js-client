@@ -13,51 +13,15 @@ import {
     VoiceParams,
     VoiceResponse,
 } from './types';
-import {ERROR_CODES} from "./ERROR_CODES";
-import {SUCCESS_CODES} from "./SUCCESS_CODES";
+export * from './types'
+
+import BaseClient from "./BaseClient";
 
 const splitByLine = (str: string): string[] => str.split('\n');
 
-export class Sms77Client {
-    static BASE_URL = 'https://gateway.sms77.io/api';
-
+export default class Sms77Client extends BaseClient {
     constructor(protected apiKey: string, protected sendWith: string = 'js') {
-    }
-
-    async post(endpoint: string, data?: { [key: string]: any }): Promise<any> {
-        const params: { [key: string]: any } = {
-            ...data,
-            p: this.apiKey,
-            sendWith: this.sendWith,
-        };
-
-        const boolToNumber = (v: any) => 'boolean' === typeof v ? v ? 1 : 0 : v;
-
-        const queryString = Object.entries(params).map(([k, v]) =>
-            `${encodeURIComponent(k)}=${encodeURIComponent(boolToNumber(v))}`).join('&');
-
-        const cfg = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            method: 'POST',
-        };
-
-        const res = await fetch(`${Sms77Client.BASE_URL}/${endpoint}?${queryString}`, cfg);
-
-        const text = await res.text();
-
-        const code = Number.parseInt(text);
-        if (ERROR_CODES.has(code)) {
-            throw new Error(`${code}: ${ERROR_CODES.get(code)}`);
-        }
-
-        try {
-            return JSON.parse(text);
-        } catch (e) {
-        }
-
-        return text;
+        super(apiKey, sendWith);
     }
 
     async balance(): Promise<number> {
@@ -73,7 +37,7 @@ export class Sms77Client {
             return res;
         }
 
-        if (SUCCESS_CODES.has(Number.parseInt(res.return))) {
+        if (Sms77Client.SUCCESS_CODES.has(Number.parseInt(res.return))) {
             if (res.id) {
                 return Number.parseInt(res.id);
             } else if (p.id) {
@@ -134,5 +98,3 @@ export class Sms77Client {
         };
     }
 }
-
-export default Sms77Client;

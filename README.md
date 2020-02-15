@@ -11,12 +11,16 @@ yarn add sms77-client
 ```
 Via NPM
 ```shell script
-npm install --save sms77-client
+npm install sms77-client
+```
+In the Browser
+```html
+<script src="https://unpkg.com/browse/sms77-client@1.4.0/dist/Sms77Client.umd.js"></script>
 ```
 
 ### Example
 ```javascript
-import Sms77Client from 'sms77-client';
+//import Sms77Client from 'sms77-client'; // uncomment in NodeJS environments
 
 new Sms77Client('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
 .balance()

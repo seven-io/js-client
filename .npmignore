@@ -1,6 +1,0 @@
-node_modules/
-.idea/
-src/
-.gitignore
-*.lock
-tsconfig.json

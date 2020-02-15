@@ -1,11 +1,9 @@
-import {GSM_CODES} from './GSM_CODES';
-import {
-    CONTACTS_ACTIONS,
-    LOOKUP_TYPES,
-    NETWORK_TYPES,
-    PROVIDER_NAMES,
-    STATUS_REPORT_CODES
-} from './CONSTANTS';
+import {GSM_CODES} from './constants/GSM_CODES';
+import {NETWORK_TYPES} from "./constants/NETWORK_TYPES";
+import {CONTACTS_ACTIONS} from "./constants/CONTACTS_ACTIONS";
+import {LOOKUP_TYPES} from "./constants/LOOKUP_TYPES";
+import {PROVIDER_NAMES} from "./constants/PROVIDER_NAMES";
+import {STATUS_REPORT_CODES} from "./constants/STATUS_REPORT_CODES";
 
 export type GsmCode = (typeof GSM_CODES)[number];
 export type NetworkType = (typeof NETWORK_TYPES)[number];
