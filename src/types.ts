@@ -1,5 +1,11 @@
 import {GSM_CODES} from './GSM_CODES';
-import {CONTACTS_ACTIONS, LOOKUP_TYPES, NETWORK_TYPES, PROVIDER_NAMES, STATUS_REPORT_CODES} from './CONSTANTS';
+import {
+    CONTACTS_ACTIONS,
+    LOOKUP_TYPES,
+    NETWORK_TYPES,
+    PROVIDER_NAMES,
+    STATUS_REPORT_CODES
+} from './CONSTANTS';
 
 export type GsmCode = (typeof GSM_CODES)[number];
 export type NetworkType = (typeof NETWORK_TYPES)[number];
@@ -86,7 +92,6 @@ export type LookupParams = {
 export type PricingParams = {
     country?: string
     format?: 'json' | 'csv'
-    type?: 'direct' | 'economy'
 }
 
 export type SmsParams = {
@@ -104,6 +109,7 @@ export type SmsParams = {
     udh?: string
     utf8?: boolean
     ttl?: string
+    type?: 'direct' | 'economy'
     performance_tracking?: boolean
     return_msg_id?: boolean
 }
