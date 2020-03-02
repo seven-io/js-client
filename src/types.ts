@@ -169,23 +169,25 @@ export type MNPApiResponse = ProviderName | BaseApiResponse & {
 export type SmsResponse = string | SmsJsonResponse
 
 export type CountryNetwork = {
+    comment: string
+    features: string[]
+    mcc: string
+    mncs: string[]
+    networkName: string
+    price: number
+}
+
+export type CountryPricing = {
     countryCode: string
     countryName: string
     countryPrefix: string
-    networks: {
-        comment: string
-        features: string[]
-        mcc: string
-        mncs: string[]
-        networkName: string
-        price: number
-    }
+    networks: CountryNetwork[]
 }
 
 export type PricingResponse = {
     countCountries: number
     countNetworks: number
-    countries: CountryNetwork[]
+    countries: CountryPricing[]
 }
 
 export type StatusResponse = {
