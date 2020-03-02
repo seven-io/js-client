@@ -5,7 +5,7 @@ import {
     LookupResponse,
     PricingParams,
     PricingResponse,
-    SmsParams,
+    SmsParams, SmsResponse,
     StatusParams,
     StatusResponse,
     ValidateForVoiceParams,
@@ -70,7 +70,7 @@ export default class Sms77Client extends BaseClient {
         return await this.post('pricing', params);
     }
 
-    async sms(params: SmsParams): Promise<any> {
+    async sms(params: SmsParams): Promise<SmsResponse> {
         return await this.post('sms', params);
     }
 

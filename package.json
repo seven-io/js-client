@@ -4,7 +4,7 @@
   "devDependencies": {
     "browserify": "^16.5.0",
     "tsify": "^4.0.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "files": ["dist/Sms77Client.umd.js", "dist/constants/*.d.ts", "dist/*.d.ts"],
   "keywords": ["sms"],
@@ -21,5 +21,5 @@
     "prepublishOnly": "npm run build"
   },
   "types": "dist/Sms77Client.d.ts",
-  "version": "1.4.0"
+  "version": "1.4.1"
 }

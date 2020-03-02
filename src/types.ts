@@ -1,9 +1,9 @@
 import {GSM_CODES} from './constants/GSM_CODES';
-import {NETWORK_TYPES} from "./constants/NETWORK_TYPES";
-import {CONTACTS_ACTIONS} from "./constants/CONTACTS_ACTIONS";
-import {LOOKUP_TYPES} from "./constants/LOOKUP_TYPES";
-import {PROVIDER_NAMES} from "./constants/PROVIDER_NAMES";
-import {STATUS_REPORT_CODES} from "./constants/STATUS_REPORT_CODES";
+import {NETWORK_TYPES} from './constants/NETWORK_TYPES';
+import {CONTACTS_ACTIONS} from './constants/CONTACTS_ACTIONS';
+import {LOOKUP_TYPES} from './constants/LOOKUP_TYPES';
+import {PROVIDER_NAMES} from './constants/PROVIDER_NAMES';
+import {STATUS_REPORT_CODES} from './constants/STATUS_REPORT_CODES';
 
 export type GsmCode = (typeof GSM_CODES)[number];
 export type NetworkType = (typeof NETWORK_TYPES)[number];
@@ -92,6 +92,8 @@ export type PricingParams = {
     format?: 'json' | 'csv'
 }
 
+export type SmsType = 'direct' | 'economy'
+
 export type SmsParams = {
     text: string
     to: string
@@ -107,10 +109,31 @@ export type SmsParams = {
     udh?: string
     utf8?: boolean
     ttl?: string
-    type?: 'direct' | 'economy'
+    type?: SmsType
     performance_tracking?: boolean
     return_msg_id?: boolean
 }
+
+export type SmsJsonResponse = {
+    debug: 'true' | 'false'
+    balance: number
+    messages: [{
+        encoding: string
+        error: string | null
+        error_text: string | null
+        id: string,
+        messages?: string[]
+        parts: number
+        price: number,
+        recipient: string
+        sender: string
+        success: boolean
+        text: string
+    }],
+    sms_type: SmsType
+    success: string
+    total_price: number
+};
 
 export type StatusParams = {
     msg_id: string
@@ -143,22 +166,26 @@ export type MNPApiResponse = ProviderName | BaseApiResponse & {
     mnp: MNP,
 }
 
+export type SmsResponse = string | SmsJsonResponse
+
+export type CountryNetwork = {
+    countryCode: string
+    countryName: string
+    countryPrefix: string
+    networks: {
+        comment: string
+        features: string[]
+        mcc: string
+        mncs: string[]
+        networkName: string
+        price: number
+    }
+}
+
 export type PricingResponse = {
     countCountries: number
     countNetworks: number
-    countries: {
-        countryCode: string
-        countryName: string
-        countryPrefix: string
-        networks: {
-            mcc: string
-            mncs: string[]
-            networkName: string
-            price: number
-            features: string[]
-            comment: string
-        }[]
-    }[]
+    countries: CountryNetwork[]
 }
 
 export type StatusResponse = {
