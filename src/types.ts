@@ -55,7 +55,7 @@ export type HLR = {
     gsm_message: string
     international_format_number: string
     international_formatted: string
-    lookup_outcome: 1 | 2 | 0
+    lookup_outcome: 1 | 2 | 0 | boolean
     lookup_outcome_message: string
     national_format_number: string
     original_carrier: Carrier
