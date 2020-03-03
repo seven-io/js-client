@@ -104,6 +104,20 @@ export type PricingParams = {
     format?: 'json' | 'csv'
 }
 
+export type SmsMessage = {
+    encoding: string
+    error: string | null
+    error_text: string | null
+    id: string,
+    messages?: string[]
+    parts: number
+    price: number,
+    recipient: string
+    sender: string
+    success: boolean
+    text: string
+};
+
 export type SmsType = 'direct' | 'economy'
 
 export type SmsParams = {
@@ -129,19 +143,7 @@ export type SmsParams = {
 export type SmsJsonResponse = {
     debug: 'true' | 'false'
     balance: number
-    messages: [{
-        encoding: string
-        error: string | null
-        error_text: string | null
-        id: string,
-        messages?: string[]
-        parts: number
-        price: number,
-        recipient: string
-        sender: string
-        success: boolean
-        text: string
-    }],
+    messages: SmsMessage[],
     sms_type: SmsType
     success: string
     total_price: number
