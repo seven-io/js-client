@@ -27,6 +27,6 @@
     "prepublishOnly": "npm run build"
   },
   "types": "dist/Sms77Client.d.ts",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "homepage": "https://www.sms77.io/en/docs/gateway/http-api/"
 }

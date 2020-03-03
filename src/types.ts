@@ -163,10 +163,12 @@ export type VoiceParams = {
     from?: string
 }
 
-export type CNAMApiResponse = CNAMApiCodes | BaseApiResponse & {
+export type CNAMApiJsonResponse = BaseApiResponse & {
     name: string//callerID
     number: string
 }
+
+export type CNAMApiResponse = CNAMApiCodes | CNAMApiJsonResponse
 
 export type ContactsResponse = Contact[] | string | number
 
@@ -176,9 +178,11 @@ export type FormatApiResponse = string | Format
 
 export type LookupResponse = string | number | FormatApiResponse | HLRApiResponse | CNAMApiResponse | MNPApiResponse
 
-export type MNPApiResponse = ProviderName | BaseApiResponse & {
+export type MNPApiJsonResponse = BaseApiResponse & {
     mnp: MNP,
 }
+
+export type MNPApiResponse = ProviderName | MNPApiJsonResponse
 
 export type SmsResponse = string | SmsJsonResponse
 
