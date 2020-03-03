@@ -8,7 +8,7 @@ import {STATUS_REPORT_CODES} from './constants/STATUS_REPORT_CODES';
 export type GsmCode = (typeof GSM_CODES)[number]
 export type NetworkType = keyof typeof NETWORK_TYPES
 export type ContactsAction = keyof typeof CONTACTS_ACTIONS
-export type LookupType = typeof LOOKUP_TYPES
+export type LookupType = keyof typeof LOOKUP_TYPES
 export type ProviderName = keyof typeof PROVIDER_NAMES
 export type StatusDeliveryCode = keyof typeof STATUS_REPORT_CODES
 
