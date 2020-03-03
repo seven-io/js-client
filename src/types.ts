@@ -160,7 +160,7 @@ export type ContactsResponse = Contact[] | string | number
 
 export type HLRApiResponse = string | HLR | number | { code: string }
 
-export type LookupResponse = string | number | HLRApiResponse | CNAMApiResponse | MNPApiResponse
+export type LookupResponse = string | number | FormatResponse | HLRApiResponse | CNAMApiResponse | MNPApiResponse
 
 export type MNPApiResponse = ProviderName | BaseApiResponse & {
     mnp: MNP,
@@ -182,6 +182,18 @@ export type CountryPricing = {
     countryName: string
     countryPrefix: string
     networks: CountryNetwork[]
+}
+
+export type FormatResponse = {
+    national: string
+    carrier: string
+    country_code: string
+    country_iso: string
+    country_name: string
+    international: string
+    international_formatted: string
+    network_type: NetworkType
+    success: boolean,
 }
 
 export type PricingResponse = {
