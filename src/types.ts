@@ -47,7 +47,7 @@ export type Format = {
 
 export type HLR = {
     country_code: string
-    country_code_iso3: string
+    country_code_iso3?: string
     country_name: string
     country_prefix: string
     current_carrier: Carrier
