@@ -13,9 +13,11 @@ import {
     VoiceParams,
     VoiceResponse,
 } from './types';
-export * from './types'
 
-import BaseClient from "./BaseClient";
+export * from './types';
+
+import {SUCCESS_CODES} from './constants/SUCCESS_CODES';
+import BaseClient from './BaseClient';
 
 const splitByLine = (str: string): string[] => str.split('\n');
 
@@ -37,7 +39,7 @@ export default class Sms77Client extends BaseClient {
             return res;
         }
 
-        if (Sms77Client.SUCCESS_CODES.has(Number.parseInt(res.return))) {
+        if (SUCCESS_CODES.has(Number.parseInt(res.return))) {
             if (res.id) {
                 return Number.parseInt(res.id);
             } else if (p.id) {

@@ -1,1 +1,1 @@
-module.exports = require("../src/Sms77Client").default;
+module.exports = require('../src/Sms77Client').default;

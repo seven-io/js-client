@@ -6,8 +6,14 @@
     "tsify": "^4.0.1",
     "typescript": "^3.8.3"
   },
-  "files": ["dist/Sms77Client.umd.js", "dist/constants/*.d.ts", "dist/*.d.ts"],
-  "keywords": ["sms"],
+  "files": [
+    "dist/Sms77Client.umd.js",
+    "dist/constants/*.*",
+    "dist/*.d.ts"
+  ],
+  "keywords": [
+    "sms"
+  ],
   "license": "MIT",
   "main": "dist/Sms77Client.umd.js",
   "name": "sms77-client",
@@ -21,5 +27,6 @@
     "prepublishOnly": "npm run build"
   },
   "types": "dist/Sms77Client.d.ts",
-  "version": "1.4.2"
+  "version": "1.5.0",
+  "homepage": "https://www.sms77.io/en/docs/gateway/http-api/"
 }

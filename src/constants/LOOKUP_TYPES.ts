@@ -1,8 +1,6 @@
-import {tuple} from "../util";
-
-export const LOOKUP_TYPES = tuple(
-    'cname'
-    , 'format'
-    , 'hlr'
-    , 'mnp'
-);
+export enum LOOKUP_TYPES {
+    cname,
+    format,
+    hlr,
+    mnp,
+}

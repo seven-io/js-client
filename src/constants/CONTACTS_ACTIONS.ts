@@ -1,7 +1,5 @@
-import {tuple} from "../util";
-
-export const CONTACTS_ACTIONS = tuple(
-    'del'
-    , 'read'
-    , 'write'
-);
+export enum CONTACTS_ACTIONS {
+    del,
+    read,
+    write,
+}

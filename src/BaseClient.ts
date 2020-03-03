@@ -1,12 +1,7 @@
-import {ERROR_CODES} from "./constants/ERROR_CODES";
-import {SUCCESS_CODES} from "./constants/SUCCESS_CODES";
-import {GSM_CODES} from "./constants/GSM_CODES";
+import {ERROR_CODES} from './constants/ERROR_CODES';
 
 export default class BaseClient {
     static BASE_URL = 'https://gateway.sms77.io/api';
-    static ERROR_CODES = ERROR_CODES;
-    static SUCCESS_CODES = SUCCESS_CODES;
-    static GSM_CODES = GSM_CODES;
 
     constructor(protected apiKey: string, protected sendWith: string) {
     }
@@ -35,8 +30,8 @@ export default class BaseClient {
         const text = await res.text();
 
         const code = Number.parseInt(text);
-        if (BaseClient.ERROR_CODES.has(code)) {
-            throw new Error(`${code}: ${BaseClient.ERROR_CODES.get(code)}`);
+        if (ERROR_CODES.has(code)) {
+            throw new Error(`${code}: ${ERROR_CODES.get(code)}`);
         }
 
         try {

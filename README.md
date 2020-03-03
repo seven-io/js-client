@@ -15,7 +15,7 @@ npm install sms77-client
 ```
 In the Browser
 ```html
-<script src="https://unpkg.com/browse/sms77-client@1.4.0/dist/Sms77Client.umd.js"></script>
+<script src="https://unpkg.com/browse/sms77-client@1.5.0/dist/Sms77Client.umd.js"></script>
 ```
 
 ### Example

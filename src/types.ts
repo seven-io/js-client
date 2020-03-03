@@ -5,12 +5,12 @@ import {LOOKUP_TYPES} from './constants/LOOKUP_TYPES';
 import {PROVIDER_NAMES} from './constants/PROVIDER_NAMES';
 import {STATUS_REPORT_CODES} from './constants/STATUS_REPORT_CODES';
 
-export type GsmCode = (typeof GSM_CODES)[number];
-export type NetworkType = (typeof NETWORK_TYPES)[number];
-export type ContactsAction = (typeof CONTACTS_ACTIONS)[number];
-export type LookupType = (typeof LOOKUP_TYPES)[number];
-export type ProviderName = (typeof PROVIDER_NAMES)[number];
-export type StatusDeliveryCode = (typeof STATUS_REPORT_CODES)[number];
+export type GsmCode = (typeof GSM_CODES)[number]
+export type NetworkType = keyof typeof NETWORK_TYPES
+export type ContactsAction = keyof typeof CONTACTS_ACTIONS
+export type LookupType = typeof LOOKUP_TYPES
+export type ProviderName = keyof typeof PROVIDER_NAMES
+export type StatusDeliveryCode = keyof typeof STATUS_REPORT_CODES
 
 export type CNAMApiCodes = 202 | 600
 
