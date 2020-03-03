@@ -61,7 +61,7 @@ export type HLR = {
     original_carrier: Carrier
     ported: 'unknown' | 'ported' | 'not_ported' | 'assumed_not_ported' | 'assumed_ported'
     reachable: 'unknown' | 'reachable' | 'undeliverable' | 'absent' | 'bad_number' | 'blacklisted'
-    roaming: Roaming
+    roaming: 'not_roaming' | Roaming
     status: boolean
     status_message: 'error' | 'success'
     valid_number: 'unknown' | 'valid' | 'not_valid'
