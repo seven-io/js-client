@@ -135,7 +135,6 @@ export type SmsParams = {
     udh?: string
     utf8?: boolean
     ttl?: string
-    type?: SmsType
     performance_tracking?: boolean
     return_msg_id?: boolean
 }
