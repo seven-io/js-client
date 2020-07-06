@@ -3,8 +3,8 @@
   "description": "API client for the sms77.io SMS gateway",
   "devDependencies": {
     "browserify": "^16.5.1",
-    "tsify": "^4.0.1",
-    "typescript": "^3.8.3"
+    "tsify": "^4.0.2",
+    "typescript": "^3.9.6"
   },
   "files": [
     "dist/Sms77Client.umd.js",
@@ -27,6 +27,6 @@
     "prepublishOnly": "npm run build"
   },
   "types": "dist/Sms77Client.d.ts",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "homepage": "https://www.sms77.io/en/docs/gateway/http-api/"
 }

@@ -27,10 +27,13 @@ export type Carrier = {
 }
 
 export type Contact = {
-    email: string
-    id: number
-    nick: string,
-    number: string,
+    email?: string
+    id?: number
+    ID?: string
+    Name?: string
+    number?: string
+    Number?: string
+    nick?: string
 }
 
 export type Format = {
@@ -177,7 +180,13 @@ export type HLRApiResponse = string | HLR | number | { code: string }
 
 export type FormatApiResponse = string | Format
 
-export type LookupResponse = string | number | FormatApiResponse | HLRApiResponse | CNAMApiResponse | MNPApiResponse
+export type LookupResponse =
+    string
+    | number
+    | FormatApiResponse
+    | HLRApiResponse
+    | CNAMApiResponse
+    | MNPApiResponse
 
 export type MNPApiJsonResponse = BaseApiResponse & {
     mnp: MNP,
