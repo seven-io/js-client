@@ -1,7 +1,13 @@
 const browserify = require('browserify');
 const tsify = require('tsify');
+const {sms77io} = require('../package.json');
 
-browserify(__dirname + '/main.js', {standalone: 'Sms77Client'})
+const entry = __dirname + '/main.js';
+const opts = {
+    standalone: sms77io.bundleName,
+};
+
+browserify(entry, opts)
     .plugin(tsify)
     .bundle()
     .on('error', e => {

@@ -1,11 +1,14 @@
 import {
+    AnalyticsParams,
+    AnalyticsResponse,
     ContactsParams,
     ContactsResponse,
     LookupParams,
     LookupResponse,
     PricingParams,
     PricingResponse,
-    SmsParams, SmsResponse,
+    SmsParams,
+    SmsResponse,
     StatusParams,
     StatusResponse,
     ValidateForVoiceParams,
@@ -14,89 +17,69 @@ import {
     VoiceResponse,
 } from './types';
 
+import {SUCCESS_CODES} from './constants/SUCCESS_CODES';
+import {BaseClient} from './BaseClient';
+import {Endpoint} from './constants/enums/Endpoint';
+import TextTransformer from './lib/TextTransformer';
+
 export * from './types';
 
-import {SUCCESS_CODES} from './constants/SUCCESS_CODES';
-import BaseClient from './BaseClient';
-
-const splitByLine = (str: string): string[] => str.split('\n');
-
 export default class Sms77Client extends BaseClient {
-    constructor(protected apiKey: string, protected sendWith: string = 'js') {
-        super(apiKey, sendWith);
-    }
+    analytics = async (p?: AnalyticsParams): Promise<AnalyticsResponse> =>
+        (await this.post<AnalyticsResponse>
+        (Endpoint.Analytics, p) as AnalyticsResponse);
 
-    async balance(): Promise<number> {
-        return Number.parseFloat(await this.post('balance'));
-    }
+    balance = async (): Promise<number> =>
+        Number.parseFloat(await this.post(Endpoint.Balance));
 
-    async contacts(p: ContactsParams): Promise<ContactsResponse> {
-        const res = await this.post('contacts', p);
+    contacts = async (p: ContactsParams): Promise<ContactsResponse> => {
+        const res = await this.post<ContactsResponse>(Endpoint.Contacts, p);
+        const type = typeof res;
+        const isCSV = type === 'string';
+        const isCode = type === 'number';
 
-        if ('string' === typeof res) { //return CSV if ContactsParams.json was set to 0
+        if (isCSV || isCode) {
             return res;
         } else if (Array.isArray(res)) {
             return res;
         }
 
-        if (SUCCESS_CODES.has(Number.parseInt(res.return))) {
-            if (res.id) {
-                return Number.parseInt(res.id);
-            } else if (p.id) {
-                return p.id;
-            }
-        }
-
-        throw new Error(res);
-    }
-
-    async lookup(params: LookupParams): Promise<LookupResponse> {
-        const res = await this.post('lookup', params);
-
-        const isValidResponse = (str: string) => 100 === Number.parseInt(str);
-
-        if ('string' === typeof res) {
-            if (!isValidResponse(res)) {
-                throw new Error(res);
-            }
-        } else if (res.code) {
-            if (!isValidResponse(res.code)) {
-                throw new Error(res);
+        if (typeof res === 'object') {
+            if (SUCCESS_CODES.has(Number.parseInt(res.return))) {
+                if (res.id) {
+                    return Number.parseInt(res.id);
+                } else if (p.id) {
+                    return p.id;
+                }
             }
         }
 
         return res;
-    }
+    };
 
-    async pricing(params: PricingParams): Promise<PricingResponse> {
-        return await this.post('pricing', params);
-    }
+    lookup = async (p: LookupParams): Promise<LookupResponse> =>
+        await this.post<LookupResponse>(Endpoint.Lookup, p);
 
-    async sms(params: SmsParams): Promise<SmsResponse> {
-        return await this.post('sms', params);
-    }
+    pricing = async (p?: PricingParams): Promise<PricingResponse> =>
+        await this.post<PricingResponse>(Endpoint.Pricing, p);
 
-    async status(params: StatusParams): Promise<StatusResponse> {
-        const res = await this.post('status', params);
+    sms = async (p: SmsParams): Promise<SmsResponse> =>
+        await this.post(Endpoint.Sms, p);
 
-        const [report, timestamp] = splitByLine(res);
+    status = async (p: StatusParams): Promise<StatusResponse> => {
+        const res = await this.post(Endpoint.Status, p);
 
-        return {report: report as StatusResponse['report'], timestamp};
-    }
+        return p._json ? TextTransformer.status(res) : res;
+    };
 
-    async validateForVoice(params: ValidateForVoiceParams): Promise<ValidateForVoiceResponse> {
-        return await this.post('validate_for_voice', params);
-    }
+    validateForVoice = async (p: ValidateForVoiceParams):
+        Promise<ValidateForVoiceResponse> =>
+        (await this.post<ValidateForVoiceResponse>
+        (Endpoint.ValidateForVoice, p) as ValidateForVoiceResponse);
 
-    async voice(params: VoiceParams): Promise<VoiceResponse> {
-        const res = await this.post('voice', params);
+    voice = async (p: VoiceParams): Promise<VoiceResponse> => {
+        const res = await this.post(Endpoint.Voice, p);
 
-        const [code, id, cost] = splitByLine(res);
-
-        return {
-            code: Number.parseInt(code),
-            id: Number.parseInt(id),
-            cost: Number.parseFloat(cost)
-        };
-    }
+        return p._json ? TextTransformer.voice(res) : res;
+    };
 }

@@ -1,23 +1,71 @@
 import {GSM_CODES} from './constants/GSM_CODES';
-import {NETWORK_TYPES} from './constants/NETWORK_TYPES';
-import {CONTACTS_ACTIONS} from './constants/CONTACTS_ACTIONS';
-import {LOOKUP_TYPES} from './constants/LOOKUP_TYPES';
-import {PROVIDER_NAMES} from './constants/PROVIDER_NAMES';
-import {STATUS_REPORT_CODES} from './constants/STATUS_REPORT_CODES';
+import {NetworkType} from './constants/enums/NetworkType';
+import {ContactsAction} from './constants/enums/ContactsAction';
+import {LookupType} from './constants/enums/LookupType';
+import {ProviderName} from './constants/enums/ProviderName';
+import {StatusReportCode} from './constants/enums/StatusReportCode';
+import {
+    ANALYTICS_GROUPS,
+    ANALYTICS_LABELS,
+    ANALYTICS_SUBACCOUNTS,
+    API_RESPONSE_CODES,
+    CNAM_API_CODES,
+    HLR_LOOKUP_OUTCOME_CODES,
+    HLR_PORTED_CODES,
+    HLR_REACHABLE_CODES,
+    HLR_ROAMING_CODES,
+    HLR_STATUS_MESSAGE_CODES,
+    HLR_VALID_NUMBER_CODES,
+    PRICING_FORMATS,
+    ROAMING_STATUS_CODES,
+    SMS_DEBUG_VALUES,
+    SMS_ENCODINGS,
+    SMS_SIGNATURE_POSITIONS,
+    SMS_TYPES,
+    STRING_BOOLEAN_VALUES,
+    STRING_RESPONSE_CODES
+} from './constants/GENERAL';
 
-export type GsmCode = (typeof GSM_CODES)[number]
-export type NetworkType = keyof typeof NETWORK_TYPES
-export type ContactsAction = keyof typeof CONTACTS_ACTIONS
-export type LookupType = keyof typeof LOOKUP_TYPES
-export type ProviderName = keyof typeof PROVIDER_NAMES
-export type StatusDeliveryCode = keyof typeof STATUS_REPORT_CODES
-
-export type CNAMApiCodes = 202 | 600
-
-export type BaseApiResponse = {
-    success: boolean
-    code: 100 | 202 | 500 | 600
+export type AnalyticBase = {
+    direct: number
+    economy: number
+    hlr: number
+    inbound: number
+    mnp: number
+    usage_eur: number
+    voice: number
 }
+
+export type AnalyticGroupByCountry = AnalyticBase & { country: string }
+export type AnalyticGroupByDate = AnalyticBase & { date: string }
+export type AnalyticGroupBySubaccount = AnalyticBase & { account: string }
+export type AnalyticGroupByLabel = AnalyticBase & { label: string }
+export type Analytic = AnalyticGroupByCountry
+    | AnalyticGroupByDate
+    | AnalyticGroupBySubaccount
+    | AnalyticGroupByLabel
+export type AnalyticsGroupBy = typeof ANALYTICS_GROUPS[number]
+export type AnalyticsLabel = typeof ANALYTICS_LABELS[number] | string
+export type AnalyticsSubaccounts = typeof ANALYTICS_SUBACCOUNTS[number] | number
+
+export type AnalyticsParams = {
+    start?: string
+    end?: string
+    label?: AnalyticsLabel
+    subaccounts?: AnalyticsSubaccounts
+    group_by?: AnalyticsGroupBy
+}
+
+export type AnalyticsResponse = Analytic[]
+
+export type GsmCode = typeof GSM_CODES[number]
+
+export type CNAMApiCodes = typeof CNAM_API_CODES[number]
+
+export type ApiResponseCode = typeof API_RESPONSE_CODES[number];
+
+export type StringBoolean = typeof STRING_BOOLEAN_VALUES[number];
+export type StringResponseCode = typeof STRING_RESPONSE_CODES[number];
 
 export type Carrier = {
     country: string
@@ -58,16 +106,16 @@ export type HLR = {
     gsm_message: string
     international_format_number: string
     international_formatted: string
-    lookup_outcome: 1 | 2 | 0 | boolean
+    lookup_outcome: typeof HLR_LOOKUP_OUTCOME_CODES[number] | boolean
     lookup_outcome_message: string
     national_format_number: string
     original_carrier: Carrier
-    ported: 'unknown' | 'ported' | 'not_ported' | 'assumed_not_ported' | 'assumed_ported'
-    reachable: 'unknown' | 'reachable' | 'undeliverable' | 'absent' | 'bad_number' | 'blacklisted'
-    roaming: 'not_roaming' | Roaming
+    ported: typeof HLR_PORTED_CODES[number]
+    reachable: typeof HLR_REACHABLE_CODES[number]
+    roaming: typeof HLR_ROAMING_CODES[number] | Roaming
     status: boolean
-    status_message: 'error' | 'success'
-    valid_number: 'unknown' | 'valid' | 'not_valid'
+    status_message: typeof HLR_STATUS_MESSAGE_CODES[number]
+    valid_number: typeof HLR_VALID_NUMBER_CODES[number]
 }
 
 export type MNP = {
@@ -84,7 +132,7 @@ export type Roaming = {
     roaming_country_code: string
     roaming_network_code: string
     roaming_network_name: string
-    status: 'not_roaming' | 'roaming' | 'unknown'
+    status: typeof ROAMING_STATUS_CODES[number]
 }
 
 export type ContactsParams = {
@@ -96,22 +144,32 @@ export type ContactsParams = {
     nick?: string
 }
 
-export type LookupParams = {
-    type: LookupType
+type BaseLookupParams<T extends LookupType> = {
+    type: T
     number: string
+}
+export type LookupCnamParams = BaseLookupParams<LookupType.Cnam>
+export type LookupFormatParams = BaseLookupParams<LookupType.Format>
+export type LookupHlrParams = BaseLookupParams<LookupType.Hlr>
+export type LookupMnpParams = BaseLookupParams<LookupType.Mnp> & {
     json?: boolean
 }
+export type LookupParams =
+    LookupCnamParams
+    | LookupFormatParams
+    | LookupHlrParams
+    | LookupMnpParams
 
 export type PricingParams = {
     country?: string
-    format?: 'json' | 'csv'
+    format?: typeof PRICING_FORMATS[number]
 }
 
 export type SmsMessage = {
-    encoding: string
+    encoding: typeof SMS_ENCODINGS[number]
     error: string | null
     error_text: string | null
-    id: string,
+    id: string | null
     messages?: string[]
     parts: number
     price: number,
@@ -121,29 +179,34 @@ export type SmsMessage = {
     text: string
 };
 
-export type SmsType = 'direct' | 'economy'
+export type SmsType = typeof SMS_TYPES[number]
 
 export type SmsParams = {
-    text: string
-    to: string
+    _extras?: {
+        signature?: string
+        signaturePosition?: AddSignatureOpts['position']
+    }
     debug?: boolean
     delay?: string
     details?: boolean
     flash?: boolean
+    foreign_id?: string
     from?: string
     label?: string
     json?: boolean
     no_reload?: boolean
+    text: string
+    to: string
     unicode?: boolean
     udh?: string
     utf8?: boolean
-    ttl?: string
+    ttl?: number
     performance_tracking?: boolean
     return_msg_id?: boolean
 }
 
 export type SmsJsonResponse = {
-    debug: 'true' | 'false'
+    debug: typeof SMS_DEBUG_VALUES[number]
     balance: number
     messages: SmsMessage[],
     sms_type: SmsType
@@ -152,6 +215,7 @@ export type SmsJsonResponse = {
 };
 
 export type StatusParams = {
+    _json?: boolean
     msg_id: string
 }
 
@@ -161,20 +225,32 @@ export type ValidateForVoiceParams = {
 }
 
 export type VoiceParams = {
+    _json?: boolean
     text: string
     to: string
     xml?: boolean
     from?: string
 }
 
-export type CNAMApiJsonResponse = BaseApiResponse & {
-    name: string//callerID
+export type CNAMApiJsonResponse = {
+    code: StringResponseCode
+    name: string // callerID
     number: string
+    success: StringBoolean
 }
 
 export type CNAMApiResponse = CNAMApiCodes | CNAMApiJsonResponse
 
-export type ContactsResponse = Contact[] | string | number
+export type ContactsWriteResponse = {
+    return: string
+    id: string
+}
+
+export type ContactsResponse =
+    Contact[]
+    | string
+    | number
+    | ContactsWriteResponse
 
 export type HLRApiResponse = string | HLR | number | { code: string }
 
@@ -188,13 +264,16 @@ export type LookupResponse =
     | CNAMApiResponse
     | MNPApiResponse
 
-export type MNPApiJsonResponse = BaseApiResponse & {
-    mnp: MNP,
+export type MNPApiJsonResponse = {
+    code: ApiResponseCode
+    mnp: MNP
+    price: number
+    success: boolean
 }
 
 export type MNPApiResponse = ProviderName | MNPApiJsonResponse
 
-export type SmsResponse = string | SmsJsonResponse
+export type SmsResponse = number | string | SmsJsonResponse
 
 export type CountryNetwork = {
     comment: string
@@ -205,6 +284,8 @@ export type CountryNetwork = {
     price: number
 }
 
+export type CsvNetwork = CountryNetwork & Omit<CountryPricing, 'networks'>
+
 export type CountryPricing = {
     countryCode: string
     countryName: string
@@ -212,29 +293,41 @@ export type CountryPricing = {
     networks: CountryNetwork[]
 }
 
-export type PricingResponse = {
+export type PricingResponse = PricingResponseJson | string
+
+export type PricingResponseJson = {
     countCountries: number
     countNetworks: number
     countries: CountryPricing[]
 }
 
-export type StatusResponse = {
-    report: StatusDeliveryCode
+export type StatusResponseJson = {
+    report: StatusReportCode
     timestamp: string
 }
 
+export type StatusResponse = string | StatusResponseJson
+
 export type ValidateForVoiceResponse = {
-    error: string
-    success: boolean
     code?: string
-    formatted_output?: null
-    id?: null | number
+    error: string | null
+    formatted_output?: string | null
+    id?: number | null
     sender?: string
+    success: boolean
     voice?: boolean
 }
 
-export type VoiceResponse = {
+export type VoiceResponseJson = {
     code: number
     cost: number
     id: number
+}
+
+export type VoiceResponse = string | VoiceResponseJson
+
+export type AddSignatureOpts = {
+    position: typeof SMS_SIGNATURE_POSITIONS[number]
+    signature: string
+    text: string
 }
