@@ -1,6 +1,4 @@
-import {tuple} from '../util';
-
-export const GSM_CODES = tuple(
+export const GSM_CODES = [
     '0',
     '1',
     '2',
@@ -143,5 +141,5 @@ export const GSM_CODES = tuple(
     '89xx',
     '8cxx',
     'exxx',
-    'e140'
-);
+    'e140',
+] as const;

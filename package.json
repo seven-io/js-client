@@ -1,18 +1,28 @@
 {
   "author": "sms77 e.K.",
   "description": "API client for the sms77.io SMS gateway",
+  "dependencies": {
+    "date-fns": "^2.16.1"
+  },
   "devDependencies": {
-    "browserify": "^16.5.1",
-    "tsify": "^4.0.2",
-    "typescript": "^3.9.6"
+    "@types/node": "^12.12.6",
+    "@types/node-fetch": "^2.5.7",
+    "browserify": "^16.5.2",
+    "jasmine-fail-fast": "^2.0.1",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.3.0",
+    "tsify": "^5.0.2",
+    "typescript": "^4.0.2"
   },
   "files": [
     "dist/Sms77Client.umd.js",
     "dist/constants/*.*",
+    "dist/validators/*.*",
     "dist/*.d.ts"
   ],
   "keywords": [
-    "sms"
+    "sms",
+    "text2speech"
   ],
   "license": "MIT",
   "main": "dist/Sms77Client.umd.js",
@@ -22,11 +32,15 @@
   },
   "repository": "https://github.com/sms77io/js-client",
   "scripts": {
-    "build": "tsc && npm run bundle",
-    "bundle": "node build/build.js > dist/Sms77Client.umd.js",
-    "prepublishOnly": "npm run build"
+    "build": "rm -rf dist && tsc && npm run bundle",
+    "bundle": "node build/build.js > dist/$npm_package_sms77io_bundleName.umd.js",
+    "prepublishOnly": "npm run build",
+    "test": "npx jest"
   },
-  "types": "dist/Sms77Client.d.ts",
-  "version": "1.9.2",
+  "sms77io": {
+    "bundleName": "Sms77Client"
+  },
+  "types": "dist/index.d.ts",
+  "version": "2.0.0",
   "homepage": "https://www.sms77.io/en/docs/gateway/http-api/"
 }
