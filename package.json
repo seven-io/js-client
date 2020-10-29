@@ -1,18 +1,21 @@
 {
   "author": "sms77 e.K.",
-  "description": "API client for the sms77.io SMS gateway",
+  "description": "API client for the Sms77.io SMS gateway",
   "dependencies": {
-    "date-fns": "^2.16.1"
+    "date-fns": "^2.16.1",
+    "globalthis": "^1.0.1",
+    "form-data": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^12.12.6",
     "@types/node-fetch": "^2.5.7",
-    "browserify": "^16.5.2",
+    "@types/globalthis": "^1.0.1",
+    "browserify": "^17.0.0",
     "jasmine-fail-fast": "^2.0.1",
-    "jest": "^26.4.2",
-    "ts-jest": "^26.3.0",
+    "jest": "^26.6.1",
+    "ts-jest": "^26.4.3",
     "tsify": "^5.0.2",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.5"
   },
   "files": [
     "dist/Sms77Client.umd.js",
@@ -21,8 +24,13 @@
     "dist/*.d.ts"
   ],
   "keywords": [
+    "2fa",
     "sms",
-    "text2speech"
+    "gateway",
+    "text2speech",
+    "hlr",
+    "cnam",
+    "mnp"
   ],
   "license": "MIT",
   "main": "dist/Sms77Client.umd.js",
@@ -41,6 +49,6 @@
     "bundleName": "Sms77Client"
   },
   "types": "dist/index.d.ts",
-  "version": "2.0.0",
-  "homepage": "https://www.sms77.io/en/docs/gateway/http-api/"
+  "version": "2.1.0",
+  "homepage": "https://github.com/sms77io/js-client"
 }

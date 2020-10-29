@@ -16,24 +16,25 @@ import {
     VoiceParams,
     VoiceResponse,
 } from './types';
-
 import {SUCCESS_CODES} from './constants/SUCCESS_CODES';
 import {BaseClient} from './BaseClient';
 import {Endpoint} from './constants/enums/Endpoint';
 import TextTransformer from './lib/TextTransformer';
+import {ContactsAction} from './constants/enums/ContactsAction';
 
 export * from './types';
 
 export default class Sms77Client extends BaseClient {
     analytics = async (p?: AnalyticsParams): Promise<AnalyticsResponse> =>
-        (await this.post<AnalyticsResponse>
-        (Endpoint.Analytics, p) as AnalyticsResponse);
+        (await this.get<AnalyticsResponse>(Endpoint.Analytics, p) as AnalyticsResponse);
 
     balance = async (): Promise<number> =>
-        Number.parseFloat(await this.post(Endpoint.Balance));
+        Number.parseFloat(await this.get(Endpoint.Balance));
 
     contacts = async (p: ContactsParams): Promise<ContactsResponse> => {
-        const res = await this.post<ContactsResponse>(Endpoint.Contacts, p);
+        const args: [Endpoint, ContactsParams] = [Endpoint.Contacts, p];
+        const method = p.action === ContactsAction.Del ? this.post : this.get;
+        const res = await method<ContactsResponse>(...args);
         const type = typeof res;
         const isCSV = type === 'string';
         const isCode = type === 'number';
@@ -67,7 +68,7 @@ export default class Sms77Client extends BaseClient {
         await this.post(Endpoint.Sms, p);
 
     status = async (p: StatusParams): Promise<StatusResponse> => {
-        const res = await this.post(Endpoint.Status, p);
+        const res = await this.get(Endpoint.Status, p);
 
         return p._json ? TextTransformer.status(res) : res;
     };

@@ -1,5 +1,5 @@
-![](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "Sms77.io Logo")
-# Sms77.io SMS Gateway API Client
+![Sms77.io Logo](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "Sms77.io Logo")
+# Sms77.io SMS Gateway API Client for JavaScript
 
 This library relies on the the global fetch API.
 In order to to use it with NodeJS u may need to install [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch).

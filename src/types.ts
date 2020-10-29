@@ -36,6 +36,7 @@ export type AnalyticBase = {
     voice: number
 }
 
+export type AnyObject = { [k: string]: any }
 export type AnalyticGroupByCountry = AnalyticBase & { country: string }
 export type AnalyticGroupByDate = AnalyticBase & { date: string }
 export type AnalyticGroupBySubaccount = AnalyticBase & { account: string }

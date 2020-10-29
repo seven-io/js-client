@@ -12,8 +12,8 @@ import {
 } from './data/contacts';
 import CsvToJson from '../src/lib/TextTransformer';
 import Sms77Client from '../src/Sms77Client';
-import {ContactsAction} from '../src/constants/enums/ContactsAction';
 import {ContactsResponseCode} from '../src/constants/enums/ContactsResponseCode';
+import {ContactsAction} from '../src/constants/enums/ContactsAction';
 
 const contacts: Sms77Client['contacts'] = process.env.SMS77_LIVE_TEST
     ? client.contacts : jest.fn(async (p: ContactsParams) => {
@@ -57,24 +57,21 @@ const assertResponse = async (params: ContactsParams): Promise<void> => {
 };
 
 describe('Contacts', () => {
-    afterEach(async () => await new Promise(r => setTimeout(r, 750)));
-
     it('should return a csv list of contacts',
         async () => await assertResponse({action: ContactsAction.Read}));
-
-    it('should create a new contact',
-        async () => await assertResponse(contactsWriteParams));
-
-    it('should delete a contact',
-        async () => await assertResponse({action: ContactsAction.Del, id: uid,}));
 
     it('should return a json list of contacts',
         async () => await assertResponse({action: ContactsAction.Read, json: true}));
 
-    it('should create a new contact and delete it again',
-        async () => {
-            await assertResponse({...contactsWriteParams, json: true,});
+    it('should create a new contact and delete it again', async () => {
+        await assertResponse(contactsWriteParams);
 
-            await assertResponse({action: ContactsAction.Del, id: uid, json: true,});
-        });
+        await assertResponse({action: ContactsAction.Del, id: uid});
+    });
+
+    it('should create a new contact and delete it again as json', async () => {
+        await assertResponse({...contactsWriteParams, json: true,});
+
+        await assertResponse({action: ContactsAction.Del, id: uid, json: true,});
+    });
 });

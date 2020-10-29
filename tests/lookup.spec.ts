@@ -20,23 +20,25 @@ import {
 } from './matchers/lookup';
 import Sms77Client from '../src/Sms77Client';
 import {
-    dummyLookupCnam, dummyLookupFormat,
+    dummyLookupCnam,
+    dummyLookupFormat,
     dummyLookupHlr,
     dummyLookupMnpJson,
     dummyLookupMnpText
 } from './data/lookup';
+import {LookupType} from '../src/constants/enums/LookupType';
 
 const lookup: Sms77Client['lookup'] = process.env.SMS77_LIVE_TEST
     ? client.lookup : jest.fn(async (p: LookupParams) => {
-        if ('format' === p.type) {
-            return dummyLookupFormat
+        if (p.type === LookupType.Format) {
+            return dummyLookupFormat;
         }
 
-        if ('cnam' === p.type) {
-            return dummyLookupCnam
+        if (p.type === LookupType.Cnam) {
+            return dummyLookupCnam;
         }
 
-        if ('mnp' === p.type) {
+        if (p.type === LookupType.Mnp) {
             return p.json ? dummyLookupMnpJson : dummyLookupMnpText;
         }
 
