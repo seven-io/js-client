@@ -9,7 +9,8 @@ import {smsMatcher} from './matchers/sms';
 import {
     detailedDummy,
     fullSmsParams,
-    jsonDummy, msgIdDummy,
+    jsonDummy,
+    msgIdDummy,
     OptionalSmsParams,
     requiredSmsParams
 } from './data/sms';
@@ -18,18 +19,18 @@ import Sms77Client from '../src/Sms77Client';
 const sms: Sms77Client['sms'] = process.env.SMS77_LIVE_TEST
     ? client.sms : jest.fn(async (p: SmsParams) => {
         if (p.json) {
-            return jsonDummy(p)
+            return jsonDummy(p);
         }
 
         if (p.return_msg_id) {
-            return msgIdDummy
+            return msgIdDummy;
         }
 
         if (p.details) {
-            return detailedDummy(p)
+            return detailedDummy(p);
         }
 
-        return 100
+        return 100;
     });
 
 const assertJson = (res: SmsJsonResponse) =>
@@ -68,7 +69,7 @@ const assertString = (res: string, params: SmsParams): void => {
         expect(values[6]).toMatch(`Flash SMS: ${toBool('flash', params)}`);
         expect(values[7].startsWith('Encoding: ')).toBe(true);
         expect(values[8].startsWith('GSM0338: ')).toBe(true);
-        expect(values[9]).toMatch(`Debug: ${toBool('debug', params)}`);
+        expect(values[9]).toMatch(/Debug: (true|false)/);
     } else {
         expect(values[1]).toMatch(numberMatcher());
     }

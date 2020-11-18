@@ -8,13 +8,14 @@ import unionMatcher from './lib/unionMatcher';
 import getStringEnumValues from './lib/getStringEnumValues';
 import {StatusReportCode} from '../src/constants/enums/StatusReportCode';
 import TextTransformer from '../src/lib/TextTransformer';
+import createRandomNumber from './lib/createRandomNumber';
 
 const status: Sms77Client['status'] = process.env.SMS77_LIVE_TEST
     ? Client.status
     : jest.fn(async (p: StatusParams) =>
         p._json ? dummyStatusJson : dummyStatusText);
 
-const requiredParams: StatusParams = {msg_id: process.env.SMS77_MSG_ID!};
+let requiredParams: StatusParams;
 
 const expectJson = (json: StatusResponseJson) => expect(json)
     .toMatchObject<StatusResponseJson>({
@@ -24,8 +25,16 @@ const expectJson = (json: StatusResponseJson) => expect(json)
     });
 
 describe('Status', () => {
-    it('should have process.env.SMS77_MSG_ID set', () =>
-        expect(typeof process.env.SMS77_MSG_ID).toBe('string'));
+    it('should have process.env.SMS77_MSG_ID set', () => {
+        requiredParams = {
+            msg_id: process.env.SMS77_LIVE_TEST
+                ? process.env.SMS77_MSG_ID!
+                : createRandomNumber(1, 100).toString()
+        };
+
+        expect(typeof requiredParams.msg_id).toBe('string');
+        expect(requiredParams.msg_id.length).toBeGreaterThan(0);
+    });
 
     it('should return a text response', async () => {
         const text = await status(requiredParams);

@@ -1,3 +1,7 @@
+import fetch from 'node-fetch';
+
+globalThis.fetch = fetch as unknown as typeof globalThis.fetch
+
 //@ts-ignore
 import * as failFast from 'jasmine-fail-fast';
 

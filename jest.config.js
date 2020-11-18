@@ -1,7 +1,6 @@
 /** @typedef {import('ts-jest')} */
 
 module.exports = {
-    bail: 1,
     globals: {
         'ts-jest': {
             tsconfig: 'tests/tsconfig.json'
@@ -9,6 +8,6 @@ module.exports = {
     },
     preset: 'ts-jest',
     setupFilesAfterEnv: ['./jest.setup.ts'],
-    testEnvironment: 'node',
-    verbose: false,
+    testEnvironment: 'jsdom',
+    verbose: true,
 };

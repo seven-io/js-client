@@ -29,7 +29,7 @@ export default class Sms77Client extends BaseClient {
         (await this.get<AnalyticsResponse>(Endpoint.Analytics, p) as AnalyticsResponse);
 
     balance = async (): Promise<number> =>
-        Number.parseFloat(await this.get(Endpoint.Balance));
+        Number.parseFloat(await this.get<string>(Endpoint.Balance, {}));
 
     contacts = async (p: ContactsParams): Promise<ContactsResponse> => {
         const args: [Endpoint, ContactsParams] = [Endpoint.Contacts, p];
@@ -68,7 +68,7 @@ export default class Sms77Client extends BaseClient {
         await this.post(Endpoint.Sms, p);
 
     status = async (p: StatusParams): Promise<StatusResponse> => {
-        const res = await this.get(Endpoint.Status, p);
+        const res = await this.get<string>(Endpoint.Status, p);
 
         return p._json ? TextTransformer.status(res) : res;
     };
@@ -79,7 +79,7 @@ export default class Sms77Client extends BaseClient {
         (Endpoint.ValidateForVoice, p) as ValidateForVoiceResponse);
 
     voice = async (p: VoiceParams): Promise<VoiceResponse> => {
-        const res = await this.post(Endpoint.Voice, p);
+        const res = await this.post<string>(Endpoint.Voice, p);
 
         return p._json ? TextTransformer.voice(res) : res;
     };

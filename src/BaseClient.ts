@@ -1,33 +1,44 @@
-import fetch, {RequestInit} from 'node-fetch';
 import {ERROR_CODES} from './constants/ERROR_CODES';
 import Util from './lib/Util';
 import {Endpoint} from './constants/enums/Endpoint';
 import {AnyObject} from './types';
 
-const globalThis = require('globalthis');
-const FormData = require('form-data');
+const METHODS = ['get', 'post'] as const;
+export type Response<R> = R | string;
+export type Method = (typeof METHODS)[number];
+export type MethodArgs = [Endpoint, AnyObject | undefined | null]
 
-if (!globalThis.fetch) {
-    globalThis.fetch = fetch;
+export type MethodCall = <R>(...a: MethodArgs) => Promise<Response<R>>;
+
+interface HttpMethods {
+    get: MethodCall
+    post: MethodCall
 }
 
-export type Params = [string, string | number][];
-export type Response<R> = R | string;
+export class BaseClient implements HttpMethods {
+    get = async <R>(...a: MethodArgs): Promise<Response<R>> => '';
+    post = async <R>(...a: MethodArgs): Promise<Response<R>> => '';
 
-export class BaseClient {
-    public static readonly BASE_URL = 'https://gateway.sms77.io/api';
-
-    constructor(protected apiKey: string, protected sentWith: string = 'js') {
+    private assertIs<T>(value: unknown): asserts value is T {
     }
 
-    protected get = async <R = string>(e: Endpoint, o?: AnyObject): Promise<Response<R>> =>
-        await this.request(e, 'GET', o);
+    public static readonly BASE_URL = 'https://gateway.sms77.io/api';
 
-    protected post = async <R = string>(e: Endpoint, o?: AnyObject): Promise<Response<R>> =>
-        await this.request(e, 'POST', o);
+    constructor(
+        protected apiKey: string,
+        protected sentWith: string = 'js',
+        protected debug: boolean = false) {
+        this.assertIs<{ [k in Method]: MethodCall }>(this);
 
-    private async request<R = string>(
-        e: Endpoint, method: 'GET' | 'POST', o: AnyObject = {}): Promise<Response<R>> {
+        for (const name of METHODS) {
+            this[name] =
+                async <R>(...a: MethodArgs): Promise<Response<R>> =>
+                    await this.request<R>(name, a);
+        }
+    }
+
+    private async request<R>(method: Method, [e, o = {}]: MethodArgs):
+        Promise<Response<R>> {
         let url = `${BaseClient.BASE_URL}/${e}`;
         const opts: RequestInit = {
             headers: {
@@ -37,54 +48,61 @@ export class BaseClient {
             method,
         };
 
-        if (o) {
+        if (o && Object.keys(o).length) {
             o = this.normalizePayload(o);
             const entries = Object.entries(o);
-            const qs = this.toQueryString(entries);
 
-            if (method === 'GET') {
-                url += `?${qs}`;
-            } else {
-                const fd = new FormData();
-                entries.forEach(([k, v]) => fd.append(k, v));
-                opts.body = fd;
-            }
+            const params = new URLSearchParams;
+
+            entries.forEach((([k, v]) => params.set(k, v)));
+
+            'get' === method
+                ? url += `?${params.toString()}` : opts.body = params;
         }
 
         const res = await fetch(url, opts);
-        const text = await res.text();
-        const code = Number.parseInt(text);
+        let body = await res.text();
 
-        if (ERROR_CODES.has(code)) {
-            throw new Error(`${code}: ${ERROR_CODES.get(code)}`);
+        if (typeof body === 'string') {
+            try {
+                body = JSON.parse(body);
+            } catch(e) {}
         }
 
-        try {
-            return JSON.parse(text) as R;
-        } catch (e) {
+        let apiCode: number | null = null;
+
+        if (typeof body === 'string' || typeof body === 'number') {
+            const parsed = Number.parseFloat(`${body}`);
+
+            if (Number.isInteger(parsed)) {
+                apiCode = parsed;
+            }
         }
 
-        return `${text}`;
+        if (this.debug) {
+            console.debug({
+                request: {
+                    ...opts,
+                    url,
+                    body: opts.body instanceof URLSearchParams
+                        ? Object.fromEntries(opts.body) : opts.body,
+                },
+                response: {
+                    apiCode,
+                    body,
+                    headers: Object.fromEntries(res.headers),
+                    status: res.status,
+                },
+            });
+        }
+
+        if (apiCode && ERROR_CODES.has(apiCode)) {
+            throw new Error(`${apiCode}: ${ERROR_CODES.get(apiCode)}`);
+        }
+
+        return body;
     }
 
-    private buildQueryStringGGG(obj: Params): string {
-        return Object.entries(obj).map(([k, v]) => {
-            const key = encodeURIComponent(k);
-            const value = encodeURIComponent(Util.toNumberedBool(v));
-            return `${key}=${value}`;
-        }).join('&');
-    }
-
-    private normalizePayload(o: AnyObject): AnyObject {
-        const p: AnyObject = {};
-
-        Object.entries(o).forEach(([k, v]) => p[k] = Util.toNumberedBool(v));
-
-        return p;
-    }
-
-    private toQueryString(p: Params): string {
-        return p.map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-            .join('&');
-    }
+    private normalizePayload = (o: AnyObject): AnyObject => Object.fromEntries(
+        Object.entries(o).map(([k, v]) => [k, Util.toNumberedBool(v)]));
 }
