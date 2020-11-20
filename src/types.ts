@@ -25,6 +25,7 @@ import {
     STRING_BOOLEAN_VALUES,
     STRING_RESPONSE_CODES
 } from './constants/GENERAL';
+import {HooksAction} from './constants/enums/HooksAction';
 
 export type AnalyticBase = {
     direct: number
@@ -136,14 +137,29 @@ export type Roaming = {
     status: typeof ROAMING_STATUS_CODES[number]
 }
 
-export type ContactsParams = {
-    action: ContactsAction
+export type ContactsBaseParams<A extends ContactsAction> = {
+    action: A
+    json?: boolean
+}
+
+export type ContactsDelParams = ContactsBaseParams<ContactsAction.Del> & {
+    id: number
+}
+
+export type ContactsReadParams = ContactsBaseParams<ContactsAction.Read> & {
+    id?: number
+}
+
+export type ContactsWriteParams = ContactsBaseParams<ContactsAction.Write> & {
     email?: string
     empfaenger?: string
     id?: number
-    json?: boolean
     nick?: string
 }
+
+export type ContactsParams = ContactsDelParams
+    | ContactsReadParams
+    | ContactsWriteParams
 
 type BaseLookupParams<T extends LookupType> = {
     type: T
@@ -160,6 +176,34 @@ export type LookupParams =
     | LookupFormatParams
     | LookupHlrParams
     | LookupMnpParams
+
+type HooksBaseParams<A extends HooksAction> = {
+    action: A
+}
+
+export type HooksParams = HooksReadParams
+    | HooksSubscribeParams
+    | HooksUnsubscribeParams
+
+export type HooksReadParams = HooksBaseParams<HooksAction.Read>
+
+export const HOOK_EVENT_TYPES = ['dlr', 'voice_status', 'sms_mo'] as const
+
+export const HOOK_REQUEST_METHODS = ['GET', 'POST'] as const
+
+export type HookEventType = (typeof HOOK_EVENT_TYPES)[number]
+
+export type HookRequestMethod = (typeof HOOK_REQUEST_METHODS)[number]
+
+export type HooksSubscribeParams = HooksBaseParams<HooksAction.Subscribe>
+    & Omit<Hook, 'id' | 'created' | 'request_method'> & {
+    request_method?: HookRequestMethod
+}
+
+export type HooksUnsubscribeParams =
+    HooksBaseParams<HooksAction.Unsubscribe> & {
+    id: number
+}
 
 export type PricingParams = {
     country?: string
@@ -256,6 +300,42 @@ export type ContactsResponse =
 export type HLRApiResponse = string | HLR | number | { code: string }
 
 export type FormatApiResponse = string | Format
+
+export type HooksResponse = HooksReadSuccessResponse
+    | HooksReadResponse<false>
+    | HooksSubscribeSuccessResponse
+    | HooksSubscribeErrorResponse
+    | HooksUnsubscribeResponse
+
+type HooksReadResponse<B extends boolean> = {
+    success: B
+}
+
+export type Hook = {
+    created: string
+    event_type: HookEventType
+    id: string
+    request_method: HookRequestMethod
+    target_url: string
+}
+
+export type HooksReadSuccessResponse = HooksReadResponse<true> & {
+    hooks: Hook[]
+}
+
+type HooksSubscribeResponse<B extends boolean> = {
+    success: B
+}
+
+export type HooksSubscribeSuccessResponse = HooksSubscribeResponse<true> & {
+    id: number
+}
+
+export type HooksSubscribeErrorResponse = HooksSubscribeResponse<false>
+
+export type HooksUnsubscribeResponse = {
+    success: boolean
+}
 
 export type LookupResponse =
     string
