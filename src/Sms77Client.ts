@@ -2,7 +2,7 @@ import {
     AnalyticsParams,
     AnalyticsResponse,
     ContactsParams,
-    ContactsResponse, HooksParams, HooksResponse,
+    ContactsResponse, HooksParams, HooksResponse, JournalParams, JournalResponse,
     LookupParams,
     LookupResponse,
     PricingParams,
@@ -60,6 +60,9 @@ export default class Sms77Client extends BaseClient {
 
     hooks = async (p: HooksParams): Promise<HooksResponse> =>
         await this.post<HooksResponse>(Endpoint.Hooks, p) as HooksResponse;
+
+    journal = async (p: JournalParams): Promise<JournalResponse> =>
+        await this.get<JournalResponse>(Endpoint.Journal, p) as JournalResponse;
 
     lookup = async (p: LookupParams): Promise<LookupResponse> =>
         await this.post<LookupResponse>(Endpoint.Lookup, p);

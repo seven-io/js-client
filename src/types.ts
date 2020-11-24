@@ -26,6 +26,9 @@ import {
     STRING_RESPONSE_CODES
 } from './constants/GENERAL';
 import {HooksAction} from './constants/enums/HooksAction';
+import JOURNAL_TYPES from './constants/JOURNAL_TYPES';
+import HOOK_EVENT_TYPES from './constants/HOOK_EVENT_TYPES';
+import HOOK_REQUEST_METHODS from './constants/HOOK_REQUEST_METHODS';
 
 export type AnalyticBase = {
     direct: number
@@ -187,10 +190,6 @@ export type HooksParams = HooksReadParams
 
 export type HooksReadParams = HooksBaseParams<HooksAction.Read>
 
-export const HOOK_EVENT_TYPES = ['dlr', 'voice_status', 'sms_mo'] as const
-
-export const HOOK_REQUEST_METHODS = ['GET', 'POST'] as const
-
 export type HookEventType = (typeof HOOK_EVENT_TYPES)[number]
 
 export type HookRequestMethod = (typeof HOOK_REQUEST_METHODS)[number]
@@ -204,6 +203,50 @@ export type HooksUnsubscribeParams =
     HooksBaseParams<HooksAction.Unsubscribe> & {
     id: number
 }
+
+export type JournalType = (typeof JOURNAL_TYPES)[number]
+
+export type JournalParams = {
+    date_from?: string
+    date_to?: string
+    id?: number
+    state?: string
+    to?: string
+    type: JournalType
+}
+
+export type JournalBase = {
+    from: string
+    id: string
+    price: string
+    text: string
+    timestamp: string
+    to: string
+}
+
+export type JournalOutbound = JournalBase & {
+    connection: string
+    dlr: string | null
+    dlr_timestamp: string | null
+    foreign_id: string | null
+    label: string | null
+    latency: string | null
+    mccmnc: string | null
+    type: string
+}
+
+export type JournalVoice = JournalBase & {
+    duration: string
+    error: string
+    status: string
+    xml: boolean
+}
+
+export type JournalInbound = JournalBase
+
+export type Journal = JournalOutbound | JournalInbound | JournalVoice
+
+export type JournalResponse = Journal[]
 
 export type PricingParams = {
     country?: string
@@ -222,7 +265,7 @@ export type SmsMessage = {
     sender: string
     success: boolean
     text: string
-};
+}
 
 export type SmsType = typeof SMS_TYPES[number]
 
@@ -257,7 +300,7 @@ export type SmsJsonResponse = {
     sms_type: SmsType
     success: string
     total_price: number
-};
+}
 
 export type StatusParams = {
     _json?: boolean

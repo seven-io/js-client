@@ -1,8 +1,6 @@
 import {v4 as uuidv4} from 'uuid';
 import './lib/afterEachWait';
 import {
-    HOOK_EVENT_TYPES,
-    HOOK_REQUEST_METHODS,
     HooksReadParams,
     HooksReadSuccessResponse,
     HooksSubscribeErrorResponse,
@@ -21,6 +19,8 @@ import {
 import {HooksAction} from '../src/constants/enums/HooksAction';
 import Sms77Client from '../src/Sms77Client';
 import isValidURL from './lib/isValidURL';
+import HOOK_EVENT_TYPES from '../src/constants/HOOK_EVENT_TYPES';
+import HOOK_REQUEST_METHODS from '../src/constants/HOOK_REQUEST_METHODS';
 
 describe('Hooks', () => {
     let id: number;

@@ -4,6 +4,7 @@ export enum Endpoint {
     Contacts = 'contacts',
     Hooks = 'hooks',
     Lookup = 'lookup',
+    Journal = 'journal',
     Pricing = 'pricing',
     Sms = 'sms',
     Status = 'status',

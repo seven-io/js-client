@@ -1,0 +1,1 @@
+export default ['GET', 'POST'] as const;
