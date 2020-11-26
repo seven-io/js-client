@@ -16,11 +16,11 @@ import {
     VoiceParams,
     VoiceResponse,
 } from './types';
-import {SUCCESS_CODES} from './constants/SUCCESS_CODES';
 import {BaseClient} from './BaseClient';
 import {Endpoint} from './constants/enums/Endpoint';
 import TextTransformer from './lib/TextTransformer';
 import {ContactsAction} from './constants/enums/ContactsAction';
+import {ContactsResponseCode} from './constants/enums/ContactsResponseCode';
 
 export * from './types';
 
@@ -46,7 +46,8 @@ export default class Sms77Client extends BaseClient {
         }
 
         if (typeof res === 'object') {
-            if (SUCCESS_CODES.has(Number.parseInt(res.return))) {
+            if (Object.values(ContactsResponseCode)
+                .includes(Number.parseInt(res.return))) {
                 if (res.id) {
                     return Number.parseInt(res.id);
                 } else if (p.id) {
