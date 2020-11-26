@@ -1,5 +1,5 @@
 import {SmsJsonResponse, SmsParams,} from '../src/types';
-import {SMS_TYPES} from '../src/constants/GENERAL';
+import {SMS_TYPES} from '../src/constants/byEndpoint/sms';
 import toBool from './lib/toBool';
 import numberMatcher from './lib/numberMatcher';
 import unionMatcher from './lib/unionMatcher';

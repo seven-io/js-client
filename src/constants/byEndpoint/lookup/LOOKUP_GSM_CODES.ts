@@ -1,4 +1,4 @@
-export const GSM_CODES = [
+export const LOOKUP_GSM_CODES = [
     '0',
     '1',
     '2',

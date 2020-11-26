@@ -3,6 +3,6 @@ export enum ProviderName {
     D2 = 'd2',
     O2 = 'o2',
     Eplus = 'eplus',
-    Na = 'N/A',
-    Int = 'int',
+    NotAvailable = 'N/A',
+    International = 'int',
 }

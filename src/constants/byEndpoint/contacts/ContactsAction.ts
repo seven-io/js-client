@@ -1,5 +1,5 @@
 export enum ContactsAction {
-    Del = 'del',
+    Delete = 'del',
     Read = 'read',
     Write = 'write',
 }

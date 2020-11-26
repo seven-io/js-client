@@ -2,7 +2,11 @@ import {
     AnalyticsParams,
     AnalyticsResponse,
     ContactsParams,
-    ContactsResponse, HooksParams, HooksResponse, JournalParams, JournalResponse,
+    ContactsResponse,
+    HooksParams,
+    HooksResponse,
+    JournalParams,
+    JournalResponse,
     LookupParams,
     LookupResponse,
     PricingParams,
@@ -17,10 +21,10 @@ import {
     VoiceResponse,
 } from './types';
 import {BaseClient} from './BaseClient';
-import {Endpoint} from './constants/enums/Endpoint';
+import {Endpoint} from './constants/Endpoint';
 import TextTransformer from './lib/TextTransformer';
-import {ContactsAction} from './constants/enums/ContactsAction';
-import {ContactsResponseCode} from './constants/enums/ContactsResponseCode';
+import {ContactsAction} from './constants/byEndpoint/contacts/ContactsAction';
+import {ContactsResponseCode} from './constants/byEndpoint/contacts/ContactsResponseCode';
 
 export * from './types';
 
@@ -33,7 +37,7 @@ export default class Sms77Client extends BaseClient {
 
     contacts = async (p: ContactsParams): Promise<ContactsResponse> => {
         const args: [Endpoint, ContactsParams] = [Endpoint.Contacts, p];
-        const method = p.action === ContactsAction.Del ? this.post : this.get;
+        const method = p.action === ContactsAction.Delete ? this.post : this.get;
         const res = await method<ContactsResponse>(...args);
         const type = typeof res;
         const isCSV = type === 'string';

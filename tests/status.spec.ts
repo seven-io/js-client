@@ -6,7 +6,7 @@ import Sms77Client, {
 import Client from './lib/client';
 import unionMatcher from './lib/unionMatcher';
 import getStringEnumValues from './lib/getStringEnumValues';
-import {StatusReportCode} from '../src/constants/enums/StatusReportCode';
+import {StatusReportCode} from '../src/constants/byEndpoint/status/StatusReportCode';
 import TextTransformer from '../src/lib/TextTransformer';
 import createRandomNumber from './lib/createRandomNumber';
 

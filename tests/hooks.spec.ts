@@ -16,11 +16,10 @@ import {
     hooksSubscribeSuccessResponse,
     hooksUnsubscribeSuccessResponse
 } from './data/hooks';
-import {HooksAction} from '../src/constants/enums/HooksAction';
+import {HooksAction} from '../src/constants/byEndpoint/hooks/HooksAction';
 import Sms77Client from '../src/Sms77Client';
 import isValidURL from './lib/isValidURL';
-import HOOK_EVENT_TYPES from '../src/constants/HOOK_EVENT_TYPES';
-import HOOK_REQUEST_METHODS from '../src/constants/HOOK_REQUEST_METHODS';
+import {HOOK_EVENT_TYPES, HOOK_REQUEST_METHODS} from '../src/constants/byEndpoint/hooks';
 
 describe('Hooks', () => {
     let id: number;

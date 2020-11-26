@@ -1,6 +1,6 @@
 import {SmsJsonResponse} from '../../src/types';
 import unionMatcher from '../lib/unionMatcher';
-import {SMS_DEBUG_VALUES, SMS_TYPES} from '../../src/constants/GENERAL';
+import {SMS_DEBUG_VALUES, SMS_TYPES} from '../../src/constants/byEndpoint/sms';
 
 export const smsMatcher = (res: SmsJsonResponse) => ({
     balance: expect.any(Number),

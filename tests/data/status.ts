@@ -1,4 +1,4 @@
-import {StatusReportCode} from '../../src/constants/enums/StatusReportCode';
+import {StatusReportCode} from '../../src/constants/byEndpoint/status/StatusReportCode';
 import {StatusResponse} from '../../src/types';
 
 const report = StatusReportCode.Delivered;

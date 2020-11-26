@@ -6,9 +6,8 @@ import {
     HLR_STATUS_MESSAGE_CODES,
     HLR_VALID_NUMBER_CODES,
     ROAMING_STATUS_CODES,
-    STRING_BOOLEAN_VALUES,
     STRING_RESPONSE_CODES
-} from '../../src/constants/GENERAL';
+} from '../../src/constants/byEndpoint/lookup';
 import {
     Carrier,
     CNAMApiJsonResponse,
@@ -17,9 +16,10 @@ import {
     MNPApiJsonResponse,
     Roaming
 } from '../../src/types';
-import {GSM_CODES} from '../../src/constants/GSM_CODES';
+import STRING_BOOLEAN_VALUES from '../../src/constants/STRING_BOOLEAN_VALUES';
+import {LOOKUP_GSM_CODES} from '../../src/constants/byEndpoint/lookup/LOOKUP_GSM_CODES';
 import getStringEnumValues from '../lib/getStringEnumValues';
-import {NetworkType} from '../../src/constants/enums/NetworkType';
+import {NetworkType} from '../../src/constants/byEndpoint/lookup/NetworkType';
 
 export const lookupCnamMatcher: CNAMApiJsonResponse = {
     code: expect.stringMatching(unionMatcher(STRING_RESPONSE_CODES)),
@@ -41,7 +41,7 @@ export const lookupHlrMatcher = (res: HLR): HLR => {
         country_name: expect.any(String),
         country_prefix: expect.any(String),
         current_carrier: carrierMatcher,
-        gsm_code: expect.stringMatching(unionMatcher(GSM_CODES)),
+        gsm_code: expect.stringMatching(unionMatcher(LOOKUP_GSM_CODES)),
         gsm_message: expect.any(String),
         lookup_outcome: typeof res.lookup_outcome === 'boolean'
             ? expect.any(Boolean) : expect.any(Number),

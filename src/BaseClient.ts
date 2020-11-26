@@ -1,7 +1,7 @@
-import {ERROR_CODES} from './constants/ERROR_CODES';
 import Util from './lib/Util';
-import {Endpoint} from './constants/enums/Endpoint';
+import {Endpoint} from './constants/Endpoint';
 import {AnyObject} from './types';
+import {ErrorCode} from './constants/ErrorCode';
 
 const METHODS = ['get', 'post'] as const;
 export type Response<R> = R | string;
@@ -69,7 +69,7 @@ export class BaseClient implements HttpMethods {
             } catch(e) {}
         }
 
-        let apiCode: number | null = null;
+        let apiCode: ErrorCode | null = null;
 
         if (typeof body === 'string' || typeof body === 'number') {
             const parsed = Number.parseFloat(`${body}`);
@@ -96,8 +96,8 @@ export class BaseClient implements HttpMethods {
             });
         }
 
-        if (apiCode && ERROR_CODES.has(apiCode)) {
-            throw new Error(`${apiCode}: ${ERROR_CODES.get(apiCode)}`);
+        if (apiCode && apiCode in ErrorCode) {
+            throw new Error(`${apiCode}: ${ErrorCode[apiCode]}`);
         }
 
         return body;

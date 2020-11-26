@@ -12,8 +12,8 @@ import {
 } from './data/contacts';
 import CsvToJson from '../src/lib/TextTransformer';
 import Sms77Client from '../src/Sms77Client';
-import {ContactsResponseCode} from '../src/constants/enums/ContactsResponseCode';
-import {ContactsAction} from '../src/constants/enums/ContactsAction';
+import {ContactsResponseCode} from '../src/constants/byEndpoint/contacts/ContactsResponseCode';
+import {ContactsAction} from '../src/constants/byEndpoint/contacts/ContactsAction';
 
 const contacts: Sms77Client['contacts'] = process.env.SMS77_LIVE_TEST
     ? client.contacts : jest.fn(async (p: ContactsParams) => {
@@ -66,12 +66,12 @@ describe('Contacts', () => {
     it('should create a new contact and delete it again', async () => {
         await assertResponse(contactsWriteParams);
 
-        await assertResponse({action: ContactsAction.Del, id: uid});
+        await assertResponse({action: ContactsAction.Delete, id: uid});
     });
 
     it('should create a new contact and delete it again as json', async () => {
         await assertResponse({...contactsWriteParams, json: true,});
 
-        await assertResponse({action: ContactsAction.Del, id: uid, json: true,});
+        await assertResponse({action: ContactsAction.Delete, id: uid, json: true,});
     });
 });

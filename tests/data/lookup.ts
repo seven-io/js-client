@@ -4,7 +4,7 @@ import {
     HLRApiResponse,
     MNPApiJsonResponse
 } from '../../src/types';
-import {NetworkType} from '../../src/constants/enums/NetworkType';
+import {NetworkType} from '../../src/constants/byEndpoint/lookup/NetworkType';
 
 export const dummyLookupFormat: Format = {
     carrier: 'O2',

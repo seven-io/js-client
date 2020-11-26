@@ -26,7 +26,7 @@ import {
     dummyLookupMnpJson,
     dummyLookupMnpText
 } from './data/lookup';
-import {LookupType} from '../src/constants/enums/LookupType';
+import {LookupType} from '../src/constants/byEndpoint/lookup/LookupType';
 
 const lookup: Sms77Client['lookup'] = process.env.SMS77_LIVE_TEST
     ? client.lookup : jest.fn(async (p: LookupParams) => {
@@ -34,11 +34,11 @@ const lookup: Sms77Client['lookup'] = process.env.SMS77_LIVE_TEST
             return dummyLookupFormat;
         }
 
-        if (p.type === LookupType.Cnam) {
+        if (p.type === LookupType.CallingNameDelivery) {
             return dummyLookupCnam;
         }
 
-        if (p.type === LookupType.Mnp) {
+        if (p.type === LookupType.MobileNumberPortability) {
             return p.json ? dummyLookupMnpJson : dummyLookupMnpText;
         }
 

@@ -1,5 +1,5 @@
 import {Contact, ContactsParams} from '../../src/types';
-import {ContactsAction} from '../../src/constants/enums/ContactsAction';
+import {ContactsAction} from '../../src/constants/byEndpoint/contacts/ContactsAction';
 
 export const contactsWriteParams: ContactsParams = {
     action: ContactsAction.Write,
