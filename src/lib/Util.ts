@@ -7,14 +7,18 @@ export default class Util {
     }
 
     static toNumberedBool(value: any): any {
-        return 'boolean' === typeof value ? value ? 1 : 0 : value;
+        return typeof value === 'boolean'
+            ? value
+                ? 1
+                : 0
+            : value;
     }
 
     static splitByLine(str: string): string[] {
         return str.split(/[\r\n]+/);
     }
 
-    static isNumeric(val: any) {
+    static isNumeric(val: any): boolean {
         return Number.isFinite(val) && !Number.isNaN(Number.parseFloat(val));
     }
 

@@ -4,9 +4,9 @@ import {AnyObject} from './types';
 import {ErrorCode} from './constants/ErrorCode';
 
 const METHODS = ['get', 'post'] as const;
-export type Response<R> = R | string;
-export type Method = (typeof METHODS)[number];
-export type MethodArgs = [Endpoint, AnyObject | undefined | null]
+type Response<R> = R | string;
+type Method = (typeof METHODS)[number];
+type MethodArgs = [Endpoint, AnyObject | undefined | null]
 
 export type MethodCall = <R>(...a: MethodArgs) => Promise<Response<R>>;
 

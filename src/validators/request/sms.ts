@@ -4,13 +4,14 @@ import Util from '../../lib/Util';
 
 export const DELAY_DATE_FORMAT = 'yyyy-mm-dd hh:ii';
 export const DELAY_PATTERN = /^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-export const LABEL_PATTERN = /[0-9a-z-@_.]/i;
+export const FROM_ALLOWED_SPECIAL_CHARS =
+    ['/', ' ', '.', '-', '@', '_', '!', '(', ')', '+', '$', ',', '&',];
 export const FROM_ALPHANUMERIC_MAX = 11;
 export const FROM_NUMERIC_MAX = 16;
-export const FROM_ALLOWED_SPECIAL_CHARS = ['/', ' ', '.', '-', '@', '_', '!', '(', ')', '+', '$', ',', '&',];
+export const LABEL_PATTERN = /[0-9a-z-@_.]/i;
 export const TEXT_MAX_LENGTH = 1520;
-export const TTL_MIN = 300000;
 export const TTL_MAX = 86400000;
+export const TTL_MIN = 300000;
 
 export default (params: SmsParams) => {
     delay(params.delay);
