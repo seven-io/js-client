@@ -23,7 +23,8 @@
     "dist/constants/**/*",
     "dist/lib/**/*",
     "dist/validators/**/*",
-    "dist/*.d.ts"
+    "dist/*.d.ts",
+    "dist/types/*.d.ts"
   ],
   "keywords": [
     "2fa",
@@ -51,6 +52,6 @@
     "bundleName": "Sms77Client"
   },
   "types": "dist/Sms77Client.d.ts",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "homepage": "https://github.com/sms77io/js-client"
 }
