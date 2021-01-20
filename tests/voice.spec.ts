@@ -1,16 +1,16 @@
-import {VoiceParams, VoiceResponse, VoiceResponseJson,} from '../src/types';
+import {VoiceParams, VoiceResponse, VoiceJsonResponse} from '../src/types';
 import client from './lib/client';
 import Sms77Client from '../src/Sms77Client';
 import {dummmyVoiceResponseJson, dummmyVoiceResponseText} from './data/voice';
-import TextTransformer from '../src/lib/TextTransformer';
 import {voiceMatcher} from './matchers/voice';
+import Util from '../src/lib/Util';
 
 const voice: Sms77Client['voice'] = process.env.SMS77_LIVE_TEST
     ? client.voice
     : jest.fn(async (p: VoiceParams) =>
-        p._json ? dummmyVoiceResponseJson : dummmyVoiceResponseText);
+        p.json ? dummmyVoiceResponseJson : dummmyVoiceResponseText);
 
-const expectJson = (o: VoiceResponseJson) => expect(o)
+const expectJson = (o: VoiceJsonResponse) => expect(o)
     .toMatchObject<VoiceResponse>(voiceMatcher);
 
 const commonParams: VoiceParams = {
@@ -22,14 +22,16 @@ const commonParams: VoiceParams = {
 
 describe('Voice', () => {
     it('should return a text response', async () => {
-        const text = await voice(commonParams);
-        const json = TextTransformer.voice(text as string);
-        expectJson(json);
+        const text = await voice(commonParams) as string;
+        const [code, id, cost] = Util.splitByLine(text);
+        expect(code).toHaveLength(3);
+        expect(Number.parseInt(id)).toBeGreaterThan(0);
+        expect(Number.parseFloat(cost)).toBeGreaterThanOrEqual(0);
     });
 
     it('should return a json response', async () => {
-        const opts: VoiceParams = {...commonParams, _json: true};
-        const json = await voice(opts) as VoiceResponseJson;
+        const opts: VoiceParams = {...commonParams, json: true};
+        const json = await voice(opts) as VoiceJsonResponse;
         expectJson(json);
     });
 });

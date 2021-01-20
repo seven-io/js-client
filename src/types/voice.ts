@@ -1,13 +1,26 @@
-export type VoiceResponseJson = {
-    code: number
-    cost: number
-    id: number
+export type VoiceJsonMessage = {
+    error: string | null
+    error_text: string | null
+    id: string | null
+    price: number,
+    recipient: string
+    sender: string
+    success: boolean
+    text: string
 }
 
-export type VoiceResponse = string | VoiceResponseJson
+export type VoiceJsonResponse = {
+    debug: boolean
+    balance: number
+    messages: VoiceJsonMessage[],
+    success: string
+    total_price: number
+}
+
+export type VoiceResponse = string | VoiceJsonResponse
 
 export type VoiceParams = {
-    _json?: boolean
+    json?: boolean
     text: string
     to: string
     xml?: boolean

@@ -1,13 +1,22 @@
 import {VoiceResponse} from '../../src/types';
 
-const code = 100;
-const cost = 1.52
-const id = 5136161;
-
-export const dummmyVoiceResponseText: VoiceResponse = `${code}\n${id}\n${cost}`;
+export const dummmyVoiceResponseText: VoiceResponse = `100\n5136161\n1.52`;
 
 export const dummmyVoiceResponseJson: VoiceResponse = {
-    code,
-    cost,
-    id,
-}
+    balance: 12.088,
+    debug: true,
+    messages: [
+        {
+            error: null,
+            error_text: null,
+            id: '123456789',
+            price: 0,
+            recipient: '491771783130',
+            sender: '491771783130',
+            success: true,
+            text: 'HEY!'
+        }
+    ],
+    success: '100',
+    total_price: 0.55
+};

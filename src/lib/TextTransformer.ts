@@ -3,17 +3,17 @@ import {
     CountryPricing,
     PricingResponseJson,
     StatusResponseJson,
-    VoiceResponseJson
 } from '../types';
 import Util from './Util';
 
 export default class TextTransformer {
     static contacts(csv: string): Contact[] {
-        return Util.csvToArray(csv, false).map(([id, nick, number]) => ({
-            id: Number.parseInt(id),
-            nick,
-            number,
-        }));
+        return Util.csvToArray(csv, false)
+            .map(([id, nick, number]) => ({
+                id: Number.parseInt(id),
+                nick,
+                number,
+            }));
     }
 
     static pricing(csv: string): PricingResponseJson {
@@ -60,16 +60,6 @@ export default class TextTransformer {
         return <StatusResponseJson>{
             report,
             timestamp,
-        };
-    }
-
-    static voice(text: string): VoiceResponseJson {
-        const [code, id, cost] = Util.splitByLine(text);
-
-        return {
-            code: Number.parseInt(code),
-            cost: Number.parseFloat(cost),
-            id: Number.parseInt(id),
         };
     }
 }

@@ -89,9 +89,6 @@ export default class Sms77Client extends BaseClient {
         (await this.post<ValidateForVoiceResponse>
         (Endpoint.ValidateForVoice, p) as ValidateForVoiceResponse);
 
-    voice = async (p: VoiceParams): Promise<VoiceResponse> => {
-        const res = await this.post<string>(Endpoint.Voice, p);
-
-        return p._json ? TextTransformer.voice(res) : res;
-    };
+    voice = async (p: VoiceParams): Promise<VoiceResponse> =>
+        await this.post<string>(Endpoint.Voice, p);
 }
