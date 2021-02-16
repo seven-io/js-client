@@ -2,13 +2,22 @@
 # JavaScript API Client for the Sms77.io SMS Gateway
 
 ## Installation
-This library relies on the the global fetch API.
-In order to to use it with NodeJS u need to install [node-fetch](https://github.com/node-fetch/node-fetch).
-For NodeJS versions < 12 use the [globalThis polyfill](https://github.com/es-shims/globalThis).
+**This library relies on the global fetch API.
+To use this library with Node.js, [node-fetch](https://github.com/node-fetch/node-fetch) is required.**
 
-**NPM** ```npm install sms77-client node-fetch``` **Yarn** ```yarn add sms77-client node-fetch```
+For compatibility with Node.js versions < 12, please also install the [globalThis polyfill](https://github.com/es-shims/globalThis).
 
-**Browser**
+### Installation using NPM
+```bash
+npm install sms77-client
+```
+
+### Installation using Yarn
+```bash
+yarn add sms77-client
+```
+
+### Browser
 ```html
 <script src="https://unpkg.com/browse/sms77-client/dist/Sms77Client.umd.js"></script>
 ```
@@ -20,9 +29,9 @@ For NodeJS versions < 12 use the [globalThis polyfill](https://github.com/es-shi
 //const Sms77Client = require('sms77-client'); // uncomment in NodeJS environments
 
 new Sms77Client('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
-.balance()
-.then(balance => console.log(`My balance is: ${balance}`))
-.catch(error => console.error(`Error while fetching: ${balance}`));
+  .balance()
+  .then(balance => console.log(`My balance is: ${balance}`))
+  .catch(error => console.error(`Error while fetching: ${balance}`));
 ```
 
 #### Tests
@@ -30,9 +39,9 @@ new Sms77Client('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
 2. ```cd js-client && npm install```
 3. ```SMS77_API_KEY=InsertSms77ApiKey npm run test```
 
-Set ```SMS77_LIVE_TEST=1``` for live tests performing actual http requests.
+Set ```SMS77_LIVE_TEST=1``` for live tests performing actual HTTP requests.
 
-Set ```SMS77_DEBUG=1``` for details printed to stdout.
+Set ```SMS77_DEBUG=1``` for details printed to `stdout`.
 
 
 ##### Support
