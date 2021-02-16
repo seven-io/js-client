@@ -30,9 +30,9 @@ yarn add sms77-client
 ## Example
 
 ```javascript
-//const globalThis = require('globalthis')(); // uncomment if NodeJS < NodeJS versions < 12
-//globalThis.fetch = require('node-fetch').default; // uncomment in NodeJS environments
-//const Sms77Client = require('sms77-client'); // uncomment in NodeJS environments
+// const globalThis = require('globalthis')(); // uncomment if NodeJS < NodeJS versions < 12
+// globalThis.fetch = require('node-fetch').default; // uncomment in NodeJS environments
+// const Sms77Client = require('sms77-client'); // uncomment in NodeJS environments
 
 new Sms77Client("MY_SUPER_SECRET_SMS77_IO_API_KEY!")
 	.balance()
