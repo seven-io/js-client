@@ -7,5 +7,6 @@ export const HOOK_EVENT_TYPES = [
 
 export const HOOK_REQUEST_METHODS = [
     'GET',
+    'JSON',
     'POST',
 ] as const;

@@ -1,4 +1,3 @@
-import {v4 as uuidv4} from 'uuid';
 import './lib/afterEachWait';
 import {
     HooksReadParams,
@@ -20,9 +19,44 @@ import {HooksAction} from '../src/constants/byEndpoint/hooks/HooksAction';
 import Sms77Client from '../src/Sms77Client';
 import isValidURL from './lib/isValidURL';
 import {HOOK_EVENT_TYPES, HOOK_REQUEST_METHODS} from '../src/constants/byEndpoint/hooks';
+import {createRandomURL} from './lib/createRandomURL';
 
 describe('Hooks', () => {
     let id: number;
+
+    const subscribe = async () => {
+        const hooks: Sms77Client['hooks'] = process.env.SMS77_LIVE_TEST
+            ? client.hooks
+            : jest.fn(async () => hooksSubscribeSuccessResponse);
+
+        const p: HooksSubscribeParams = {
+            action: HooksAction.Subscribe,
+            event_type: 'dlr',
+            request_method: 'GET',
+            target_url: createRandomURL(),
+        };
+
+        const res = await hooks(p) as HooksSubscribeSuccessResponse;
+
+        expect(res.success).toBe(true);
+        expect(res.id).toBeGreaterThan(0);
+
+        id = res.id;
+    };
+
+    const unsubscribe = async () => {
+        const hooks: Sms77Client['hooks'] = process.env.SMS77_LIVE_TEST
+            ? client.hooks
+            : jest.fn(async () => hooksUnsubscribeSuccessResponse);
+
+        const p: HooksUnsubscribeParams = {
+            action: HooksAction.Unsubscribe,
+            id,
+        };
+
+        expect(await hooks(p))
+            .toMatchObject<HooksUnsubscribeResponse>({success: true});
+    };
 
     it('should return an object', async () => {
         const apiCall: Sms77Client['hooks'] = process.env.SMS77_LIVE_TEST
@@ -36,18 +70,19 @@ describe('Hooks', () => {
 
         expect(success).toBe(true);
 
-        hooks.forEach(hook => {
-            expect(isNaN(Date.parse(hook.created))).toBe(false);
-            expect(HOOK_EVENT_TYPES.includes(hook.event_type)).toBe(true);
-            expect(Number.parseInt(hook.id)).toBeGreaterThan(0);
-            expect(HOOK_REQUEST_METHODS.includes(hook.request_method)).toBe(true);
-            expect(isValidURL(hook.target_url)).toBe(true);
+        hooks.forEach(h => {
+            expect(isNaN(Date.parse(h.created))).toBe(false);
+            expect(HOOK_EVENT_TYPES.includes(h.event_type)).toBe(true);
+            expect(Number.parseInt(h.id)).toBeGreaterThan(0);
+            expect(HOOK_REQUEST_METHODS.includes(h.request_method)).toBe(true);
+            expect(isValidURL(h.target_url)).toBe(true);
         });
     });
 
     it('should fail to subscribe a webhook', async () => {
         const hooks: Sms77Client['hooks'] = process.env.SMS77_LIVE_TEST
-            ? client.hooks : jest.fn(async () => hooksSubscribeErrorResponse);
+            ? client.hooks
+            : jest.fn(async () => hooksSubscribeErrorResponse);
 
         const p: HooksSubscribeParams = {
             action: HooksAction.Subscribe,
@@ -60,35 +95,7 @@ describe('Hooks', () => {
         expect(res.success).toBe(false);
     });
 
-    it('should subscribe a webhook', async () => {
-        const hooks: Sms77Client['hooks'] = process.env.SMS77_LIVE_TEST
-            ? client.hooks : jest.fn(async () => hooksSubscribeSuccessResponse);
+    it('should subscribe a webhook', subscribe);
 
-        const p: HooksSubscribeParams = {
-            action: HooksAction.Subscribe,
-            event_type: 'dlr',
-            request_method: 'GET',
-            target_url: `https://my.tld/${uuidv4()}`,
-        };
-
-        const res = await hooks(p) as HooksSubscribeSuccessResponse;
-
-        expect(res.success).toBe(true);
-        expect(res.id).toBeGreaterThan(0);
-
-        id = res.id;
-    });
-
-    it('should unsubscribe a webhook', async () => {
-        const hooks: Sms77Client['hooks'] = process.env.SMS77_LIVE_TEST
-            ? client.hooks : jest.fn(async () => hooksUnsubscribeSuccessResponse);
-
-        const p: HooksUnsubscribeParams = {
-            action: HooksAction.Unsubscribe,
-            id,
-        };
-
-        expect(await hooks(p))
-            .toMatchObject<HooksUnsubscribeResponse>({success: true});
-    });
+    it('should unsubscribe a webhook', unsubscribe);
 });
