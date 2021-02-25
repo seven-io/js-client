@@ -52,7 +52,7 @@
     },
     "scripts": {
         "build": "rm -rf dist && tsc && npm run bundle",
-        "bundle": "node build/build.js > dist/$npm_package_sms77io_bundleName.umd.js",
+        "bundle": "node build/build.js",
         "prepublishOnly": "npm run build",
         "test": "npx jest"
     },
@@ -60,6 +60,6 @@
         "bundleName": "Sms77Client"
     },
     "types": "dist/Sms77Client.d.ts",
-    "version": "2.7.0",
+    "version": "2.8.0",
     "homepage": "https://github.com/sms77io/js-client"
 }
