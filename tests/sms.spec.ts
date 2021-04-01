@@ -1,4 +1,4 @@
-import {SmsJsonResponse, SmsParams,} from '../src/types';
+import {SmsFile, SmsJsonResponse, SmsParams,} from '../src/types';
 import {SMS_TYPES} from '../src/constants/byEndpoint/sms';
 import toBool from './lib/toBool';
 import numberMatcher from './lib/numberMatcher';
@@ -15,6 +15,8 @@ import {
     requiredSmsParams
 } from './data/sms';
 import Sms77Client from '../src/Sms77Client';
+import {promises} from 'fs';
+import {resolve} from 'path';
 
 const sms: Sms77Client['sms'] = process.env.SMS77_LIVE_TEST
     ? client.sms : jest.fn(async (p: SmsParams) => {
@@ -36,8 +38,9 @@ const sms: Sms77Client['sms'] = process.env.SMS77_LIVE_TEST
 const assertJson = (res: SmsJsonResponse) =>
     expect.objectContaining<SmsJsonResponse>(smsMatcher(res));
 
-const assertResponse = async (extras: OptionalSmsParams): Promise<void> => {
-    const params: SmsParams = {...requiredSmsParams, ...extras,};
+const assertResponse = async (
+    extras: OptionalSmsParams, text: string = requiredSmsParams.text): Promise<void> => {
+    const params: SmsParams = {...requiredSmsParams, ...extras, text};
     const res = await sms(params);
     const type = typeof res;
 
@@ -89,4 +92,25 @@ describe('SMS', () => {
 
     it('should return json response',
         async () => await assertResponse(fullSmsParams));
+
+    it('should send file and return json response',
+        async () => {
+            const contents = (await promises.readFile(
+                resolve(__dirname, './lib/png.base64'))).toString();
+
+            const files: SmsFile[] = [];
+            let text = '';
+            for (let i = 0; i < 2; i++) {
+                const name = `test${i}.png`;
+
+                files.push({
+                    contents,
+                    name,
+                });
+
+                text += `TestFile${i}: [[${name}]]\n`;
+            }
+
+            await assertResponse({...fullSmsParams, files, flash: false}, text);
+        });
 });

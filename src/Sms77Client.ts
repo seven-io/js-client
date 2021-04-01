@@ -36,27 +36,25 @@ export default class Sms77Client extends BaseClient {
         Number.parseFloat(await this.get<string>(Endpoint.Balance, {}));
 
     contacts = async (p: ContactsParams): Promise<ContactsResponse> => {
-        const args: [Endpoint, ContactsParams] = [Endpoint.Contacts, p];
-        const method = p.action === ContactsAction.Delete ? this.post : this.get;
+        const args: [Endpoint, ContactsParams] = [
+            Endpoint.Contacts,
+            p
+        ];
+        const method = ContactsAction.Delete === p.action ? this.post : this.get;
         const res = await method<ContactsResponse>(...args);
-        const type = typeof res;
-        const isCSV = type === 'string';
-        const isCode = type === 'number';
 
-        if (isCSV || isCode) {
-            return res;
-        } else if (Array.isArray(res)) {
+        if (Array.isArray(res)) {
             return res;
         }
 
-        if (typeof res === 'object') {
-            if (Object.values(ContactsResponseCode)
-                .includes(Number.parseInt(res.return))) {
-                if (res.id) {
-                    return Number.parseInt(res.id);
-                } else if (p.id) {
-                    return p.id;
-                }
+        if (typeof res === 'object' &&
+            Object.values(ContactsResponseCode).includes(Number.parseInt(res.return))) {
+            if (res.id) {
+                return Number.parseInt(res.id);
+            }
+
+            if (undefined !== p.id) {
+                return p.id;
             }
         }
 
@@ -75,8 +73,7 @@ export default class Sms77Client extends BaseClient {
     pricing = async (p?: PricingParams): Promise<PricingResponse> =>
         await this.post<PricingResponse>(Endpoint.Pricing, p);
 
-    sms = async (p: SmsParams): Promise<SmsResponse> =>
-        await this.post(Endpoint.Sms, p);
+    sms = async (p: SmsParams): Promise<SmsResponse> => await this.post(Endpoint.Sms, p);
 
     status = async (p: StatusParams): Promise<StatusResponse> => {
         const res = await this.get<string>(Endpoint.Status, p);

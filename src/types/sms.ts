@@ -13,6 +13,11 @@ export type AddSignatureOpts = {
     text: string
 }
 
+export type SmsFile = {
+    contents: string
+    name: string
+}
+
 export type SmsMessage = {
     encoding: typeof SMS_ENCODINGS[number]
     error: string | null
@@ -37,6 +42,7 @@ export type SmsParams = {
     debug?: boolean
     delay?: string
     details?: boolean
+    files?: SmsFile[]
     flash?: boolean
     foreign_id?: string
     from?: string

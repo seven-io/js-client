@@ -3,7 +3,10 @@ import {Endpoint} from './constants/Endpoint';
 import {AnyObject} from './types';
 import {ErrorCode} from './constants/ErrorCode';
 
-const METHODS = ['get', 'post'] as const;
+const METHODS = [
+    'get',
+    'post'
+] as const;
 type Response<R> = R | string;
 type Method = (typeof METHODS)[number];
 type MethodArgs = [Endpoint, AnyObject | undefined | null]
@@ -16,12 +19,6 @@ interface HttpMethods {
 }
 
 export class BaseClient implements HttpMethods {
-    get = async <R>(...a: MethodArgs): Promise<Response<R>> => '';
-    post = async <R>(...a: MethodArgs): Promise<Response<R>> => '';
-
-    private assertIs<T>(value: unknown): asserts value is T {
-    }
-
     public static readonly BASE_URL = 'https://gateway.sms77.io/api';
 
     constructor(
@@ -35,6 +32,13 @@ export class BaseClient implements HttpMethods {
                 async <R>(...a: MethodArgs): Promise<Response<R>> =>
                     await this.request<R>(name, a);
         }
+    }
+
+    get = async <R>(...a: MethodArgs): Promise<Response<R>> => '';
+
+    post = async <R>(...a: MethodArgs): Promise<Response<R>> => '';
+
+    private assertIs<T>(value: unknown): asserts value is T {
     }
 
     private async request<R>(method: Method, [e, o = {}]: MethodArgs):
@@ -51,27 +55,42 @@ export class BaseClient implements HttpMethods {
         if (o && Object.keys(o).length) {
             o = this.normalizePayload(o);
             const entries = Object.entries(o);
-
             const params = new URLSearchParams;
 
-            entries.forEach((([k, v]) => params.set(k, v)));
+            entries.forEach((([k, v]) => {
+                if (Array.isArray(v)) {
+                    v.forEach((i, n) => {
+                        // is likely SmsFile
+                        if (typeof i === 'object' && 'contents' in i && 'name' in i) {
+                            const prepend = `files[${n}]`;
 
-            'get' === method
-                ? url += `?${params.toString()}` : opts.body = params;
+                            params.set(`${prepend}[contents]`, i.contents);
+                            params.set(`${prepend}[name]`, i.name);
+                        } else {
+                            params.append(k, i);
+                        }
+                    });
+                } else {
+                    params.set(k, v);
+                }
+            }));
+
+            'get' === method ? url += `?${params.toString()}` : opts.body = params;
         }
 
         const res = await fetch(url, opts);
         let body = await res.text();
+        let apiCode: ErrorCode | null = null;
 
         if (typeof body === 'string') {
             try {
                 body = JSON.parse(body);
-            } catch(e) {}
+            } finally {
+            }
         }
 
-        let apiCode: ErrorCode | null = null;
-
-        if (typeof body === 'string' || typeof body === 'number') {
+        const type = typeof body;
+        if (type === 'string' || type === 'number') {
             const parsed = Number.parseFloat(`${body}`);
 
             if (Number.isInteger(parsed)) {
@@ -104,5 +123,8 @@ export class BaseClient implements HttpMethods {
     }
 
     private normalizePayload = (o: AnyObject): AnyObject => Object.fromEntries(
-        Object.entries(o).map(([k, v]) => [k, Util.toNumberedBool(v)]));
+        Object.entries(o).map(([k, v]) => [
+            k,
+            Util.toNumberedBool(v)
+        ]));
 }

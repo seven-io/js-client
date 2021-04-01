@@ -1,9 +1,8 @@
 import fetch from 'node-fetch';
-
-globalThis.fetch = fetch as unknown as typeof globalThis.fetch
-
 //@ts-ignore
 import * as failFast from 'jasmine-fail-fast';
+
+globalThis.fetch = fetch as unknown as typeof globalThis.fetch;
 
 //@ts-ignore
 const jasmineEnv = jasmine.getEnv();
@@ -28,11 +27,9 @@ expect.extend({
             }
         }
 
-        let msg = `expected null/undefined or instance of ${expectedType} and `;
-        msg += `received ${'object' === receivedType ? 'null' : receivedType}`
-
         return {
-            message: () => msg,
+            message: () => `expected null/undefined or instance of ${expectedType} and` +
+                ` received ${receivedType === 'object' ? 'null' : receivedType}`,
             pass,
         };
     },

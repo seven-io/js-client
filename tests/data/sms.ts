@@ -18,7 +18,8 @@ export const fullSmsParams: OptionalSmsParams = {
 
 export const requiredSmsParams: Pick<SmsParams, 'text' | 'to'> = {
     text: `The current date is: ${Date.now()}.`,
-    to: process.env.SMS77_RECIPIENT!.replace('+', ''),
+    to: process.env.SMS77_RECIPIENT
+        ? process.env.SMS77_RECIPIENT.replace('+', '') : '491771783130',
 };
 
 export const jsonDummy = (p: SmsParams): SmsJsonResponse => ({
