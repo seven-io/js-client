@@ -60,6 +60,6 @@
         "bundleName": "Sms77Client"
     },
     "types": "dist/Sms77Client.d.ts",
-    "version": "2.9.0",
+    "version": "2.10.0",
     "homepage": "https://github.com/sms77io/js-client"
 }
