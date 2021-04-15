@@ -5,21 +5,25 @@ import {
     SMS_TYPES
 } from '../constants/byEndpoint/sms';
 
-export type SmsResponse = number | string | SmsJsonResponse
-
 export type AddSignatureOpts = {
     position: typeof SMS_SIGNATURE_POSITIONS[number]
     signature: string
     text: string
 }
 
+export type SmsResponse = number | string | SmsJsonResponse
+
+export type SmsEncoding = typeof SMS_ENCODINGS[number]
+
 export type SmsFile = {
     contents: string
     name: string
+    password?: string
+    validity?: number
 }
 
 export type SmsMessage = {
-    encoding: typeof SMS_ENCODINGS[number]
+    encoding: SmsEncoding
     error: string | null
     error_text: string | null
     id: string | null

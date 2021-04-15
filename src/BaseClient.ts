@@ -46,7 +46,7 @@ export class BaseClient implements HttpMethods {
         let url = `${BaseClient.BASE_URL}/${e}`;
         const opts: RequestInit = {
             headers: {
-                'X-Api-Key': this.apiKey,
+                Authorization: `Basic ${this.apiKey}`,
                 sentWith: this.sentWith,
             },
             method,

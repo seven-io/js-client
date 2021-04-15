@@ -26,11 +26,11 @@ export type AnalyticsLabel = typeof ANALYTICS_LABELS[number] | string
 export type AnalyticsSubaccounts = typeof ANALYTICS_SUBACCOUNTS[number] | number
 
 export type AnalyticsParams = {
-    start?: string
     end?: string
-    label?: AnalyticsLabel
-    subaccounts?: AnalyticsSubaccounts
     group_by?: AnalyticsGroupBy
+    label?: AnalyticsLabel
+    start?: string
+    subaccounts?: AnalyticsSubaccounts
 }
 
 export type AnalyticsResponse = Analytic[]
