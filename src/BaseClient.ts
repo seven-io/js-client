@@ -66,6 +66,10 @@ export class BaseClient implements HttpMethods {
 
                             params.set(`${prepend}[contents]`, i.contents);
                             params.set(`${prepend}[name]`, i.name);
+                            'password' in i &&
+                            params.set(`${prepend}[password]`, i.password);
+                            'validity' in i &&
+                            params.set(`${prepend}[validity]`, i.validity);
                         } else {
                             params.append(k, i);
                         }
