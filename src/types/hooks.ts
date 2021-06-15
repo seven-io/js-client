@@ -63,9 +63,10 @@ export type HooksUnsubscribeResponse = {
     success: boolean
 }
 
-export type HookAllPayloadEvent = 'dlr' | 'sms_mo' | 'voice_status'
+export type HookAllPayloadEvent = 'dlr' | 'sms_mo' | 'tracking' | 'voice_status'
 
-export type HookAllPayloadBase<Event extends HookAllPayloadEvent, Data extends AnyObject> = {
+export type HookAllPayloadBase<Event extends HookAllPayloadEvent, Data extends AnyObject>
+    = {
     data: Data
     webhook_event: Event
     webhook_timestamp: string
@@ -93,4 +94,14 @@ export type HookAllPayloadVoiceStatus = HookAllPayloadBase<'voice_status', {
     recipient: string
     status: 'completed' | string // TODO: add more statuses
     timestamp: number
+}>
+
+export type HookAllPayloadTracking = HookAllPayloadBase<'tracking', {
+    final_url: string
+    sms_id: string
+    sms_label: string
+    total_clicks: number
+    total_views: string
+    tracking_url: string
+    type: 'click' | 'view'
 }>
