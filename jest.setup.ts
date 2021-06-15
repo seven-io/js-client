@@ -1,13 +1,6 @@
 import fetch from 'node-fetch';
-//@ts-ignore
-import * as failFast from 'jasmine-fail-fast';
 
 globalThis.fetch = fetch as unknown as typeof globalThis.fetch;
-
-//@ts-ignore
-const jasmineEnv = jasmine.getEnv();
-
-jasmineEnv.addReporter(failFast.init());
 
 expect.extend({
     nilOrAny(received: any, expected: any) {
