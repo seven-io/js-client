@@ -89,7 +89,7 @@ export class BaseClient implements HttpMethods {
         if (typeof body === 'string') {
             try {
                 body = JSON.parse(body);
-            } finally {
+            } catch (_) {
             }
         }
 
