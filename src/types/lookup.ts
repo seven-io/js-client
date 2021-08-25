@@ -1,4 +1,4 @@
-import {NetworkType} from '../constants/byEndpoint/lookup/NetworkType';
+import {NetworkType} from '../constants/byEndpoint/lookup/NetworkType'
 import {
     API_RESPONSE_CODES,
     CNAM_API_CODES,
@@ -10,17 +10,17 @@ import {
     HLR_VALID_NUMBER_CODES,
     ROAMING_STATUS_CODES,
     STRING_RESPONSE_CODES
-} from '../constants/byEndpoint/lookup';
-import STRING_BOOLEAN_VALUES from '../constants/STRING_BOOLEAN_VALUES';
-import {ProviderName} from '../constants/byEndpoint/lookup/ProviderName';
-import {LookupType} from '../constants/byEndpoint/lookup/LookupType';
-import {LOOKUP_GSM_CODES} from '../constants/byEndpoint/lookup/LOOKUP_GSM_CODES';
+} from '../constants/byEndpoint/lookup'
+import STRING_BOOLEAN_VALUES from '../constants/STRING_BOOLEAN_VALUES'
+import {ProviderName} from '../constants/byEndpoint/lookup/ProviderName'
+import {LookupType} from '../constants/byEndpoint/lookup/LookupType'
+import {LOOKUP_GSM_CODES} from '../constants/byEndpoint/lookup/LOOKUP_GSM_CODES'
 
 export type ApiResponseCode = typeof API_RESPONSE_CODES[number];
+export type CNAMApiCodes = typeof CNAM_API_CODES[number]
+export type GsmCode = typeof LOOKUP_GSM_CODES[number]
 export type StringResponseCode = typeof STRING_RESPONSE_CODES[number];
 export type StringBoolean = typeof STRING_BOOLEAN_VALUES[number];
-
-export type CNAMApiCodes = typeof CNAM_API_CODES[number]
 
 export type Carrier = {
     country: string
@@ -28,6 +28,7 @@ export type Carrier = {
     network_code: string
     network_type: NetworkType
 }
+
 export type Format = {
     national: string
     carrier: string
@@ -39,7 +40,7 @@ export type Format = {
     network_type: NetworkType
     success: boolean,
 }
-export type GsmCode = typeof LOOKUP_GSM_CODES[number]
+
 export type HLR = {
     country_code: string
     country_code_iso3?: string
@@ -79,9 +80,9 @@ export type Roaming = {
     status: typeof ROAMING_STATUS_CODES[number]
 }
 
-export type HLRApiResponse = string | HLR | number | { code: string }
+export type HLRApiResponse = string | HLR | number | { code: string } | HLR[]
 
-export type FormatApiResponse = string | Format
+export type FormatApiResponse = string | Format | Format[]
 
 export type LookupResponse =
     string
@@ -98,7 +99,7 @@ export type MNPApiJsonResponse = {
     success: boolean
 }
 
-export type MNPApiResponse = ProviderName | MNPApiJsonResponse
+export type MNPApiResponse = ProviderName | MNPApiJsonResponse | MNPApiJsonResponse[]
 
 type BaseLookupParams<T extends LookupType> = {
     type: T
@@ -118,9 +119,9 @@ export type LookupParams =
 
 export type CNAMApiJsonResponse = {
     code: StringResponseCode
-    name: string // callerID
+    name: string
     number: string
     success: StringBoolean
 }
 
-export type CNAMApiResponse = CNAMApiCodes | CNAMApiJsonResponse
+export type CNAMApiResponse = CNAMApiCodes | CNAMApiJsonResponse | CNAMApiJsonResponse[]
