@@ -1,7 +1,6 @@
-import {HooksAction} from '../constants/byEndpoint/hooks/HooksAction';
-import {HOOK_EVENT_TYPES, HOOK_REQUEST_METHODS} from '../constants/byEndpoint/hooks';
-import {AnyObject} from './index';
-import {StatusReportCode} from '../constants/byEndpoint/status/StatusReportCode';
+import {HooksAction} from '../constants/byEndpoint/hooks/HooksAction'
+import {HOOK_EVENT_TYPES, HOOK_REQUEST_METHODS} from '../constants/byEndpoint/hooks'
+import {StatusReportCode} from '../constants/byEndpoint/status/StatusReportCode'
 
 type HooksBaseParams<A extends HooksAction> = {
     action: A
@@ -18,7 +17,8 @@ export type HookEventType = (typeof HOOK_EVENT_TYPES)[number]
 export type HookRequestMethod = (typeof HOOK_REQUEST_METHODS)[number]
 
 export type HooksSubscribeParams = HooksBaseParams<HooksAction.Subscribe>
-    & Omit<Hook, 'id' | 'created' | 'request_method'> & {
+    & Omit<Hook, 'id' | 'created' | 'request_method' | 'event_filter'> & {
+    event_filter?: string | null
     request_method?: HookRequestMethod
 }
 
@@ -39,6 +39,7 @@ type HooksReadResponse<B extends boolean> = {
 
 export type Hook = {
     created: string
+    event_filter: null | string
     event_type: HookEventType
     id: string
     request_method: HookRequestMethod
@@ -49,15 +50,14 @@ export type HooksReadSuccessResponse = HooksReadResponse<true> & {
     hooks: Hook[]
 }
 
-type HooksSubscribeResponse<B extends boolean> = {
-    success: B
-}
-
-export type HooksSubscribeSuccessResponse = HooksSubscribeResponse<true> & {
+export type HooksSubscribeSuccessResponse = {
     id: number
+    success: true
 }
 
-export type HooksSubscribeErrorResponse = HooksSubscribeResponse<false>
+export type HooksSubscribeErrorResponse = {
+    success: false
+}
 
 export type HooksUnsubscribeResponse = {
     success: boolean
@@ -65,7 +65,13 @@ export type HooksUnsubscribeResponse = {
 
 export type HookAllPayloadEvent = 'dlr' | 'sms_mo' | 'tracking' | 'voice_status'
 
-export type HookAllPayloadBase<Event extends HookAllPayloadEvent, Data extends AnyObject>
+export type HookAllJsonPayloadBase<Event extends HookAllPayloadEvent, Data extends { [k: string]: any }>
+    = Data & {
+    webhook_event: Event
+    webhook_timestamp: string
+}
+
+export type HookAllPayloadBase<Event extends HookAllPayloadEvent, Data extends { [k: string]: any }>
     = {
     data: Data
     webhook_event: Event
