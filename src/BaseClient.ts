@@ -44,7 +44,8 @@ export class BaseClient implements HttpMethods {
         let url = `${BaseClient.BASE_URL}/${e}`
         const opts: RequestInit = {
             headers: {
-                Authorization: `Basic ${this.apiKey}`,
+                Authorization: this.apiKey.startsWith('Bearer ')
+                    ? this.apiKey : `Basic ${this.apiKey}`,
                 sentWith: this.sentWith,
             },
             method,

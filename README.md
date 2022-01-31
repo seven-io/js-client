@@ -1,6 +1,6 @@
-![Sms77.io Logo](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "Sms77.io Logo")
+![](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "sms77 Logo")
 
-# Official JavaScript API Client for the Sms77.io SMS Gateway
+# Official JavaScript API Client for [sms77](https://www.sms77.io)
 
 ## Installation
 
@@ -10,13 +10,13 @@ Node.js, [node-fetch](https://github.com/node-fetch/node-fetch) is required.**
 For compatibility with Node.js versions < 12, please also install
 the [globalThis polyfill](https://github.com/es-shims/globalThis).
 
-### Installation using NPM
+### Via NPM
 
 ```bash
 npm install sms77-client
 ```
 
-### Installation using Yarn
+### Via Yarn
 
 ```bash
 yarn add sms77-client
@@ -25,7 +25,7 @@ yarn add sms77-client
 ### Browser
 
 ```html
-<script src="https://unpkg.com/browse/sms77-client/dist/Sms77Client.umd.js"></script>
+<script src='https://unpkg.com/browse/sms77-client/dist/Sms77Client.umd.js'></script>
 ```
 
 ## Example
@@ -35,7 +35,7 @@ yarn add sms77-client
 // globalThis.fetch = require('node-fetch').default; // uncomment in NodeJS environments
 // const Sms77Client = require('sms77-client'); // uncomment in NodeJS environments
 
-new Sms77Client("MY_SUPER_SECRET_SMS77_IO_API_KEY!")
+new Sms77Client('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
 	.balance()
 	.then(balance => console.log(`Current balance: ${balance}`))
 	.catch(console.error);
