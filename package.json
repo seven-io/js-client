@@ -4,22 +4,22 @@
         "email": "a.matthies@sms77.io",
         "url": "https://github.com/sms77io/js-client/issues"
     },
-    "description": "Official API client for sms77.io",
+    "description": "Official API client for sms77",
     "dependencies": {
-        "date-fns": "^2.25.0"
+        "date-fns": "^2.28.0"
     },
     "devDependencies": {
         "@types/globalthis": "^1.0.1",
-        "@types/jest": "^27.0.2",
-        "@types/node": "^14.17.32",
+        "@types/jest": "^27.4.0",
+        "@types/node": "^14.18.9",
         "@types/node-fetch": "^2.5.12",
-        "@types/uuid": "^8.3.1",
+        "@types/uuid": "^8.3.4",
         "browserify": "^17.0.0",
-        "jest": "^27.3.1",
-        "node-fetch": "^2.6.6",
-        "ts-jest": "^27.0.7",
+        "jest": "^27.4.7",
+        "node-fetch": "^2.6.7",
+        "ts-jest": "^27.1.3",
         "tsify": "^5.0.4",
-        "typescript": "^4.4.4",
+        "typescript": "^4.5.5",
         "uuid": "^8.3.2"
     },
     "files": [
@@ -58,5 +58,5 @@
         "test": "npx jest"
     },
     "types": "dist/Sms77Client.d.ts",
-    "version": "2.14.0"
+    "version": "2.15.0"
 }
