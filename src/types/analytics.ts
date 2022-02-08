@@ -5,11 +5,10 @@ import {
 } from '../constants/byEndpoint/analytics';
 
 export type AnalyticBase = {
-    direct: number
-    economy: number
     hlr: number
     inbound: number
     mnp: number
+    sms: number
     usage_eur: number
     voice: number
 }

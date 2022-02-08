@@ -3,8 +3,7 @@ import {AnalyticsResponse} from '../../src/types';
 export const dummyAnalyticsGroupedBySubaccount: AnalyticsResponse = [
     {
         account: 'André Matthies',
-        economy: 0,
-        direct: 71,
+        sms: 71,
         voice: 11,
         hlr: 16,
         mnp: 8,
@@ -16,8 +15,7 @@ export const dummyAnalyticsGroupedBySubaccount: AnalyticsResponse = [
 export const dummyAnalyticsGroupedByLabel: AnalyticsResponse = [
     {
         label: '',
-        economy: 0,
-        direct: 71,
+        sms: 71,
         voice: 11,
         hlr: 16,
         mnp: 8,
@@ -26,8 +24,7 @@ export const dummyAnalyticsGroupedByLabel: AnalyticsResponse = [
     },
     {
         label: '',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -39,8 +36,7 @@ export const dummyAnalyticsGroupedByLabel: AnalyticsResponse = [
 export const dummyAnalyticsGroupedByCountry: AnalyticsResponse = [
     {
         country: 'DE',
-        economy: 0,
-        direct: 71,
+        sms: 71,
         voice: 11,
         hlr: 16,
         mnp: 8,
@@ -49,8 +45,7 @@ export const dummyAnalyticsGroupedByCountry: AnalyticsResponse = [
     },
     {
         country: '',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -62,8 +57,7 @@ export const dummyAnalyticsGroupedByCountry: AnalyticsResponse = [
 export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     {
         date: '2020-08-16',
-        direct: 0,
-        economy: 0,
+        sms: 0,
         hlr: 0,
         inbound: 0,
         mnp: 0,
@@ -72,8 +66,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-17',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -82,8 +75,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-18',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 10,
         hlr: 8,
         mnp: 4,
@@ -92,8 +84,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-19',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -102,8 +93,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-20',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -112,8 +102,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-21',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -122,8 +111,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-22',
-        economy: 0,
-        direct: 10,
+        sms: 10,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -132,8 +120,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-23',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -142,8 +129,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-24',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -152,8 +138,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-25',
-        economy: 0,
-        direct: 4,
+        sms: 4,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -162,8 +147,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-26',
-        economy: 0,
-        direct: 4,
+        sms: 4,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -172,8 +156,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-27',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -182,8 +165,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-28',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -192,8 +174,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-29',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -202,8 +183,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-30',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -212,8 +192,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-08-31',
-        economy: 0,
-        direct: 0,
+        sms: 0,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -222,8 +201,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-01',
-        economy: 0,
-        direct: 23,
+        sms: 23,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -232,8 +210,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-02',
-        economy: 0,
-        direct: 5,
+        sms: 5,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -242,8 +219,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-03',
-        economy: 0,
-        direct: 1,
+        sms: 1,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -252,8 +228,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-04',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -262,8 +237,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-05',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -272,8 +246,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-06',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -282,8 +255,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-07',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -292,8 +264,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-08',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -302,8 +273,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-09',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -312,8 +282,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-10',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -322,8 +291,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-11',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -332,8 +300,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-12',
-        economy: 0,
-        direct: 3,
+        sms: 3,
         voice: 1,
         hlr: 0,
         mnp: 0,
@@ -342,8 +309,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-13',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -352,8 +318,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-14',
-        economy: 0,
-        direct: 2,
+        sms: 2,
         voice: 0,
         hlr: 0,
         mnp: 0,
@@ -362,8 +327,7 @@ export const dummyAnalyticsGroupedByDate: AnalyticsResponse = [
     },
     {
         date: '2020-09-15',
-        economy: 0,
-        direct: 1,
+        sms: 1,
         voice: 0,
         hlr: 8,
         mnp: 4,
