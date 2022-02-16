@@ -34,7 +34,7 @@ export type JournalOutbound = JournalBase & {
 export type JournalVoice = JournalBase & {
     duration: string
     error: string
-    status: string
+    status: 'completed' | 'no-answer' | string
     xml: boolean
 }
 
