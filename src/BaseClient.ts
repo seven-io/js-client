@@ -4,16 +4,19 @@ import {AnyObject} from './types'
 import {ErrorCode} from './constants/ErrorCode'
 
 const METHODS = [
+    'delete',
     'get',
     'post'
 ] as const
 type Response<R> = R | string;
 type Method = (typeof METHODS)[number];
-type MethodArgs = [Endpoint, AnyObject | undefined | null]
+type MethodArgs = [Endpoint, RequestPayload, boolean | undefined]
+type RequestPayload = AnyObject | undefined | null
 
 export type MethodCall = <R>(...a: MethodArgs) => Promise<Response<R>>;
 
 interface HttpMethods {
+    delete: MethodCall
     get: MethodCall
     post: MethodCall
 }
@@ -24,57 +27,71 @@ export class BaseClient implements HttpMethods {
     constructor(
         protected apiKey: string,
         protected sentWith: string = 'js',
-        protected debug: boolean = false) {
+        protected debug: boolean = false,
+    ) {
         this.assertIs<{ [k in Method]: MethodCall }>(this)
-
-        for (const name of METHODS) this[name] =
-            async <R>(...a: MethodArgs): Promise<Response<R>> =>
-                await this.request<R>(name, a)
     }
 
-    get = async <R>(...a: MethodArgs): Promise<Response<R>> => ''
+    delete = async <R>(endpoint: Endpoint, payload?: RequestPayload, json = false)
+        : Promise<Response<R>> => await this.request<R>('delete', endpoint, payload, json)
 
-    post = async <R>(...a: MethodArgs): Promise<Response<R>> => ''
+    get = async <R>(endpoint: Endpoint, payload: RequestPayload): Promise<Response<R>> =>
+        await this.request<R>('get', endpoint, payload)
+
+    post = async <R>(endpoint: Endpoint, payload: RequestPayload): Promise<Response<R>> =>
+        await this.request<R>('post', endpoint, payload)
 
     private assertIs<T>(value: unknown): asserts value is T {
     }
 
-    private async request<R>(method: Method, [e, o = {}]: MethodArgs):
+    private async request<R>(
+        method: Method, endpoint: Endpoint, o: RequestPayload = {}, json = false):
         Promise<Response<R>> {
-        let url = `${BaseClient.BASE_URL}/${e}`
+        let url = `${BaseClient.BASE_URL}/${endpoint}`
+        const headers: HeadersInit = {
+            Authorization: this.apiKey.startsWith('Bearer ')
+                ? this.apiKey : `Basic ${this.apiKey}`,
+            sentWith: this.sentWith,
+        }
         const opts: RequestInit = {
-            headers: {
-                Authorization: this.apiKey.startsWith('Bearer ')
-                    ? this.apiKey : `Basic ${this.apiKey}`,
-                sentWith: this.sentWith,
-            },
+            headers,
             method,
         }
 
         if (o && Object.keys(o).length) {
             o = this.normalizePayload(o)
-            const entries = Object.entries(o)
-            const params = new URLSearchParams
 
-            entries.forEach((([k, v]) => {
-                if (Array.isArray(v)) {
-                    v.forEach((i, n) => {
-                        // is likely SmsFile
-                        if (typeof i === 'object' && 'contents' in i && 'name' in i) {
-                            const prepend = `files[${n}]`
+            if (json) {
+                opts.body = JSON.stringify(o)
+                headers['Content-Type'] = 'application/json'
+            } else {
+                const params = new URLSearchParams
 
-                            params.set(`${prepend}[contents]`, i.contents)
-                            params.set(`${prepend}[name]`, i.name)
-                            if ('password' in i)
-                                params.set(`${prepend}[password]`, i.password)
-                            if ('validity' in i)
-                                params.set(`${prepend}[validity]`, i.validity)
-                        } else params.append(k, i)
-                    })
-                } else params.set(k, v)
-            }))
+                Object.entries(o).forEach((([k, v]) => {
+                    if (Array.isArray(v)) {
+                        v.forEach((i, n) => {
+                            if (typeof i === 'object' && 'contents' in i && 'name' in i) { // is likely SmsFile
+                                const prepend = `files[${n}]`
 
-            'get' === method ? url += `?${params.toString()}` : opts.body = params
+                                params.set(`${prepend}[contents]`, i.contents)
+                                params.set(`${prepend}[name]`, i.name)
+                                if ('password' in i)
+                                    params.set(`${prepend}[password]`, i.password)
+                                if ('validity' in i)
+                                    params.set(`${prepend}[validity]`, i.validity)
+                            } else params.append(k, i)
+                        })
+                    } else params.set(k, v)
+                }))
+
+                switch (method) {
+                    case 'get':
+                        url += `?${params.toString()}`
+                        break
+                    default:
+                        opts.body = params
+                }
+            }
         }
 
         const res = await fetch(url, opts)

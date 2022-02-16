@@ -11,6 +11,8 @@ import {
     LookupResponse,
     PricingParams,
     PricingResponse,
+    SmsDeleteParams,
+    SmsDeleteResponse,
     SmsParams,
     SmsResponse,
     StatusParams,
@@ -36,12 +38,8 @@ export default class Sms77Client extends BaseClient {
         Number.parseFloat(await this.get<string>(Endpoint.Balance, {}))
 
     contacts = async (p: ContactsParams): Promise<ContactsResponse> => {
-        const args: [Endpoint, ContactsParams] = [
-            Endpoint.Contacts,
-            p
-        ]
         const method = ContactsAction.Delete === p.action ? this.post : this.get
-        const res = await method<ContactsResponse>(...args)
+        const res = await method<ContactsResponse>(Endpoint.Contacts, p)
 
         if (Array.isArray(res)) return res
 
@@ -54,6 +52,9 @@ export default class Sms77Client extends BaseClient {
 
         return res
     }
+
+    deleteSMS = async (p: SmsDeleteParams): Promise<SmsDeleteResponse> =>
+        await this.delete(Endpoint.Sms, p, true) as SmsDeleteResponse
 
     hooks = async (p: HooksParams): Promise<HooksResponse> =>
         await this.post<HooksResponse>(Endpoint.Hooks, p) as HooksResponse

@@ -13,6 +13,15 @@ export type AddSignatureOpts = {
 
 export type SmsResponse = number | string | SmsJsonResponse
 
+export type SmsDeleteParams = {
+    ids: string[]
+}
+
+export type SmsDeleteResponse = {
+    deleted: string[]
+    success: boolean
+}
+
 export type SmsEncoding = typeof SMS_ENCODINGS[number]
 
 export type SmsFile = {
