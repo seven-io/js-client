@@ -49,10 +49,12 @@ export class BaseClient implements HttpMethods {
         Promise<Response<R>> {
         let url = `${BaseClient.BASE_URL}/${endpoint}`
         const headers: HeadersInit = {
-            Authorization: this.apiKey.startsWith('Bearer ')
-                ? this.apiKey : `Basic ${this.apiKey}`,
             sentWith: this.sentWith,
         }
+
+        if (this.apiKey.startsWith('Bearer ')) headers.Authorization = this.apiKey
+        else headers['X-Api-Key'] = this.apiKey
+
         const opts: RequestInit = {
             headers,
             method,
