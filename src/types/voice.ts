@@ -20,6 +20,7 @@ export type VoiceJsonResponse = {
 export type VoiceResponse = string | VoiceJsonResponse
 
 export type VoiceParams = {
+    debug?: boolean
     json?: boolean
     text: string
     to: string

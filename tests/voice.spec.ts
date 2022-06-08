@@ -14,6 +14,7 @@ const expectJson = (o: VoiceJsonResponse) => expect(o)
     .toMatchObject<VoiceResponse>(voiceMatcher);
 
 const commonParams: VoiceParams = {
+    debug: false,
     from: 'Tom Tester',
     text: 'This is a Test!',
     to: process.env.SMS77_RECIPIENT!,
@@ -33,5 +34,13 @@ describe('Voice', () => {
         const opts: VoiceParams = {...commonParams, json: true};
         const json = await voice(opts) as VoiceJsonResponse;
         expectJson(json);
+    });
+
+    it('should return a json dummy response', async () => {
+        const opts: VoiceParams = {...commonParams, debug: true, json: true};
+        const json = await voice(opts) as VoiceJsonResponse;
+        expectJson(json);
+        expect(json.total_price).toEqual(0);
+        expect(json.debug).toEqual(true);
     });
 });
