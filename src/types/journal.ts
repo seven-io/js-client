@@ -6,6 +6,7 @@ export type JournalParams = {
     date_from?: string
     date_to?: string
     id?: number
+    limit?: number
     state?: string
     to?: string
     type: JournalType
