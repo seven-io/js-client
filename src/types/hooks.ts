@@ -17,7 +17,7 @@ export type HookEventType = (typeof HOOK_EVENT_TYPES)[number]
 export type HookRequestMethod = (typeof HOOK_REQUEST_METHODS)[number]
 
 export type HooksSubscribeParams = HooksBaseParams<HooksAction.Subscribe>
-    & Omit<Hook, 'id' | 'created' | 'request_method' | 'event_filter'> & {
+    & Omit<Hook, 'id' | 'created' | 'request_method' | 'event_filter' | 'enabled'> & {
     event_filter?: string | null
     request_method?: HookRequestMethod
 }
@@ -38,6 +38,7 @@ type HooksReadResponse<B extends boolean> = {
 }
 
 export type Hook = {
+    enabled: boolean
     created: string
     event_filter: null | string
     event_type: HookEventType

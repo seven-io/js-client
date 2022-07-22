@@ -71,6 +71,7 @@ describe('Hooks', () => {
         expect(success).toBe(true);
 
         hooks.forEach(h => {
+            expect(h).toHaveProperty('enabled');
             expect(isNaN(Date.parse(h.created))).toBe(false);
             expect(HOOK_EVENT_TYPES.includes(h.event_type)).toBe(true);
             expect(Number.parseInt(h.id)).toBeGreaterThan(0);
