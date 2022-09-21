@@ -37,6 +37,7 @@ export type SmsMessage = {
     error_text: string | null
     id: string | null
     is_binary: boolean
+    label: string | null
     messages?: string[]
     parts: number
     price: number,

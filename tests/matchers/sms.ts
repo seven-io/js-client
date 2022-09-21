@@ -12,6 +12,7 @@ export const smsMatcher = (res: SmsJsonResponse) => ({
         error_text: expect.nilOrAny(String),
         id: expect.nilOrAny(String),
         is_binary: expect.any(Boolean),
+        label: expect.nilOrAny(String),
         messages: expect.nilOrAny(Array),
         parts: expect.any(Number),
         price: expect.any(Number),
