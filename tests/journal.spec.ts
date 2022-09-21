@@ -1,5 +1,6 @@
 import './lib/afterEachWait';
 import {
+    Journal,
     JournalInbound,
     JournalOutbound,
     JournalParams, JournalResponse,
@@ -39,7 +40,7 @@ const baseMatcher = {
 };
 
 const assertEach =
-    async <J>(p: JournalParams, expected: J): Promise<void> => {
+    async <J extends Journal>(p: JournalParams, expected: J): Promise<void> => {
         const entries = await journal(p)
         entries.forEach(r => expect(r)
                 .toMatchObject<J>(expected))

@@ -1,15 +1,17 @@
-import {SmsJsonResponse} from '../../src/types';
+import {SmsJsonResponse, SmsMessage} from '../../src/types'
 import unionMatcher from '../lib/unionMatcher';
 import {SMS_DEBUG_VALUES, SMS_TYPES} from '../../src/constants/byEndpoint/sms';
 
 export const smsMatcher = (res: SmsJsonResponse) => ({
     balance: expect.any(Number),
     debug: expect.stringMatching(unionMatcher(SMS_DEBUG_VALUES)),
-    messages: expect.arrayContaining(Array(res.messages.length).fill(expect.objectContaining({
+    messages: expect.arrayContaining(Array(res.messages.length)
+        .fill(expect.objectContaining<SmsMessage>({
         encoding: expect.any(String),
         error: expect.nilOrAny(String),
         error_text: expect.nilOrAny(String),
         id: expect.nilOrAny(String),
+        is_binary: expect.any(Boolean),
         messages: expect.nilOrAny(Array),
         parts: expect.any(Number),
         price: expect.any(Number),
@@ -17,6 +19,7 @@ export const smsMatcher = (res: SmsJsonResponse) => ({
         sender: expect.any(String),
         success: expect.any(Boolean),
         text: expect.any(String),
+        udh: expect.nilOrAny(String),
     }))),
     sms_type: expect.any(unionMatcher(SMS_TYPES)),
     success: expect.any(String),

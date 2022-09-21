@@ -36,6 +36,7 @@ export type SmsMessage = {
     error: string | null
     error_text: string | null
     id: string | null
+    is_binary: boolean
     messages?: string[]
     parts: number
     price: number,
@@ -43,6 +44,7 @@ export type SmsMessage = {
     sender: string
     success: boolean
     text: string
+    udh: string| null
 }
 
 export type SmsType = typeof SMS_TYPES[number]
