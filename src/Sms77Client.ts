@@ -17,17 +17,6 @@ import {
     SmsResponse,
     StatusParams,
     StatusResponse,
-    ValidateForVoiceParams,
-    ValidateForVoiceResponse,
-    VoiceParams,
-    VoiceResponse,
-} from './types'
-import {BaseClient} from './BaseClient'
-import {Endpoint} from './constants/Endpoint'
-import TextTransformer from './lib/TextTransformer'
-import {ContactsAction} from './constants/byEndpoint/contacts/ContactsAction'
-import {ContactsResponseCode} from './constants/byEndpoint/contacts/ContactsResponseCode'
-import {
     Subaccount,
     SubaccountsAutoChargeParams,
     SubaccountsAutoChargeResponse,
@@ -38,8 +27,18 @@ import {
     SubaccountsApiParams,
     SubaccountsTransferCreditsParams,
     SubaccountsTransferCreditsResponse,
-    SubaccountsParams, SubaccountsAction, SubaccountsResponse,
-} from './types/subaccounts'
+    SubaccountsAction,
+    SubaccountsResponse,
+    ValidateForVoiceParams,
+    ValidateForVoiceResponse,
+    VoiceParams,
+    VoiceResponse,
+} from './types'
+import {BaseClient} from './BaseClient'
+import {Endpoint} from './constants/Endpoint'
+import TextTransformer from './lib/TextTransformer'
+import {ContactsAction} from './constants/byEndpoint/contacts/ContactsAction'
+import {ContactsResponseCode} from './constants/byEndpoint/contacts/ContactsResponseCode'
 
 export * from './types'
 

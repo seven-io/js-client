@@ -26,17 +26,11 @@ import Sms77Client from '../src/Sms77Client'
 
 const sms: Sms77Client['sms'] = process.env.SMS77_LIVE_TEST
     ? client.sms : jest.fn(async (p: SmsParams) => {
-        if (p.json) {
-            return jsonDummy(p)
-        }
+        if (p.json) return jsonDummy(p)
 
-        if (p.return_msg_id) {
-            return msgIdDummy
-        }
+        if (p.return_msg_id) return msgIdDummy
 
-        if (p.details) {
-            return detailedDummy(p)
-        }
+        if (p.details) return detailedDummy(p)
 
         return 100
     })
@@ -134,12 +128,13 @@ describe('SMS', () => {
     })
 
     it('should task a sms and delete it again', async () => {
-        const {messages} = <SmsJsonResponse>await client.sms({
+        const {messages} = await sms({
+            debug: false,
             delay: '2035-12-30 23:25:04',
             json: true,
             text: 'X',
             to: '+49123456789',
-        })
+        }) as SmsJsonResponse
         const id = messages[0].id
         expect(id).not.toBeNull()
 

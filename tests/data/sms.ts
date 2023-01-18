@@ -1,4 +1,5 @@
 import {SmsJsonResponse, SmsParams} from '../../src/types';
+import environment from '../lib/environment'
 
 export type OptionalSmsParams = Omit<SmsParams, 'text' | 'to'>;
 
@@ -29,7 +30,7 @@ export const jsonDummy = (p: SmsParams): SmsJsonResponse => ({
         encoding: 'gsm',
         error: null,
         error_text: null,
-        id: null,
+        id: p.debug ? null : 1,
         parts: 1,
         price: 0,
         recipient: p.to || requiredSmsParams.to,
