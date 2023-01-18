@@ -43,7 +43,7 @@ new Sms77Client('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
 
 ## Tests
 
-1. `git clone https://github.com/sms77io/js-client`
+1. `git clone https://github.com/seven-io/js-client`
 2. `cd js-client && npm install`
 3. `SMS77_API_KEY=InsertSms77ApiKey npm run test`
 

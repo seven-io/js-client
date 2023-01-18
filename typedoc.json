@@ -1,0 +1,4 @@
+{
+    "entryPoints": ["src/Sms77Client.ts"],
+    "out": "docs"
+}

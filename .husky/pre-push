@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+typedoc
+git add .
+git commit -a --no-edit --amend
