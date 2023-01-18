@@ -1,3 +1,3 @@
-export default function toBool<T>(option: keyof T, params: T) {
+export default function toBool<T extends object>(option: keyof T, params: T) {
     return option in params ? params[option] : false;
 }

@@ -27,6 +27,19 @@ import {Endpoint} from './constants/Endpoint'
 import TextTransformer from './lib/TextTransformer'
 import {ContactsAction} from './constants/byEndpoint/contacts/ContactsAction'
 import {ContactsResponseCode} from './constants/byEndpoint/contacts/ContactsResponseCode'
+import {
+    Subaccount,
+    SubaccountsAutoChargeParams,
+    SubaccountsAutoChargeResponse,
+    SubaccountsCreateParams,
+    SubaccountsCreateResponse,
+    SubaccountsDeleteParams,
+    SubaccountsDeleteResponse,
+    SubaccountsApiParams,
+    SubaccountsTransferCreditsParams,
+    SubaccountsTransferCreditsResponse,
+    SubaccountsParams, SubaccountsAction, SubaccountsResponse,
+} from './types/subaccounts'
 
 export * from './types'
 
@@ -74,6 +87,65 @@ export default class Sms77Client extends BaseClient {
         const res = await this.get<string>(Endpoint.Status, p)
 
         return p._json ? TextTransformer.status(res) : res
+    }
+
+    subaccounts = {
+        _dynamic: async <TAction extends SubaccountsAction, TData, TRes extends SubaccountsResponse>(
+            p: SubaccountsApiParams<TAction, TData>,
+        ): Promise<TRes> => {
+            switch (p.action) {
+                case 'read':
+                    return await this.subaccounts.read() as TRes
+                case 'create':
+                    return await this.subaccounts
+                        .create(p as unknown as SubaccountsCreateParams) as TRes
+                case 'delete':
+                    return await this.subaccounts
+                        .delete(p as unknown as SubaccountsDeleteParams) as TRes
+                case 'update':
+                    return await this.subaccounts
+                        .autoCharge(p as unknown as SubaccountsAutoChargeParams) as TRes
+                case 'transfer_credits':
+                    return await this.subaccounts
+                        .transferCredits(p as unknown as SubaccountsTransferCreditsParams) as TRes
+            }
+
+            throw new Error(`Invalid action ${p.action}`)
+        },
+        read: async (): Promise<Subaccount[]> => {
+            const params: SubaccountsApiParams<'read', {}> = {
+                action: 'read',
+            }
+            return await this.get(Endpoint.Subaccounts, params) as Subaccount[]
+        },
+        create: async (p: SubaccountsCreateParams): Promise<SubaccountsCreateResponse> => {
+            const params: SubaccountsApiParams<'create', SubaccountsCreateParams> = {
+                action: 'create',
+                ...p,
+            }
+            return await this.post(Endpoint.Subaccounts, params) as SubaccountsCreateResponse
+        },
+        delete: async (p: SubaccountsDeleteParams): Promise<SubaccountsDeleteResponse> => {
+            const params: SubaccountsApiParams<'delete', SubaccountsDeleteParams> = {
+                action: 'delete',
+                ...p,
+            }
+            return await this.post(Endpoint.Subaccounts, params) as SubaccountsDeleteResponse
+        },
+        transferCredits: async (p: SubaccountsTransferCreditsParams): Promise<SubaccountsTransferCreditsResponse> => {
+            const params: SubaccountsApiParams<'transfer_credits', SubaccountsTransferCreditsParams> = {
+                action: 'transfer_credits',
+                ...p,
+            }
+            return await this.post(Endpoint.Subaccounts, params) as SubaccountsTransferCreditsResponse
+        },
+        autoCharge: async (p: SubaccountsAutoChargeParams): Promise<SubaccountsAutoChargeResponse> => {
+            const params: SubaccountsApiParams<'update', SubaccountsAutoChargeParams> = {
+                action: 'update',
+                ...p,
+            }
+            return await this.post(Endpoint.Subaccounts, params) as SubaccountsAutoChargeResponse
+        },
     }
 
     validateForVoice = async (p: ValidateForVoiceParams):

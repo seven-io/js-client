@@ -8,6 +8,7 @@ export enum Endpoint {
     Pricing = 'pricing',
     Sms = 'sms',
     Status = 'status',
+    Subaccounts = 'subaccounts',
     ValidateForVoice = 'validate_for_voice',
     Voice = 'voice',
 }

@@ -6,6 +6,7 @@ export * from './lookup';
 export * from './pricing';
 export * from './sms';
 export * from './status';
+export * from './subaccounts';
 export * from './validateForVoice';
 export * from './voice';
 
