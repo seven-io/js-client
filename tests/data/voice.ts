@@ -18,5 +18,5 @@ export const dummmyVoiceResponseJson: VoiceResponse = {
         }
     ],
     success: '100',
-    total_price: 0.55
+    total_price: 0
 };
