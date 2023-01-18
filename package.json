@@ -60,9 +60,8 @@
         "url": "git+https://github.com/seven-io/js-client.git"
     },
     "scripts": {
-        "build": "rm -rf dist && tsc && typedoc && npm run bundle",
+        "build": "rm -rf dist && tsc && npm run bundle",
         "bundle": "node build/build.js",
-        "docs": "typedoc",
         "prepublishOnly": "npm run build",
         "test": "npx jest",
         "prepare": "husky install"
