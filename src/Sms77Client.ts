@@ -42,7 +42,7 @@ import {ContactsResponseCode} from './constants/byEndpoint/contacts/ContactsResp
 
 export * from './types'
 
-export default class Sms77Client extends BaseClient {
+export class Sms77Client extends BaseClient {
     analytics = async (p?: AnalyticsParams): Promise<AnalyticsResponse> =>
         (await this.get<AnalyticsResponse>(Endpoint.Analytics, p) as AnalyticsResponse)
 
@@ -155,3 +155,5 @@ export default class Sms77Client extends BaseClient {
     voice = async (p: VoiceParams): Promise<VoiceResponse> =>
         await this.post<string>(Endpoint.Voice, p)
 }
+
+export default Sms77Client
