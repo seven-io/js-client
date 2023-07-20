@@ -1,11 +1,11 @@
 import Util from '../src/lib/Util'
-import Sms77Client from '../src/Sms77Client'
+import SevenClient from '../src/SevenClient'
 import {VoiceJsonResponse, VoiceParams, VoiceResponse} from '../src/types'
 import {dummmyVoiceResponseJson, dummmyVoiceResponseText} from './data/voice'
 import client from './lib/client'
 import {voiceMatcher} from './matchers/voice'
 
-const voice: Sms77Client['voice'] = process.env.SMS77_LIVE_TEST
+const voice: SevenClient['voice'] = process.env.SEVEN_LIVE_TEST
     ? client.voice
     : jest.fn(async (p: VoiceParams) =>
         p.json ? dummmyVoiceResponseJson : dummmyVoiceResponseText)
@@ -18,7 +18,7 @@ const commonParams: VoiceParams = {
     from: 'Tom Tester',
     ringtime: 10,
     text: 'This is a Test!',
-    to: process.env.SMS77_RECIPIENT!,
+    to: process.env.SEVEN_RECIPIENT!,
     xml: false,
 }
 

@@ -1,5 +1,6 @@
 import {ok} from 'assert'
-import './lib/afterEachWait'
+import {LookupType} from '../src/constants/byEndpoint/lookup/LookupType'
+import SevenClient from '../src/SevenClient'
 import {
     CNAMApiJsonResponse,
     Format,
@@ -10,24 +11,23 @@ import {
     LookupResponse,
     MNPApiJsonResponse,
 } from '../src/types'
-import client from './lib/client'
-import {
-    lookupCnamMatcher,
-    lookupFormatMatcher,
-    lookupHlrMatcher,
-    lookupMnpMatcher
-} from './matchers/lookup'
-import Sms77Client from '../src/Sms77Client'
 import {
     dummyLookupCnam,
     dummyLookupFormat,
     dummyLookupHlr,
     dummyLookupMnpJson,
-    dummyLookupMnpText
+    dummyLookupMnpText,
 } from './data/lookup'
-import {LookupType} from '../src/constants/byEndpoint/lookup/LookupType'
+import './lib/afterEachWait'
+import client from './lib/client'
+import {
+    lookupCnamMatcher,
+    lookupFormatMatcher,
+    lookupHlrMatcher,
+    lookupMnpMatcher,
+} from './matchers/lookup'
 
-const lookup: Sms77Client['lookup'] = process.env.SMS77_LIVE_TEST
+const lookup: SevenClient['lookup'] = process.env.SEVEN_LIVE_TEST
     ? client.lookup : jest.fn(async (p: LookupParams) => {
         const numbers = p.number.split(',').length
         let singular = 1 === numbers
@@ -57,12 +57,14 @@ const lookup: Sms77Client['lookup'] = process.env.SMS77_LIVE_TEST
         return singular ? type : Array(numbers).fill(type)
     })
 
-const assertResponse = async (params: Omit<LookupParams, 'number'> & { number?: string }, plural = false): Promise<LookupResponse> => {
-    ok(process.env.SMS77_RECIPIENT)
+const assertResponse = async (params: Omit<LookupParams, 'number'> & {
+    number?: string
+}, plural = false): Promise<LookupResponse> => {
+    ok(process.env.SEVEN_RECIPIENT)
 
     if (!params.number) params.number = plural
-        ? `${process.env.SMS77_RECIPIENT},${process.env.SMS77_RECIPIENT}`
-        : process.env.SMS77_RECIPIENT
+        ? `${process.env.SEVEN_RECIPIENT},${process.env.SEVEN_RECIPIENT}`
+        : process.env.SEVEN_RECIPIENT
 
     const res = await lookup(<LookupParams>params)
 
@@ -78,7 +80,7 @@ describe('Lookup related', () => {
 
     it('should return an array of format objects',
         async () => {
-            const arr = <Format[]>await assertResponse({type: LookupType.Format,}, true)
+            const arr = <Format[]>await assertResponse({type: LookupType.Format}, true)
             arr.forEach(o => expect(o).toMatchObject(lookupFormatMatcher))
         })
 
@@ -92,7 +94,7 @@ describe('Lookup related', () => {
     it('should return mnp lookup as json',
         async () => expect(await assertResponse(<LookupMnpParams>{
             json: true,
-            type: LookupType.MobileNumberPortability
+            type: LookupType.MobileNumberPortability,
         })).toMatchObject(lookupMnpMatcher))
 
     it('should return an array of mnp objects',

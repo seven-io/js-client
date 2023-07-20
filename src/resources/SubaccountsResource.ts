@@ -1,4 +1,3 @@
-import {BaseClient} from '../BaseClient'
 import {Endpoint} from '../constants/Endpoint'
 import {
     Subaccount,
@@ -14,11 +13,9 @@ import {
     SubaccountsTransferCreditsParams,
     SubaccountsTransferCreditsResponse,
 } from '../types'
+import AbstractResource from './AbstractResource'
 
-export default class SubaccountsResource {
-    constructor(protected readonly client: BaseClient) {
-    }
-
+export default class SubaccountsResource extends AbstractResource {
     _dynamic = async <TAction extends SubaccountsAction, TData, TRes extends SubaccountsResponse>(
         p: SubaccountsApiParams<TAction, TData>,
     ): Promise<TRes> => {

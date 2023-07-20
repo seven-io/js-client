@@ -1,10 +1,10 @@
-import Sms77Client from '../src/Sms77Client'
+import SevenClient from '../src/SevenClient'
 import {Journal, JournalInbound, JournalOutbound, JournalParams, JournalVoice} from '../src/types'
 import {journalSuccessResponse} from './data/journal'
 import './lib/afterEachWait'
 import client, {env} from './lib/client'
 
-const journal: Sms77Client['journal'] = env.live
+const journal: SevenClient['journal'] = env.live
     ? client.journal
     : jest.fn(async (p: JournalParams) => {
         let entries

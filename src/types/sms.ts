@@ -1,15 +1,4 @@
-import {
-    SMS_DEBUG_VALUES,
-    SMS_ENCODINGS,
-    SMS_SIGNATURE_POSITIONS,
-    SMS_TYPES
-} from '../constants/byEndpoint/sms';
-
-export type AddSignatureOpts = {
-    position: typeof SMS_SIGNATURE_POSITIONS[number]
-    signature: string
-    text: string
-}
+import {SMS_DEBUG_VALUES, SMS_ENCODINGS, SMS_TYPES} from '../constants/byEndpoint/sms'
 
 export type SmsResponse = number | string | SmsJsonResponse
 
@@ -45,16 +34,12 @@ export type SmsMessage = {
     sender: string
     success: boolean
     text: string
-    udh: string| null
+    udh: string | null
 }
 
 export type SmsType = typeof SMS_TYPES[number]
 
 export type SmsParams = {
-    _extras?: {
-        signature?: string
-        signaturePosition?: AddSignatureOpts['position']
-    }
     debug?: boolean
     delay?: string
     details?: boolean
@@ -65,14 +50,14 @@ export type SmsParams = {
     label?: string
     json?: boolean
     no_reload?: boolean
+    performance_tracking?: boolean
+    return_msg_id?: boolean
     text: string
     to: string
     unicode?: boolean
     udh?: string
     utf8?: boolean
     ttl?: number
-    performance_tracking?: boolean
-    return_msg_id?: boolean
 }
 
 export type SmsJsonResponse = {

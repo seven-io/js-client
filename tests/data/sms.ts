@@ -1,5 +1,4 @@
-import {SmsJsonResponse, SmsParams} from '../../src/types';
-import environment from '../lib/environment'
+import {SmsJsonResponse, SmsParams} from '../../src/types'
 
 export type OptionalSmsParams = Omit<SmsParams, 'text' | 'to'>;
 
@@ -15,13 +14,13 @@ export const fullSmsParams: OptionalSmsParams = {
     udh: 'MyTestHeader',
     unicode: true,
     utf8: true,
-};
+}
 
 export const requiredSmsParams: Pick<SmsParams, 'text' | 'to'> = {
     text: `The current date is: ${Date.now()}.`,
-    to: process.env.SMS77_RECIPIENT
-        ? process.env.SMS77_RECIPIENT.replace('+', '') : '491771783130',
-};
+    to: process.env.SEVEN_RECIPIENT
+        ? process.env.SEVEN_RECIPIENT.replace('+', '') : '491771783130',
+}
 
 export const jsonDummy = (p: SmsParams): SmsJsonResponse => ({
     balance: 8.42,
@@ -41,9 +40,9 @@ export const jsonDummy = (p: SmsParams): SmsJsonResponse => ({
     sms_type: 'direct',
     success: '100',
     total_price: 0,
-});
+})
 
-export const msgIdDummy = '100\n1234567890';
+export const msgIdDummy = '100\n1234567890'
 
 export const detailedDummy = (p: SmsParams) =>
     '100\n'
@@ -55,4 +54,4 @@ export const detailedDummy = (p: SmsParams) =>
     + `Flash SMS: ${'flash' in p ? p.flash : false}\n`
     + 'Encoding: gsm\n'
     + 'GSM0338: true\n'
-    + `Debug: ${'debug' in p ? p.debug : false}`;
+    + `Debug: ${'debug' in p ? p.debug : false}`

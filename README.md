@@ -13,19 +13,19 @@ the [globalThis polyfill](https://github.com/es-shims/globalThis).
 ### Via NPM
 
 ```bash
-npm install sms77-client
+npm install @seven.io/client
 ```
 
 ### Via Yarn
 
 ```bash
-yarn add sms77-client
+yarn add @seven.io/client
 ```
 
 ### Browser
 
 ```html
-<script src='https://unpkg.com/browse/sms77-client/dist/Sms77Client.umd.js'></script>
+<script src='https://unpkg.com/browse/@seven.io/client/dist/SevenClient.umd.js'></script>
 ```
 
 ## Example
@@ -33,9 +33,9 @@ yarn add sms77-client
 ```javascript
 // const globalThis = require('globalthis')(); // uncomment if NodeJS < NodeJS versions < 12
 // globalThis.fetch = require('node-fetch').default; // uncomment in NodeJS environments
-// const SevenClient = require('sms77-client'); // uncomment in NodeJS environments
+// const SevenClient = require('@seven.io/client'); // uncomment in NodeJS environments
 
-new SevenClient('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
+new SevenClient('MY_SUPER_SECRET_SEVEN_IO_API_KEY!')
 	.balance()
 	.then(balance => console.log(`Current balance: ${balance}`))
 	.catch(console.error);
@@ -45,11 +45,11 @@ new SevenClient('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
 
 1. `git clone https://github.com/seven-io/js-client seven-client`
 2. `cd seven-client && npm install`
-3. `SMS77_API_KEY=<InsertSevenApiKey> npm run test`
+3. `SEVEN_API_KEY=<InsertSevenApiKey> npm run test`
 
-Set `SMS77_LIVE_TEST=1` for live tests performing actual HTTP requests.
+Set `SEVEN_LIVE_TEST=1` for live tests performing actual HTTP requests.
 
-Set `SMS77_DEBUG=1` for details printed to `stdout`.
+Set `SEVEN_DEBUG=1` for details printed to `stdout`.
 
 ### Support
 

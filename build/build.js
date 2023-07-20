@@ -6,7 +6,7 @@ const pkg = require('../package.json')
 
 const files = resolve(__dirname, 'main.js')
 const opts = {
-    standalone: 'Sms77Client',
+    standalone: 'SevenClient',
 }
 const output = resolve(__dirname, '..', pkg.main)
 

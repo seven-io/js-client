@@ -1,5 +1,8 @@
 import {promises} from 'fs'
 import {resolve} from 'path'
+import {SMS_TYPES} from '../src/constants/byEndpoint/sms'
+import Util from '../src/lib/Util'
+import SevenClient from '../src/SevenClient'
 import {
     SmsDeleteParams,
     SmsDeleteResponse,
@@ -7,24 +10,21 @@ import {
     SmsJsonResponse,
     SmsParams,
 } from '../src/types'
-import {SMS_TYPES} from '../src/constants/byEndpoint/sms'
-import toBool from './lib/toBool'
-import numberMatcher from './lib/numberMatcher'
-import unionMatcher from './lib/unionMatcher'
-import client from './lib/client'
-import Util from '../src/lib/Util'
-import {smsMatcher} from './matchers/sms'
 import {
     detailedDummy,
     fullSmsParams,
     jsonDummy,
     msgIdDummy,
     OptionalSmsParams,
-    requiredSmsParams
+    requiredSmsParams,
 } from './data/sms'
-import Sms77Client from '../src/Sms77Client'
+import client from './lib/client'
+import numberMatcher from './lib/numberMatcher'
+import toBool from './lib/toBool'
+import unionMatcher from './lib/unionMatcher'
+import {smsMatcher} from './matchers/sms'
 
-const sms: Sms77Client['sms'] = process.env.SMS77_LIVE_TEST
+const sms: SevenClient['sms'] = process.env.SEVEN_LIVE_TEST
     ? client.sms : jest.fn(async (p: SmsParams) => {
         if (p.json) return jsonDummy(p)
 
@@ -35,7 +35,7 @@ const sms: Sms77Client['sms'] = process.env.SMS77_LIVE_TEST
         return 100
     })
 
-const deleteSMS: Sms77Client['deleteSMS'] = process.env.SMS77_LIVE_TEST
+const deleteSMS: SevenClient['deleteSMS'] = process.env.SEVEN_LIVE_TEST
     ? client.deleteSMS
     : jest.fn(async (p: SmsDeleteParams): Promise<SmsDeleteResponse> => ({
         deleted: p.ids,
@@ -92,10 +92,10 @@ describe('SMS', () => {
         async () => await assertResponse({}))
 
     it('should return detailed text response',
-        async () => await assertResponse({details: true,}))
+        async () => await assertResponse({details: true}))
 
     it('should return text response with msg id',
-        async () => await assertResponse({return_msg_id: true,}))
+        async () => await assertResponse({return_msg_id: true}))
 
     it('should return json response',
         async () => await assertResponse(fullSmsParams))

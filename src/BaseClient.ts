@@ -1,12 +1,12 @@
-import Util from './lib/Util'
 import {Endpoint} from './constants/Endpoint'
-import {AnyObject} from './types'
 import {ErrorCode} from './constants/ErrorCode'
+import Util from './lib/Util'
+import {AnyObject} from './types'
 
 const METHODS = [
     'delete',
     'get',
-    'post'
+    'post',
 ] as const
 type Response<R> = R | string;
 type Method = (typeof METHODS)[number];
@@ -22,14 +22,13 @@ interface HttpMethods {
 }
 
 export class BaseClient implements HttpMethods {
-    public static readonly BASE_URL = 'https://gateway.sms77.io/api'
+    public static readonly BASE_URL = 'https://gateway.seven.io/api'
 
     constructor(
         protected apiKey: string,
         protected sentWith: string = 'js',
         protected debug: boolean = false,
     ) {
-        this.assertIs<{ [k in Method]: MethodCall }>(this)
     }
 
     delete = async <R>(endpoint: Endpoint, payload?: RequestPayload, json = false)
@@ -40,9 +39,6 @@ export class BaseClient implements HttpMethods {
 
     post = async <R>(endpoint: Endpoint, payload: RequestPayload): Promise<Response<R>> =>
         await this.request<R>('post', endpoint, payload)
-
-    private assertIs<T>(value: unknown): asserts value is T {
-    }
 
     private async request<R>(
         method: Method, endpoint: Endpoint, o: RequestPayload = {}, json = false):
@@ -138,6 +134,6 @@ export class BaseClient implements HttpMethods {
     private normalizePayload = (o: AnyObject): AnyObject => Object.fromEntries(
         Object.entries(o).map(([k, v]) => [
             k,
-            Util.toNumberedBool(v)
+            Util.toNumberedBool(v),
         ]))
 }

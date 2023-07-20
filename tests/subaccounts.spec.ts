@@ -1,4 +1,4 @@
-import Sms77Client from '../src/Sms77Client'
+import SevenClient from '../src/SevenClient'
 import {
     Subaccount,
     SubaccountsAutoChargeErrorResponse,
@@ -21,7 +21,7 @@ import {
 } from '../src/types'
 import client from './lib/client'
 
-const read: Sms77Client['subaccounts']['read'] = process.env.SMS77_LIVE_TEST
+const read: SevenClient['subaccounts']['read'] = process.env.SEVEN_LIVE_TEST
     ? client.subaccounts.read : jest.fn(async (): Promise<SubaccountsReadResponse> => [
         {
             'id': 941955,
@@ -40,7 +40,7 @@ const read: Sms77Client['subaccounts']['read'] = process.env.SMS77_LIVE_TEST
         },
     ])
 
-const createSuccess: Sms77Client['subaccounts']['create'] = process.env.SMS77_LIVE_TEST
+const createSuccess: SevenClient['subaccounts']['create'] = process.env.SEVEN_LIVE_TEST
     ? client.subaccounts.create : jest.fn(async (): Promise<SubaccountsCreateSuccessResponse> => ({
         error: null,
         subaccount: {
@@ -61,43 +61,43 @@ const createSuccess: Sms77Client['subaccounts']['create'] = process.env.SMS77_LI
         success: true,
     }))
 
-const createError: Sms77Client['subaccounts']['create'] = process.env.SMS77_LIVE_TEST
+const createError: SevenClient['subaccounts']['create'] = process.env.SEVEN_LIVE_TEST
     ? client.subaccounts.create : jest.fn(async (): Promise<SubaccountsCreateErrorResponse> => ({
         error: '',
         success: false,
     }))
 
-const deleteSuccess: Sms77Client['subaccounts']['delete'] = process.env.SMS77_LIVE_TEST
+const deleteSuccess: SevenClient['subaccounts']['delete'] = process.env.SEVEN_LIVE_TEST
     ? client.subaccounts.delete : jest.fn(async (): Promise<SubaccountsDeleteSuccessResponse> => ({
         error: null,
         success: true,
     }))
 
-const deleteError: Sms77Client['subaccounts']['delete'] = process.env.SMS77_LIVE_TEST
+const deleteError: SevenClient['subaccounts']['delete'] = process.env.SEVEN_LIVE_TEST
     ? client.subaccounts.delete : jest.fn(async (): Promise<SubaccountsDeleteErrorResponse> => ({
         error: '',
         success: false,
     }))
 
-const transferCreditsSuccess: Sms77Client['subaccounts']['transferCredits'] = process.env.SMS77_LIVE_TEST
+const transferCreditsSuccess: SevenClient['subaccounts']['transferCredits'] = process.env.SEVEN_LIVE_TEST
     ? client.subaccounts.transferCredits : jest.fn(async (): Promise<SubaccountsTransferCreditsSuccessResponse> => ({
         error: null,
         success: true,
     }))
 
-const transferCreditsError: Sms77Client['subaccounts']['transferCredits'] = process.env.SMS77_LIVE_TEST
+const transferCreditsError: SevenClient['subaccounts']['transferCredits'] = process.env.SEVEN_LIVE_TEST
     ? client.subaccounts.transferCredits : jest.fn(async (): Promise<SubaccountsTransferCreditsErrorResponse> => ({
         error: '',
         success: false,
     }))
 
-const autoChargeSuccess: Sms77Client['subaccounts']['autoCharge'] = process.env.SMS77_LIVE_TEST
+const autoChargeSuccess: SevenClient['subaccounts']['autoCharge'] = process.env.SEVEN_LIVE_TEST
     ? client.subaccounts.autoCharge : jest.fn(async (): Promise<SubaccountsAutoChargeSuccessResponse> => ({
         error: null,
         success: true,
     }))
 
-const autoChargeError: Sms77Client['subaccounts']['autoCharge'] = process.env.SMS77_LIVE_TEST
+const autoChargeError: SevenClient['subaccounts']['autoCharge'] = process.env.SEVEN_LIVE_TEST
     ? client.subaccounts.autoCharge : jest.fn(async (): Promise<SubaccountsAutoChargeErrorResponse> => ({
         error: '',
         success: false,

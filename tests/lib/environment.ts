@@ -1,12 +1,12 @@
-const apiKey = process.env.SMS77_API_KEY;
-const recipient = process.env.SMS77_RECIPIENT;
+const apiKey = process.env.SMS77_API_KEY
+const recipient = process.env.SEVEN_RECIPIENT
 
 if (!apiKey) {
-    throw new Error('process.env.SMS77_API_KEY must be set!');
+    throw new Error('process.env.SMS77_API_KEY must be set!')
 }
 
 if (!recipient) {
-    throw new Error('process.env.SMS77_RECIPIENT must be set!');
+    throw new Error('process.env.SEVEN_RECIPIENT must be set!')
 }
 
 export type Environment = {
@@ -19,8 +19,8 @@ export type Environment = {
 const environment: Environment = {
     apiKey,
     debug: Boolean(process.env.SMS77_DEBUG),
-    live: Boolean(process.env.SMS77_LIVE_TEST),
+    live: Boolean(process.env.SEVEN_LIVE_TEST),
     recipient,
-};
+}
 
-export default environment;
+export default environment

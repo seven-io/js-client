@@ -26,8 +26,8 @@
         "uuid": "^9.0.0"
     },
     "files": [
-        "dist/Sms77Client.js",
-        "dist/Sms77Client.umd.js",
+        "dist/SevenClient.js",
+        "dist/SevenClient.umd.js",
         "dist/constants/**/*",
         "dist/lib/**/*",
         "dist/validators/**/*",
@@ -46,9 +46,9 @@
         "tts"
     ],
     "license": "MIT",
-    "main": "dist/Sms77Client.umd.js",
-    "module": "dist/Sms77Client.js",
-    "name": "sms77-client",
+    "main": "dist/SevenClient.umd.js",
+    "module": "dist/SevenClient.js",
+    "name": "@seven-io/client",
     "peerDependencies": {
         "node-fetch": "^2.6.12"
     },
@@ -68,6 +68,6 @@
         "prepublishOnly": "npm run build",
         "test": "npx jest"
     },
-    "types": "dist/Sms77Client.d.ts",
+    "types": "dist/SevenClient.d.ts",
     "version": "2.27.0"
 }
