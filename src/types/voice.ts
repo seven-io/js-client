@@ -21,9 +21,10 @@ export type VoiceResponse = string | VoiceJsonResponse
 
 export type VoiceParams = {
     debug?: boolean
+    from?: string
     json?: boolean
+    ringtime?: number
     text: string
     to: string
     xml?: boolean
-    from?: string
 }

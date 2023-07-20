@@ -1,6 +1,6 @@
-![](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "sms77 Logo")
+![](https://www.seven.io/wp-content/uploads/Logo.svg "seven Logo")
 
-# Official JavaScript API Client for [sms77](https://www.sms77.io)
+# Official JavaScript API Client for [seven](https://www.seven.io)
 
 ## Installation
 
@@ -33,9 +33,9 @@ yarn add sms77-client
 ```javascript
 // const globalThis = require('globalthis')(); // uncomment if NodeJS < NodeJS versions < 12
 // globalThis.fetch = require('node-fetch').default; // uncomment in NodeJS environments
-// const Sms77Client = require('sms77-client'); // uncomment in NodeJS environments
+// const SevenClient = require('sms77-client'); // uncomment in NodeJS environments
 
-new Sms77Client('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
+new SevenClient('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
 	.balance()
 	.then(balance => console.log(`Current balance: ${balance}`))
 	.catch(console.error);
@@ -43,9 +43,9 @@ new Sms77Client('MY_SUPER_SECRET_SMS77_IO_API_KEY!')
 
 ## Tests
 
-1. `git clone https://github.com/seven-io/js-client`
-2. `cd js-client && npm install`
-3. `SMS77_API_KEY=InsertSms77ApiKey npm run test`
+1. `git clone https://github.com/seven-io/js-client seven-client`
+2. `cd seven-client && npm install`
+3. `SMS77_API_KEY=<InsertSevenApiKey> npm run test`
 
 Set `SMS77_LIVE_TEST=1` for live tests performing actual HTTP requests.
 
@@ -53,6 +53,6 @@ Set `SMS77_DEBUG=1` for details printed to `stdout`.
 
 ### Support
 
-Need help? Feel free to [contact us](https://www.sms77.io/en/company/contact/).
+Need help? Feel free to [contact us](https://www.seven.io/en/company/contact/).
 
 [![MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)

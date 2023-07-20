@@ -4,12 +4,12 @@
         "downlevelIteration": true,
         "esModuleInterop": true,
         "lib": [
-            "dom",
-            "dom.iterable",
-            "es2017",
-            "esnext"
+            "DOM",
+            "DOM.Iterable",
+            "ES2017",
+            "ESNext"
         ],
-        "module": "commonjs",
+        "module": "CommonJS",
         "outDir": "dist",
         "rootDir": "src",
         "strict": true

@@ -1,18 +1,25 @@
+import Sms77Client from '../src/Sms77Client'
 import {
-    Subaccount, SubaccountsAutoChargeErrorResponse,
-    SubaccountsAutoChargeParams, SubaccountsAutoChargeResponse,
+    Subaccount,
+    SubaccountsAutoChargeErrorResponse,
+    SubaccountsAutoChargeParams,
+    SubaccountsAutoChargeResponse,
     SubaccountsAutoChargeSuccessResponse,
     SubaccountsCreateErrorResponse,
-    SubaccountsCreateParams, SubaccountsCreateResponse,
-    SubaccountsCreateSuccessResponse, SubaccountsDeleteErrorResponse,
-    SubaccountsDeleteParams, SubaccountsDeleteResponse,
+    SubaccountsCreateParams,
+    SubaccountsCreateResponse,
+    SubaccountsCreateSuccessResponse,
+    SubaccountsDeleteErrorResponse,
+    SubaccountsDeleteParams,
+    SubaccountsDeleteResponse,
     SubaccountsDeleteSuccessResponse,
-    SubaccountsReadResponse, SubaccountsTransferCreditsErrorResponse,
-    SubaccountsTransferCreditsParams, SubaccountsTransferCreditsResponse,
+    SubaccountsReadResponse,
+    SubaccountsTransferCreditsErrorResponse,
+    SubaccountsTransferCreditsParams,
+    SubaccountsTransferCreditsResponse,
     SubaccountsTransferCreditsSuccessResponse,
-} from '../src/types/subaccounts'
+} from '../src/types'
 import client from './lib/client'
-import Sms77Client from '../src/Sms77Client'
 
 const read: Sms77Client['subaccounts']['read'] = process.env.SMS77_LIVE_TEST
     ? client.subaccounts.read : jest.fn(async (): Promise<SubaccountsReadResponse> => [
