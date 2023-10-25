@@ -1,29 +1,29 @@
 {
-    "author": "seven communications GmbH & Co. KG <support@sms77.io> (https://www.sms77.io)",
+    "author": "seven communications GmbH & Co. KG <support@seven.io> (https://www.seven.io)",
     "bugs": {
-        "email": "support@sms77.io",
+        "email": "support@seven.io",
         "url": "https://github.com/seven-io/js-client/issues"
     },
-    "description": "Official API client for sms77",
+    "description": "Official API client for seven",
     "dependencies": {
-        "date-fns": "^2.29.3"
+        "date-fns": "^2.30.0"
     },
     "devDependencies": {
-        "@types/globalthis": "^1.0.1",
-        "@types/jest": "^29.2.5",
-        "@types/node": "^14.18.36",
-        "@types/node-fetch": "^2.6.2",
-        "@types/uuid": "^9.0.0",
+        "@types/globalthis": "^1.0.3",
+        "@types/jest": "^29.5.6",
+        "@types/node": "^14.18.63",
+        "@types/node-fetch": "^2.6.7",
+        "@types/uuid": "^9.0.6",
         "browserify": "^17.0.0",
         "husky": "^8.0.3",
-        "jest": "^29.3.1",
-        "jest-environment-jsdom": "^29.3.1",
-        "node-fetch": "^2.6.7",
-        "ts-jest": "^29.0.5",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "node-fetch": "^2.7.0",
+        "ts-jest": "^29.1.1",
         "tsify": "^5.0.4",
-        "typedoc": "^0.23.24",
-        "typescript": "^4.9.4",
-        "uuid": "^9.0.0"
+        "typedoc": "^0.25.2",
+        "typescript": "^5.2.2",
+        "uuid": "^9.0.1"
     },
     "files": [
         "dist/Sms77Client.umd.js",
@@ -48,7 +48,7 @@
     "main": "dist/Sms77Client.umd.js",
     "name": "sms77-client",
     "peerDependencies": {
-        "node-fetch": "^2.6.7"
+        "node-fetch": "^2.7.0"
     },
     "peerDependenciesMeta": {
         "node-fetch": {
@@ -67,5 +67,5 @@
         "prepare": "husky install"
     },
     "types": "dist/Sms77Client.d.ts",
-    "version": "2.26.0"
+    "version": "2.27.0"
 }
