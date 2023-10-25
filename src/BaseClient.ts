@@ -1,6 +1,5 @@
 import Util from './lib/Util'
 import {Endpoint} from './constants/Endpoint'
-import {AnyObject} from './types'
 import {ErrorCode} from './constants/ErrorCode'
 
 const METHODS = [
@@ -11,7 +10,7 @@ const METHODS = [
 type Response<R> = R | string;
 type Method = (typeof METHODS)[number];
 type MethodArgs = [Endpoint, RequestPayload, boolean | undefined]
-type RequestPayload = AnyObject | undefined | null
+type RequestPayload = { [k: string]: any } | undefined | null
 
 export type MethodCall = <R>(...a: MethodArgs) => Promise<Response<R>>;
 
@@ -135,7 +134,7 @@ export class BaseClient implements HttpMethods {
         return body
     }
 
-    private normalizePayload = (o: AnyObject): AnyObject => Object.fromEntries(
+    private normalizePayload = (o: { [k: string]: any }): { [k: string]: any } => Object.fromEntries(
         Object.entries(o).map(([k, v]) => [
             k,
             Util.toNumberedBool(v)

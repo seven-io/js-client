@@ -1,4 +1,4 @@
-import {SmsParams} from '../../types';
+import type {SmsParams} from '../../types';
 import isValidDate from 'date-fns/isValid';
 import Util from '../../lib/Util';
 

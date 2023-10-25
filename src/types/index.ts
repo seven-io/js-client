@@ -9,5 +9,3 @@ export * from './status';
 export * from './subaccounts';
 export * from './validateForVoice';
 export * from './voice';
-
-export type AnyObject = { [k: string]: any }

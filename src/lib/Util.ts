@@ -1,4 +1,4 @@
-import {AddSignatureOpts,} from '../types';
+import type {AddSignatureOpts} from '../types';
 
 export default class Util {
     static addSignature({position, signature, text}: AddSignatureOpts): string {
