@@ -1,6 +1,6 @@
-![](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "sms77 Logo")
+<img src="https://www.seven.io/wp-content/uploads/Logo.svg" width="250" />
 
-# Official JavaScript API Client for [sms77](https://www.sms77.io)
+# Official JavaScript API Client for [seven](https://www.seven.io)
 
 ## Installation
 
