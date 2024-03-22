@@ -1,0 +1,16 @@
+export enum Endpoint {
+    Analytics = 'analytics',
+    Balance = 'balance',
+    Contacts = 'contacts',
+    Groups = 'groups',
+    Hooks = 'hooks',
+    Lookup = 'lookup',
+    Journal = 'journal',
+    Pricing = 'pricing',
+    RCS = 'rcs',
+    Sms = 'sms',
+    Status = 'status',
+    Subaccounts = 'subaccounts',
+    ValidateForVoice = 'validate_for_voice',
+    Voice = 'voice',
+}

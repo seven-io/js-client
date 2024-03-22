@@ -25,7 +25,8 @@ yarn add @seven.io/client
 ### Browser
 
 ```html
-<script src='https://unpkg.com/browse/@seven.io/client/dist/SevenClient.umd.js'></script>
+
+<script src='https://unpkg.com/browse/@seven.io/client/dist/SevenApi.umd.js'></script>
 ```
 
 ## Example
@@ -33,12 +34,13 @@ yarn add @seven.io/client
 ```javascript
 // const globalThis = require('globalthis')(); // uncomment if NodeJS < NodeJS versions < 12
 // globalThis.fetch = require('node-fetch').default; // uncomment in NodeJS environments
-// const SevenClient = require('@seven.io/client'); // uncomment in NodeJS environments
+// const SevenApi = require('@seven.io/api'); // uncomment in NodeJS environments
 
-new SevenClient('MY_SUPER_SECRET_SEVEN_IO_API_KEY!')
-	.balance()
-	.then(balance => console.log(`Current balance: ${balance}`))
-	.catch(console.error);
+const client = new SevenApi.Client('MY_SUPER_SECRET_SEVEN_IO_API_KEY!')
+const balanceResource = new SevenApi.BalanceResource(client)
+balanceResource.json()
+    .then(console.log)
+    .catch(console.error);
 ```
 
 ## Tests
@@ -48,7 +50,6 @@ new SevenClient('MY_SUPER_SECRET_SEVEN_IO_API_KEY!')
 3. `SEVEN_API_KEY=<InsertSevenApiKey> npm run test`
 
 Set `SEVEN_LIVE_TEST=1` for live tests performing actual HTTP requests.
-
 Set `SEVEN_DEBUG=1` for details printed to `stdout`.
 
 ### Support

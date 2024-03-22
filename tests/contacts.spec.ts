@@ -1,77 +1,100 @@
-import {ContactsAction} from '../src/constants/byEndpoint/contacts/ContactsAction'
-import {ContactsResponseCode} from '../src/constants/byEndpoint/contacts/ContactsResponseCode'
-import CsvToJson from '../src/lib/TextTransformer'
-import Util from '../src/lib/Util'
-import SevenClient from '../src/SevenClient'
-import {Contact, ContactsParams} from '../src/types'
-import {
-    contactsWriteParams,
-    dummyReadCsv,
-    dummyReadJson,
-    dummyWriteCsv,
-    dummyWriteJson,
-} from './data/contacts'
-import './lib/afterEachWait'
+import {Contact, ContactsResource} from '../src'
 import client from './lib/client'
-import {contactMatcher} from './matchers/contacts'
+import environment from './lib/environment'
+import {ResourceMock} from './lib/utils'
 
-const contacts: SevenClient['contacts'] = process.env.SEVEN_LIVE_TEST
-    ? client.contacts : jest.fn(async (p: ContactsParams) => {
-        if ('read' === p.action) {
-            return p.json ? dummyReadJson : dummyReadCsv
-        } else if ('write' === p.action) {
-            return p.json ? dummyWriteJson : dummyWriteCsv
-        }
+jest.mock('../src', () => ({
+    ContactsResource: jest.fn().mockImplementation((): ResourceMock<ContactsResource> => {
+        return environment.live
+            ? new ContactsResource(client)
+            : {
+                delete: async () => ({return: 152}),
+                read: async () => [
+                    {
+                        customField: 'any value',
+                        email: '',
+                        id: 4798035,
+                        nick: '',
+                        number: '',
+                    },
+                    {
+                        email: '',
+                        id: 4799646,
+                        nick: '',
+                        number: '',
+                    },
+                    {
+                        email: '',
+                        id: 4799647,
+                        nick: '',
+                        number: '',
+                    },
+                    {
+                        email: '',
+                        id: 4799648,
+                        nick: '',
+                        number: '',
+                    },
+                    {
+                        email: '',
+                        id: 4799649,
+                        nick: '',
+                        number: '',
+                    },
+                    {
+                        email: '',
+                        id: 3172517,
+                        nick: 'Hansi',
+                        number: '004917666666666',
+                    },
+                    {
+                        email: '',
+                        id: 2925186,
+                        nick: 'Tatti',
+                        number: '004919016315610',
+                    },
+                    {
+                        email: '',
+                        id: 3172515,
+                        nick: 'Tatti',
+                        number: '004917777777777',
+                    },
+                ],
+                write: async () => ({id: 5125215, return: 152}),
+            }
+    }),
+}))
 
-        return 152
-    })
-
-let uid: number
-
-const assertResponse = async (params: ContactsParams): Promise<void> => {
-    const res = await contacts(params)
-
-    expect(res).not.toBeNull()
-
-    if (typeof res === 'string') {
-        if ('read' === params.action) {
-            expect.arrayContaining<Contact>(CsvToJson.contacts(res))
-        } else if ('write' === params.action) {
-            const [code, userId] = Util.splitByLine(res).map(s => s.trim())
-            uid = Number.parseInt(userId)
-            expect(typeof uid).toBe('number')
-            expect(Number.parseInt(code)).toBe(ContactsResponseCode.Success)
-        }
-    } else if (Number.isInteger(res)) {
-        if (params.json) {
-            expect(Number.isInteger(res)).toBe(true)
-            uid = res as number
-        } else {
-            expect(res === ContactsResponseCode.Success
-                || res === ContactsResponseCode.Error).toBe(true)
-        }
-    } else {
-        expect.arrayContaining<Contact>(Array((res as Contact[]).length)
-            .fill(contactMatcher))
-    }
-}
+const resource = new ContactsResource(client)
 
 describe('Contacts', () => {
-    it('should return a csv list of contacts',
-        async () => await assertResponse({action: ContactsAction.Read}))
-
     it('should return a json list of contacts',
-        async () => await assertResponse({action: ContactsAction.Read, json: true}))
+        async () => {
+            const res = await resource.read()
+            const contactMatcher: Contact = {
+                customFields: expect.any(Array),
+                email: expect.any(String),
+                id: expect.any(Number),
+                nick: expect.any(String),
+                number: expect.any(String),
+            }
+            expect.arrayContaining<Contact>(Array(res.length).fill(contactMatcher))
+        })
 
     it('should create a new contact and delete it again', async () => {
-        await assertResponse(contactsWriteParams)
+        const res = await resource.write({
+            email: 'tom@test.er',
+            mobile: '+490123457890',
+            nick: 'Tom Tester',
+        })
+        expect(res).toMatchObject({
+            id: expect.any(Number),
+            return: expect.any(Number),
+        })
 
-        await assertResponse({action: ContactsAction.Delete, id: uid})
-    })
-
-    it('should create a new contact and delete it again as json', async () => {
-        await assertResponse({...contactsWriteParams, json: true})
-
-        await assertResponse({action: ContactsAction.Delete, id: uid, json: true})
+        const res2 = await resource.delete(res.id)
+        expect(res2).toMatchObject({
+            return: expect.any(Number),
+        })
     })
 })

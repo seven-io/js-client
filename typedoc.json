@@ -1,4 +1,6 @@
 {
-    "entryPoints": ["src/Sms77Client.ts"],
+    "entryPoints": [
+        "src/index.ts"
+    ],
     "out": "docs"
 }

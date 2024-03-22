@@ -1,12 +1,4 @@
 export default class Util {
-    static toNumberedBool(value: any): any {
-        return typeof value === 'boolean'
-            ? value
-                ? 1
-                : 0
-            : value
-    }
-
     static splitByLine(str: string): string[] {
         return str.split(/[\r\n]+/)
     }
@@ -32,9 +24,7 @@ export default class Util {
     static csvToArray(csv: string, skipHeader: boolean): (string[])[] {
         const arr = Util.splitByLine(csv.trim().replace(/"/g, ''))
 
-        if (skipHeader) {
-            arr.shift()
-        }
+        if (skipHeader) arr.shift()
 
         return arr.map(l => l.trim().split(';'))
     }

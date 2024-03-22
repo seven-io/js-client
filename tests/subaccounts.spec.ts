@@ -1,210 +1,231 @@
-import SevenClient from '../src/SevenClient'
 import {
     Subaccount,
-    SubaccountsAutoChargeErrorResponse,
-    SubaccountsAutoChargeParams,
     SubaccountsAutoChargeResponse,
-    SubaccountsAutoChargeSuccessResponse,
-    SubaccountsCreateErrorResponse,
-    SubaccountsCreateParams,
     SubaccountsCreateResponse,
-    SubaccountsCreateSuccessResponse,
-    SubaccountsDeleteErrorResponse,
-    SubaccountsDeleteParams,
     SubaccountsDeleteResponse,
-    SubaccountsDeleteSuccessResponse,
-    SubaccountsReadResponse,
-    SubaccountsTransferCreditsErrorResponse,
-    SubaccountsTransferCreditsParams,
+    SubaccountsResource,
     SubaccountsTransferCreditsResponse,
-    SubaccountsTransferCreditsSuccessResponse,
-} from '../src/types'
+} from '../src'
 import client from './lib/client'
+import environment from './lib/environment'
 
-const read: SevenClient['subaccounts']['read'] = process.env.SEVEN_LIVE_TEST
-    ? client.subaccounts.read : jest.fn(async (): Promise<SubaccountsReadResponse> => [
-        {
-            'id': 941955,
-            'username': null,
-            'company': '',
-            'balance': 4,
-            'total_usage': 0,
-            'auto_topup': {
-                'threshold': 1,
-                'amount': 3,
-            },
-            'contact': {
-                'name': 'Tanya Tester',
-                'email': 'tanya.tester@seven.io',
-            },
-        },
-    ])
+const resource = jest.mocked(new SubaccountsResource(client))
 
-const createSuccess: SevenClient['subaccounts']['create'] = process.env.SEVEN_LIVE_TEST
-    ? client.subaccounts.create : jest.fn(async (): Promise<SubaccountsCreateSuccessResponse> => ({
+const assertCreate = (res: SubaccountsCreateResponse): void => res.success
+    ? expect.objectContaining<SubaccountsCreateResponse>({
         error: null,
-        subaccount: {
+        subaccount: expect.objectContaining<Subaccount>({
             auto_topup: {
-                amount: 0,
-                threshold: 0,
+                amount: expect.any(Number),
+                threshold: expect.any(Number),
             },
-            balance: 0,
-            company: null,
+            balance: expect.any(Number),
+            company: expect.any(String),
             contact: {
-                email: 'seven@gmail.com',
-                name: 'Anja Andersson',
+                email: expect.any(String),
+                name: expect.any(String),
             },
-            id: 123,
-            total_usage: 0,
-            username: null,
-        },
+            id: expect.any(Number),
+            total_usage: expect.any(Number),
+            username: expect.nilOrAny(String),
+        }),
         success: true,
-    }))
-
-const createError: SevenClient['subaccounts']['create'] = process.env.SEVEN_LIVE_TEST
-    ? client.subaccounts.create : jest.fn(async (): Promise<SubaccountsCreateErrorResponse> => ({
-        error: '',
+    })
+    : expect.objectContaining<SubaccountsCreateResponse>({
+        error: expect.any(String),
+        subaccount: undefined,
         success: false,
-    }))
+    })
 
-const deleteSuccess: SevenClient['subaccounts']['delete'] = process.env.SEVEN_LIVE_TEST
-    ? client.subaccounts.delete : jest.fn(async (): Promise<SubaccountsDeleteSuccessResponse> => ({
+const assertDelete = (res: SubaccountsDeleteResponse): void => res.success
+    ? expect.objectContaining<SubaccountsDeleteResponse>({
         error: null,
         success: true,
-    }))
-
-const deleteError: SevenClient['subaccounts']['delete'] = process.env.SEVEN_LIVE_TEST
-    ? client.subaccounts.delete : jest.fn(async (): Promise<SubaccountsDeleteErrorResponse> => ({
-        error: '',
+    })
+    : expect.objectContaining<SubaccountsDeleteResponse>({
+        error: expect.any(String),
         success: false,
-    }))
+    })
 
-const transferCreditsSuccess: SevenClient['subaccounts']['transferCredits'] = process.env.SEVEN_LIVE_TEST
-    ? client.subaccounts.transferCredits : jest.fn(async (): Promise<SubaccountsTransferCreditsSuccessResponse> => ({
+const assertAutoCharge = (res: SubaccountsAutoChargeResponse): void => res.success
+    ? expect.objectContaining<SubaccountsAutoChargeResponse>({
         error: null,
         success: true,
-    }))
-
-const transferCreditsError: SevenClient['subaccounts']['transferCredits'] = process.env.SEVEN_LIVE_TEST
-    ? client.subaccounts.transferCredits : jest.fn(async (): Promise<SubaccountsTransferCreditsErrorResponse> => ({
-        error: '',
+    })
+    : expect.objectContaining<SubaccountsAutoChargeResponse>({
+        error: expect.any(String),
         success: false,
-    }))
+    })
 
-const autoChargeSuccess: SevenClient['subaccounts']['autoCharge'] = process.env.SEVEN_LIVE_TEST
-    ? client.subaccounts.autoCharge : jest.fn(async (): Promise<SubaccountsAutoChargeSuccessResponse> => ({
+const assertTransferCredits = (res: SubaccountsTransferCreditsResponse): void => res.success
+    ? expect.objectContaining<SubaccountsTransferCreditsResponse>({
         error: null,
         success: true,
-    }))
-
-const autoChargeError: SevenClient['subaccounts']['autoCharge'] = process.env.SEVEN_LIVE_TEST
-    ? client.subaccounts.autoCharge : jest.fn(async (): Promise<SubaccountsAutoChargeErrorResponse> => ({
-        error: '',
+    })
+    : expect.objectContaining<SubaccountsTransferCreditsResponse>({
+        error: expect.any(String),
         success: false,
-    }))
-
-async function assertCreate(res: SubaccountsCreateResponse) {
-    res.success
-        ? expect.objectContaining<SubaccountsCreateSuccessResponse>(res)
-        : expect.objectContaining<SubaccountsCreateErrorResponse>(res)
-}
-
-async function assertDelete(res: SubaccountsDeleteResponse) {
-    res.success
-        ? expect.objectContaining<SubaccountsDeleteSuccessResponse>(res)
-        : expect.objectContaining<SubaccountsDeleteErrorResponse>(res)
-}
-
-async function assertAutoCharge(res: SubaccountsAutoChargeResponse) {
-    res.success
-        ? expect.objectContaining<SubaccountsAutoChargeSuccessResponse>(res)
-        : expect.objectContaining<SubaccountsAutoChargeErrorResponse>(res)
-}
-
-async function assertTransferCredits(res: SubaccountsTransferCreditsResponse) {
-    res.success
-        ? expect.objectContaining<SubaccountsTransferCreditsSuccessResponse>(res)
-        : expect.objectContaining<SubaccountsTransferCreditsErrorResponse>(res)
-}
+    })
 
 describe('Subaccounts', () => {
-    let subaccount: Subaccount
+    let subaccount: Subaccount | undefined
 
     it('should return an array uf subaccounts',
-        async () => expect.arrayContaining<Subaccount>(await read()))
+        async () => {
+            if (!environment.live) jest.spyOn(resource, 'read').mockReturnValue(Promise.resolve([
+                {
+                    auto_topup: {
+                        amount: 3,
+                        threshold: 1,
+                    },
+                    balance: 4,
+                    company: '',
+                    contact: {
+                        email: 'tanya.tester@seven.dev',
+                        name: 'Tanya Tester',
+                    },
+                    id: 941955,
+                    total_usage: 0,
+                    username: null,
+                },
+            ]))
+
+            expect.arrayContaining<Subaccount>(await resource.read())
+        })
 
     it('should create an account',
         async () => {
-            const params: SubaccountsCreateParams = {
+            if (!environment.live) jest.spyOn(resource, 'create').mockReturnValue(Promise.resolve({
+                error: null,
+                subaccount: {
+                    auto_topup: {
+                        amount: 0,
+                        threshold: 0,
+                    },
+                    balance: 0,
+                    company: null,
+                    contact: {
+                        email: 'seven@gmail.com',
+                        name: 'Anja Andersson',
+                    },
+                    id: 123,
+                    total_usage: 0,
+                    username: null,
+                },
+                success: true,
+            }))
+
+            const res = await resource.create({
                 email: 'js_client_test_subaccount@seven.io',
                 name: 'Anja Andersson',
-            }
-            const res = await createSuccess(params) as SubaccountsCreateSuccessResponse
+            })
             await assertCreate(res)
             subaccount = res.subaccount
         })
 
     it('should fail to create an account',
         async () => {
-            const params: SubaccountsCreateParams = {
+            if (!environment.live) jest.spyOn(resource, 'create').mockReturnValue(Promise.resolve({
+                error: '',
+                success: false,
+            }))
+
+            const res = await resource.create({
                 email: '',
                 name: '',
-            }
-            await assertCreate(await createError(params))
+            })
+            await assertCreate(res)
         })
 
     it('should transfer credits',
         async () => {
-            const params: SubaccountsTransferCreditsParams = {
+            if (!environment.live) jest.spyOn(resource, 'transferCredits')
+                .mockReturnValue(Promise.resolve({
+                    error: null,
+                    success: true,
+                }))
+
+            expect(subaccount).toBeDefined()
+
+            const res = await resource.transferCredits({
                 amount: 1,
-                id: subaccount.id,
-            }
-            await assertTransferCredits(await transferCreditsSuccess(params))
+                id: subaccount!.id,
+            })
+            await assertTransferCredits(res)
         })
 
     it('should fail to transfer credits',
         async () => {
-            const params: SubaccountsTransferCreditsParams = {
+            if (!environment.live) jest.spyOn(resource, 'transferCredits')
+                .mockReturnValue(Promise.resolve({
+                    error: '',
+                    success: false,
+                }))
+
+            expect(subaccount).toBeDefined()
+
+            const res = await resource.transferCredits({
                 amount: -1,
-                id: subaccount.id,
-            }
-            await assertTransferCredits(await transferCreditsError(params))
+                id: subaccount!.id,
+            })
+            await assertTransferCredits(res)
         })
 
     it('should set up auto charging',
         async () => {
-            const params: SubaccountsAutoChargeParams = {
+            if (!environment.live) jest.spyOn(resource, 'autoCharge')
+                .mockReturnValue(Promise.resolve({
+                    error: null,
+                    success: true,
+                }))
+
+            expect(subaccount).toBeDefined()
+
+            const res = await resource.autoCharge({
                 amount: 1,
-                id: subaccount.id,
+                id: subaccount!.id,
                 threshold: 2,
-            }
-            await assertAutoCharge(await autoChargeSuccess(params))
+            })
+            await assertAutoCharge(res)
         })
 
     it('should fail to set up auto charging',
         async () => {
-            const params: SubaccountsAutoChargeParams = {
+            if (!environment.live) jest.spyOn(resource, 'autoCharge')
+                .mockReturnValue(Promise.resolve({
+                    error: '',
+                    success: false,
+                }))
+
+            const res = await resource.autoCharge({
                 amount: -1,
                 id: 0,
                 threshold: -2,
-            }
-            await assertAutoCharge(await autoChargeError(params))
+            })
+            await assertAutoCharge(res)
         })
 
     it('should delete an account',
         async () => {
-            const params: SubaccountsDeleteParams = {
-                id: subaccount.id,
-            }
-            const res = await deleteSuccess(params) as SubaccountsDeleteSuccessResponse
+            if (!environment.live) jest.spyOn(resource, 'delete').mockReturnValue(Promise.resolve({
+                error: null,
+                success: true,
+            }))
+
+            expect(subaccount).toBeDefined()
+
+            const res = await resource.delete({id: subaccount!.id})
             await assertDelete(res)
         })
 
     it('should fail to delete an account',
         async () => {
-            const params: SubaccountsDeleteParams = {
-                id: 0,
-            }
-            await assertDelete(await deleteError(params))
+            if (!environment.live) jest.spyOn(resource, 'delete').mockReturnValue(Promise.resolve({
+                error: '',
+                success: false,
+            }))
+
+            const res = await resource.delete({id: 0})
+            await assertDelete(res)
         })
 })

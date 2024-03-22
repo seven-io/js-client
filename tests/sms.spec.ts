@@ -1,146 +1,141 @@
-import {promises} from 'fs'
-import {resolve} from 'path'
-import {SMS_TYPES} from '../src/constants/byEndpoint/sms'
-import Util from '../src/lib/Util'
-import SevenClient from '../src/SevenClient'
-import {
-    SmsDeleteParams,
-    SmsDeleteResponse,
-    SmsFile,
-    SmsJsonResponse,
-    SmsParams,
-} from '../src/types'
-import {
-    detailedDummy,
-    fullSmsParams,
-    jsonDummy,
-    msgIdDummy,
-    OptionalSmsParams,
-    requiredSmsParams,
-} from './data/sms'
+import {SMS_TYPES, SmsFile, SmsMessage, SmsParams, SmsResource, SmsResponse} from '../src'
+import STRING_BOOLEAN_VALUES from '../src/lib/StringBooleanValues'
 import client from './lib/client'
-import numberMatcher from './lib/numberMatcher'
-import toBool from './lib/toBool'
-import unionMatcher from './lib/unionMatcher'
-import {smsMatcher} from './matchers/sms'
+import environment from './lib/environment'
+import {ResourceMock, unionMatcher} from './lib/utils'
 
-const sms: SevenClient['sms'] = process.env.SEVEN_LIVE_TEST
-    ? client.sms : jest.fn(async (p: SmsParams) => {
-        if (p.json) return jsonDummy(p)
+type OptionalSmsParams = Omit<SmsParams, 'text' | 'to'>;
 
-        if (p.return_msg_id) return msgIdDummy
-
-        if (p.details) return detailedDummy(p)
-
-        return 100
-    })
-
-const deleteSMS: SevenClient['deleteSMS'] = process.env.SEVEN_LIVE_TEST
-    ? client.deleteSMS
-    : jest.fn(async (p: SmsDeleteParams): Promise<SmsDeleteResponse> => ({
-        deleted: p.ids,
-        success: true,
-    }))
-
-const assertJson = (res: SmsJsonResponse) =>
-    expect.objectContaining<SmsJsonResponse>(smsMatcher(res))
-
-const assertResponse = async (
-    extras: OptionalSmsParams, text: string = requiredSmsParams.text): Promise<void> => {
-    const params: SmsParams = {...requiredSmsParams, ...extras, text}
-    const res = await sms(params)
-    const type = typeof res
-
-    expect(res).not.toBeNull()
-
-    if (type === 'string') {
-        assertString(res as string, params)
-    } else if (type === 'number') {
-        expect(typeof res).toBe('number')
-    } else {
-        assertJson(res as SmsJsonResponse)
-    }
+const fullSmsParams: OptionalSmsParams = {
+    flash: true,
+    foreign_id: 'TestForeignID',
+    from: 'Tom Tester',
+    json: true,
+    label: 'TestLabel',
+    no_reload: true,
+    performance_tracking: true,
+    ttl: 128000,
+    udh: 'MyTestHeader',
+    unicode: true,
+    utf8: true,
 }
 
-const assertString = (res: string, params: SmsParams): void => {
-    const values = Util.splitByLine(res)
-    let expectedArrayLength = 2
-
-    expect(values[0].length).toBe(3)
-
-    if (params.details) {
-        expectedArrayLength = 10
-
-        expect(values[1]).toMatch(numberMatcher('Verbucht: '))
-        expect(values[2]).toMatch(numberMatcher('Preis: '))
-        expect(values[3]).toMatch(numberMatcher('Guthaben: '))
-        expect(values[4]).toMatch(`Text: ${params.text}`)
-        expect(values[5]).toMatch(unionMatcher(SMS_TYPES, 'SMS-Typ: '))
-        expect(values[6]).toMatch(`Flash SMS: ${toBool('flash', params)}`)
-        expect(values[7].startsWith('Encoding: ')).toBe(true)
-        expect(values[8].startsWith('GSM0338: ')).toBe(true)
-        expect(values[9]).toMatch(/Debug: (true|false)/)
-    } else {
-        expect(values[1]).toMatch(numberMatcher())
-    }
-
-    expect(values.length).toEqual(expectedArrayLength)
+const requiredSmsParams: Pick<SmsParams, 'text' | 'to'> = {
+    text: `The current date is: ${Date.now()}.`,
+    to: ['4917123456789'],
 }
+
+jest.mock('../src', () => ({
+    SmsResource: jest.fn().mockImplementation((): ResourceMock<SmsResource> => {
+        return environment.live
+            ? new SmsResource(client)
+            : {
+                delete: async (p) => ({
+                    deleted: p.ids,
+                    success: p.ids.length !== 0,
+                }),
+                dispatch: async (p) => ({
+                    balance: 8.42,
+                    debug: p.debug ? 'true' : 'false',
+                    messages: Array(p.to.includes(',') ? p.to.length : 1).fill({
+                        encoding: 'gsm',
+                        error: null,
+                        error_text: null,
+                        id: p.debug ? null : 1,
+                        parts: 1,
+                        price: 0,
+                        recipient: p.to || requiredSmsParams.to,
+                        sender: p.from || 'seven.io',
+                        success: true,
+                        text: p.text || requiredSmsParams.text,
+                    }),
+                    sms_type: 'direct',
+                    success: '100',
+                    total_price: 0,
+                }),
+            }
+    }),
+}))
+
+const resource = new SmsResource(client)
+const smsMatcher = (res: SmsResponse) => ({
+    balance: expect.any(Number),
+    debug: expect.stringMatching(unionMatcher(STRING_BOOLEAN_VALUES)),
+    messages: expect.arrayContaining(Array(res.messages.length)
+        .fill(expect.objectContaining<SmsMessage>({
+            encoding: expect.any(String),
+            error: expect.nilOrAny(String),
+            error_text: expect.nilOrAny(String),
+            id: expect.nilOrAny(String),
+            is_binary: expect.any(Boolean),
+            label: expect.nilOrAny(String),
+            messages: expect.nilOrAny(Array),
+            parts: expect.any(Number),
+            price: expect.any(Number),
+            recipient: expect.any(String),
+            sender: expect.any(String),
+            success: expect.any(Boolean),
+            text: expect.any(String),
+            udh: expect.nilOrAny(String),
+        }))),
+    sms_type: expect.any(unionMatcher(SMS_TYPES)),
+    success: expect.any(String),
+    total_price: expect.any(Number),
+})
+const assertJSON = (res: SmsResponse) =>
+    expect.objectContaining<SmsResponse>(smsMatcher(res))
 
 describe('SMS', () => {
-    it('should return numbered success code',
-        async () => await assertResponse({}))
-
-    it('should return detailed text response',
-        async () => await assertResponse({details: true}))
-
-    it('should return text response with msg id',
-        async () => await assertResponse({return_msg_id: true}))
-
     it('should return json response',
-        async () => await assertResponse(fullSmsParams))
+        async () => assertJSON(await resource.dispatch({...requiredSmsParams, ...fullSmsParams})))
 
-    it('should send file and return json response',
-        async () => {
-            const contents = (await promises.readFile(
-                resolve(__dirname, './lib/png.base64'))).toString()
+    it('should send file and return json response', async () => {
+        const files: SmsFile[] = []
+        let text = ''
+        for (let i = 0; i < 2; i++) {
+            const name = `test${i}.png`
 
-            const files: SmsFile[] = []
-            let text = ''
-            for (let i = 0; i < 2; i++) {
-                const name = `test${i}.png`
+            files.push({
+                contents: Buffer.from('abc123', 'base64').toString(),
+                name,
+            })
 
-                files.push({
-                    contents,
-                    name,
-                })
+            text += `TestFile${i}: [[${name}]]\n`
+        }
 
-                text += `TestFile${i}: [[${name}]]\n`
-            }
-
-            await assertResponse({...fullSmsParams, files, flash: false}, text)
+        const {details, json, return_msg_id, ...params} = fullSmsParams
+        const res = await resource.dispatch({
+            ...params,
+            ...requiredSmsParams,
+            files,
+            flash: false,
+            text,
         })
+        await assertJSON(res)
+    })
 
     it('should delete nothing', async () => {
-        const {deleted, success} = await deleteSMS({ids: []})
-        expect(deleted.length).toBe(0)
-        expect(success).toBe(true)
+        const {deleted, success} = await resource.delete({ids: []})
+        expect(deleted).not.toBeNull()
+        expect(deleted!.length).toBe(0)
+        expect(success).toBe(false)
     })
 
     it('should task a sms and delete it again', async () => {
-        const {messages} = await sms({
+        const {messages} = await resource.dispatch({
             debug: false,
-            delay: '2035-12-30 23:25:04',
-            json: true,
+            delay: new Date('2035-12-30 23:25:04'),
             text: 'X',
-            to: '+49123456789',
-        }) as SmsJsonResponse
+            to: ['+49123456789'],
+        })
         const id = messages[0].id
         expect(id).not.toBeNull()
 
-        const {deleted, success} = await deleteSMS({ids: [id!]})
-        expect(deleted.length).toBe(1)
-        expect(deleted[0]).toBe(id)
+        const {deleted, success} = await resource.delete({ids: [id!]})
+
+        expect(deleted).not.toBeNull()
+        expect(deleted!.length).toBe(1)
+        expect(deleted![0]).toBe(id)
         expect(success).toBe(true)
     })
 })

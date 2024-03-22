@@ -1,22 +1,22 @@
-import fetch from 'node-fetch';
+import * as matchers from 'jest-extended'
 
-globalThis.fetch = fetch as unknown as typeof globalThis.fetch;
+expect.extend(matchers)
 
 expect.extend({
     nilOrAny(received: any, expected: any) {
-        const receivedType = typeof received;
-        const expectedType = typeof expected;
-        let pass = received instanceof expected;
+        const receivedType = typeof received
+        const expectedType = typeof expected
+        let pass = received instanceof expected
 
         if (null === received || undefined === received) {
-            pass = true;
+            pass = true
         } else {
             if (Number === expected) {
-                pass = receivedType === 'number' || received instanceof Number;
+                pass = receivedType === 'number' || received instanceof Number
             } else if (String === expected) {
-                pass = receivedType === 'string' || received instanceof String;
+                pass = receivedType === 'string' || received instanceof String
             } else if (Array === expected) {
-                pass = Array.isArray(received) || received instanceof Array;
+                pass = Array.isArray(received) || received instanceof Array
             }
         }
 
@@ -24,6 +24,6 @@ expect.extend({
             message: () => `expected null/undefined or instance of ${expectedType} and` +
                 ` received ${receivedType === 'object' ? 'null' : receivedType}`,
             pass,
-        };
+        }
     },
-});
+})

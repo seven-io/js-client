@@ -1,21 +1,98 @@
-import CsvToJson from '../src/lib/TextTransformer'
-import SevenClient from '../src/SevenClient'
-import {CountryNetwork, CountryPricing, PricingParams, PricingResponseJson} from '../src/types'
-import {dummyPricingCsv} from './data/pricing/dummyPricingCsv'
-import {dummyPricingJson} from './data/pricing/dummyPricingJson'
-import './lib/afterEachWait'
-import Client from './lib/client'
-import {
-    pricingCountryNetworkMatcher,
-    pricingCountryPricingMatcher,
-    pricingMatcher,
-} from './matchers/pricing'
+import {CountryNetwork, CountryPricing, PricingParams, PricingResource, PricingResponse} from '../src'
+import client from './lib/client'
+import environment from './lib/environment'
+import {ResourceMock} from './lib/utils'
 
-const pricing: SevenClient['pricing'] = process.env.SEVEN_LIVE_TEST
-    ? Client.pricing : jest.fn(async (p?: PricingParams) =>
-        'csv' === p?.format ? dummyPricingCsv : dummyPricingJson)
+const pricingCountryNetworkMatcher: CountryNetwork = {
+    comment: expect.any(String),
+    features: expect.any(Array),
+    mcc: expect.any(String),
+    mncs: expect.any(Array),
+    networkName: expect.any(String),
+    price: expect.any(Number),
+}
 
-const assertObject = (res: PricingResponseJson): void => {
+const pricingCountryPricingMatcher: Omit<CountryPricing, 'networks'> = {
+    countryCode: expect.any(String),
+    countryName: expect.any(String),
+    countryPrefix: expect.any(String),
+}
+
+const pricingMatcher: Omit<PricingResponse, 'countries'> = {
+    countCountries: expect.any(Number),
+    countNetworks: expect.any(Number),
+}
+
+jest.mock('../src', () => ({
+    PricingResource: jest.fn().mockImplementation((): ResourceMock<PricingResource> => {
+        return environment.live
+            ? new PricingResource(client)
+            : {
+                get: async (p) => ({
+                    countCountries: 1,
+                    countNetworks: 4,
+                    countries: [
+                        {
+                            countryCode: 'BR',
+                            countryName: 'Brazil',
+                            countryPrefix: '43',
+                            networks: [
+                                {
+                                    mcc: '232',
+                                    mncs: [
+                                        '02',
+                                    ],
+                                    networkName: 'A1 Telekom Austria',
+                                    price: 0.075,
+                                    features: [],
+                                    comment: '',
+                                },
+                                {
+                                    mcc: '232',
+                                    mncs: [
+                                        '01',
+                                    ],
+                                    networkName: 'A1 Telekom Austria (A1.net)',
+                                    price: 0.075,
+                                    features: [
+                                        'alpha',
+                                        'numeric',
+                                        'dlr',
+                                        'sc',
+                                    ],
+                                    comment: '',
+                                },
+                                {
+                                    mcc: '232',
+                                    mncs: [
+                                        '11',
+                                    ],
+                                    networkName: 'A1 Telekom Austria (bob)',
+                                    price: 0.075,
+                                    features: [],
+                                    comment: '',
+                                },
+                                {
+                                    mcc: '232',
+                                    mncs: [
+                                        '09',
+                                    ],
+                                    networkName: 'A1 Telekom Austria (Tele2Mobil)',
+                                    price: 0.075,
+                                    features: [],
+                                    comment: '',
+                                },
+                            ],
+                        },
+                    ],
+                }),
+            }
+    }),
+}))
+
+const resource = new PricingResource(client)
+
+const assertObject = (res: PricingResponse): void => {
     const countryPricing = (p: CountryPricing): CountryPricing => ({
         ...pricingCountryPricingMatcher,
         networks: expect.arrayContaining<CountryNetwork>(
@@ -25,38 +102,25 @@ const assertObject = (res: PricingResponseJson): void => {
     })
 
     const countries = expect.arrayContaining(
-        (res as PricingResponseJson).countries.map(
-            p => expect.objectContaining<CountryPricing>(countryPricing(p))),
+        res.countries.map(p => expect.objectContaining(countryPricing(p))),
     )
 
-    expect.objectContaining<PricingResponseJson>({
+    expect.objectContaining<PricingResponse>({
         ...pricingMatcher,
         countries,
     })
 }
 
-const assertResponse = async (p?: PricingParams): Promise<void> => {
-    const res = await pricing(p)
-
-    assertObject(typeof res === 'string' ? CsvToJson.pricing(res) : res)
+const assertJSON = (json: PricingResponse): void => {
+    assertObject(json)
 }
 
-const country: Pick<PricingParams, 'country'> = {country: 'DE'}
-const csv: Pick<PricingParams, 'format'> = {format: 'csv'}
-
-it('should return pricing from Germany as json',
-    async () => await assertResponse(country))
+const country: PricingParams = {country: 'DE'}
 
 describe('Pricing', () => {
     it('should return pricing from all countries as json',
-        async () => await assertResponse())
+        async () => assertJSON(await resource.get()))
 
     it('should return pricing from Germany as json',
-        async () => await assertResponse(country))
-
-    it('should return pricing from all countries as csv',
-        async () => await assertResponse(csv))
-
-    it('should return pricing from Germany as csv',
-        async () => await assertResponse({...country, ...csv}))
+        async () => assertJSON(await resource.get(country)))
 })
