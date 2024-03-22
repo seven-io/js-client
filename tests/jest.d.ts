@@ -1,9 +1,9 @@
-export {};
+export {}
 
 declare global {
     namespace jest {
-        interface Expect {
-            nilOrAny: (classType: any) => any;
+        interface Matchers<R> {
+            nilOrAny(classType: any): CustomMatcherResult;
         }
     }
 }

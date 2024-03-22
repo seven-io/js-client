@@ -9,30 +9,26 @@
         "date-fns": "^2.30.0"
     },
     "devDependencies": {
-        "@types/globalthis": "^1.0.1",
-        "@types/jest": "^29.5.3",
-        "@types/node": "^16.18.38",
-        "@types/node-fetch": "^2.6.4",
-        "@types/uuid": "^9.0.2",
+        "@babel/core": "^7.23.3",
+        "@babel/preset-env": "^7.23.3",
+        "@types/jest": "^29.5.8",
+        "@types/node": "^18.18.9",
+        "babelify": "^10.0.0",
         "browserify": "^17.0.0",
+        "core-js": "^3.33.2",
         "husky": "^8.0.3",
-        "jest": "^29.6.1",
-        "jest-environment-jsdom": "^29.6.1",
-        "node-fetch": "^2.6.12",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "jest-extended": "^4.0.2",
+        "nanoid": "^5.0.3",
         "ts-jest": "^29.1.1",
         "tsify": "^5.0.4",
-        "typedoc": "^0.24.8",
-        "typescript": "^5.1.6",
-        "uuid": "^9.0.0"
+        "tslib": "^2.6.2",
+        "typedoc": "^0.25.3",
+        "typescript": "^5.2.2"
     },
     "files": [
-        "dist/SevenClient.js",
-        "dist/SevenClient.umd.js",
-        "dist/constants/**/*",
-        "dist/lib/**/*",
-        "dist/validators/**/*",
-        "dist/*.d.ts",
-        "dist/types/*.d.ts"
+        "dist/**/*"
     ],
     "homepage": "https://github.com/seven-io/js-client",
     "keywords": [
@@ -46,11 +42,11 @@
         "tts"
     ],
     "license": "MIT",
-    "main": "dist/SevenClient.umd.js",
-    "module": "dist/SevenClient.js",
-    "name": "@seven-io/client",
+    "main": "dist/SevenApi.umd.js",
+    "module": "dist/index.js",
+    "name": "@seven.io/api",
     "peerDependencies": {
-        "node-fetch": "^2.6.12"
+        "node-fetch": "^2.7.0"
     },
     "peerDependenciesMeta": {
         "node-fetch": {
@@ -66,8 +62,8 @@
         "bundle": "node build/build.js",
         "prepare": "husky install",
         "prepublishOnly": "npm run build",
-        "test": "npx jest"
+        "test": "jest"
     },
-    "types": "dist/SevenClient.d.ts",
-    "version": "2.27.0"
+    "types": "dist/types.d.ts",
+    "version": "3.0.0"
 }

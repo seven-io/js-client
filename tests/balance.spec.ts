@@ -1,10 +1,30 @@
-import SevenClient from '../src/SevenClient'
+import {Balance, BalanceResource} from '../src'
 import client from './lib/client'
+import environment from './lib/environment'
+import {ResourceMock} from './lib/utils'
 
-const balance: SevenClient['balance'] = process.env.SEVEN_LIVE_TEST
-    ? client.balance : jest.fn(async () => 14.52)
+jest.mock('../src', () => ({
+    BalanceResource: jest.fn().mockImplementation((): ResourceMock<BalanceResource> => {
+        return environment.live
+            ? new BalanceResource(client)
+            : {
+                json: async () => ({
+                    amount: 12.45,
+                    currency: 'EUR',
+                }),
+            }
+    }),
+}))
+
+const resource = new BalanceResource(client)
 
 describe('Balance', () => {
-    it('should return a floating number',
-        async () => expect(typeof (await balance())).toBe('number'))
+    it('should return an object',
+        async () => {
+            const res = await resource.json()
+            expect(res).toMatchObject<Balance>({
+                amount: expect.any(Number),
+                currency: expect.any(String),
+            })
+        })
 })

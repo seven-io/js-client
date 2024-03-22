@@ -1,10 +1,8 @@
-import SevenClient from '../../src/SevenClient'
+import Client from '../../src/Client'
 import environment from './environment'
 
-if (!environment.apiKey) {
-    throw new Error('environment.apiKey is missing!')
-}
-
-export const env = environment
-
-export default new SevenClient(environment.apiKey, 'js-test', environment.debug)
+export default new Client({
+    apiKey: environment.apiKey,
+    debug: environment.debug,
+    sentWith: 'js-test',
+})

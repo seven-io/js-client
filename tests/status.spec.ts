@@ -1,46 +1,42 @@
-import {StatusReportCode} from '../src/constants/byEndpoint/status/StatusReportCode'
-import TextTransformer from '../src/lib/TextTransformer'
-import SevenClient, {StatusParams, StatusResponseJson} from '../src/SevenClient'
-import {dummyStatusJson, dummyStatusText} from './data/status'
-import Client from './lib/client'
-import createRandomNumber from './lib/createRandomNumber'
-import getStringEnumValues from './lib/getStringEnumValues'
-import unionMatcher from './lib/unionMatcher'
+import {StatusReportCode, StatusResource, StatusResponse} from '../src'
+import client from './lib/client'
+import environment from './lib/environment'
+import {getStringEnumValues, ResourceMock, unionMatcher} from './lib/utils'
 
-const status: SevenClient['status'] = process.env.SEVEN_LIVE_TEST
-    ? Client.status
-    : jest.fn(async (p: StatusParams) =>
-        p._json ? dummyStatusJson : dummyStatusText)
+const report = StatusReportCode.Delivered
+const timestamp = '2020-09-15 21:26:14.777'
 
-let requiredParams: StatusParams
+jest.mock('../src', () => ({
+    StatusResource: jest.fn().mockImplementation((): ResourceMock<StatusResource> => {
+        return environment.live
+            ? new StatusResource(client)
+            : {
+                async get() {
+                    return [
+                        {
+                            id: 123,
+                            status: report,
+                            statusTime: timestamp,
+                        },
+                    ]
+                },
+            }
+    }),
+}))
 
-const expectJson = (json: StatusResponseJson) => expect(json)
-    .toMatchObject<StatusResponseJson>({
-        report: expect.stringMatching(
+const resource = new StatusResource(client)
+
+const expectJson = (json: StatusResponse) => expect(json)
+    .toMatchObject<StatusResponse>({
+        id: expect.any(Number),
+        status: expect.stringMatching(
             unionMatcher(getStringEnumValues(StatusReportCode))),
-        timestamp: expect.any(String),
+        statusTime: expect.any(String),
     })
 
 describe('Status', () => {
-    it('should have process.env.SMS77_MSG_ID set', () => {
-        requiredParams = {
-            msg_id: process.env.SEVEN_LIVE_TEST
-                ? process.env.SMS77_MSG_ID!
-                : createRandomNumber(1, 100).toString(),
-        }
-
-        expect(typeof requiredParams.msg_id).toBe('string')
-        expect(requiredParams.msg_id.length).toBeGreaterThan(0)
-    })
-
-    it('should return a text response', async () => {
-        const text = await status(requiredParams)
-        const json = TextTransformer.status(text as string)
-        expectJson(json)
-    })
-
     it('should return a json response', async () => {
-        const json = await status({...requiredParams, _json: true})
-        expectJson(json as StatusResponseJson)
+        const arr = await resource.get([])
+        arr.forEach(expectJson)
     })
 })

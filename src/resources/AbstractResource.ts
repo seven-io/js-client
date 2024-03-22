@@ -1,6 +1,9 @@
-import {BaseClient} from '../BaseClient'
+import Client from '../index'
+import {Endpoint} from '../lib'
 
-export default abstract class AbstractResource {
-    protected constructor(protected readonly client: BaseClient) {
+export abstract class AbstractResource {
+    constructor(protected readonly client: Client) {
     }
+
+    abstract get endpoint(): Endpoint
 }
