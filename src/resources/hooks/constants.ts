@@ -2,6 +2,7 @@ export const HOOK_EVENT_TYPES = [
     'all',
     'dlr',
     'sms_mo',
+    'rcs',
     'tracking',
     'voice_call',
     'voice_status',
