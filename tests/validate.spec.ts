@@ -16,8 +16,7 @@ describe('Validate', () => {
         }
 
         'code' in res && (expected.code = expect.any(String))
-        'formatted_output' in res && (expected.formatted_output
-            = expect.nilOrAny(String))
+        'formatted_output' in res && (expected.formatted_output = expect.nilOrAny(String))
         'id' in res && (expected.id = expect.nilOrAny(Number))
         'sender' in res && (expected.sender = expect.any(String))
         'voice' in res && (expected.voice = expect.any(Boolean))

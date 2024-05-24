@@ -17,7 +17,7 @@ const assertEach = <J extends JournalBase>(entries: JournalBase[], p: JournalPar
     if (p.limit && entries.length) expect(entries).toHaveLength(p.limit)
 }
 
-const outboundMatcher = {
+const outboundMatcher: JournalOutbound = {
     ...baseMatcher,
     connection: expect.any(String),
     dlr: expect.nilOrAny(String),
