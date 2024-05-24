@@ -8,7 +8,7 @@ export default class BalanceResource extends AbstractResource {
         return Endpoint.Balance
     }
 
-    json = async (): Promise<Balance> => {
+    get = async (): Promise<Balance> => {
         const payload = new BalancePayload({})
         return await this.client.request('get', this.endpoint, payload)
     }
