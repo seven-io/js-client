@@ -1,5 +1,5 @@
 import Util from '../../lib/Util'
-import {VoiceParams} from './types'
+import type {VoiceParams} from './types'
 import AbstractValidator from '../../lib/AbstractValidator'
 
 export default class VoiceValidator extends AbstractValidator<Partial<VoiceParams>> {

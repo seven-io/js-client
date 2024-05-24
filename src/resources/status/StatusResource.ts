@@ -1,7 +1,7 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import StatusPayload from './StatusPayload'
-import {StatusResponse} from './types'
+import type {StatusResponse} from './types'
 
 export default class StatusResource extends AbstractResource {
     get endpoint(): Endpoint {

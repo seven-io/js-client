@@ -1,6 +1,6 @@
 import {ApiPayload} from './lib/ApiPayload'
 import {Endpoint, ErrorCode} from './lib'
-import {ClientOptions} from './types'
+import type {ClientOptions} from './types'
 
 export default class Client {
     public static readonly BASE_URL = 'https://gateway.seven.io/api'
@@ -90,8 +90,7 @@ export default class Client {
             },
         })
 
-        if (apiCode && apiCode in ErrorCode)
-            throw new Error(`${apiCode}: ${ErrorCode[apiCode]}`)
+        if (apiCode && apiCode in ErrorCode) throw new Error(`${apiCode}: ${ErrorCode[apiCode]}`)
 
         return body as R
     }

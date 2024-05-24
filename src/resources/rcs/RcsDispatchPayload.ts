@@ -1,5 +1,5 @@
 import {ApiPayload} from '../../lib/ApiPayload'
-import {RcsDispatchParams} from './types'
+import type {RcsDispatchParams} from './types'
 
 export default class RcsDispatchPayload extends ApiPayload<RcsDispatchParams> {
     convert(): {

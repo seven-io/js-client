@@ -1,5 +1,5 @@
 import {ApiPayload} from '../../lib/ApiPayload'
-import {ValidateParams} from './types'
+import type {ValidateParams} from './types'
 
 export default class ValidationPayload extends ApiPayload<ValidateParams> {
     convert(): {

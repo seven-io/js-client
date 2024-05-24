@@ -1,4 +1,4 @@
-import {SmsEncoding, SmsType} from '../sms/types'
+import type {SmsEncoding, SmsType} from '../sms/types'
 
 export type RcsDispatchParams = {
     delay?: string

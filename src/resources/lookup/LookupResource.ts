@@ -1,7 +1,7 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import LookupPayload from './LookupPayload'
-import {CnamResponse, Format, HLR, LookupParams, MnpResponse, RcsCapabilities} from './types'
+import type {CnamResponse, Format, HLR, LookupParams, MnpResponse, RcsCapabilities} from './types'
 
 export default class LookupResource extends AbstractResource {
     get endpoint(): Endpoint {

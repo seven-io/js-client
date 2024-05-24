@@ -1,6 +1,6 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
-import {
+import type {
     RcsDeleteParams,
     RcsDeleteResponse,
     RcsDispatchParams,

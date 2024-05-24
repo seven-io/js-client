@@ -1,5 +1,5 @@
 import {ApiPayload} from '../../lib/ApiPayload'
-import {RcsEventParams} from './types'
+import type {RcsEventParams} from './types'
 
 export default class RcsEventPayload extends ApiPayload<RcsEventParams> {
     convert(): {

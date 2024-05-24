@@ -1,12 +1,7 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import HooksPayload from './HooksPayload'
-import {
-    HooksReadResponse,
-    HooksSubscribeParams,
-    HooksSubscribeResponse,
-    HooksUnsubscribeResponse,
-} from './types'
+import type {HooksReadResponse, HooksSubscribeParams, HooksSubscribeResponse, HooksUnsubscribeResponse,} from './types'
 
 export default class HooksResource extends AbstractResource {
     get endpoint(): Endpoint {

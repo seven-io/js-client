@@ -1,5 +1,5 @@
 import {ApiPayload} from '../../lib/ApiPayload'
-import {SmsJsonParams} from './SmsResource'
+import type {SmsJsonParams} from './SmsResource'
 
 export default class SmsPayload extends ApiPayload<SmsJsonParams> {
     convert(): {

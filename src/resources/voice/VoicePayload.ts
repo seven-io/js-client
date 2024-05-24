@@ -1,5 +1,5 @@
 import {ApiPayload} from '../../lib/ApiPayload'
-import {VoiceParams} from './types'
+import type {VoiceParams} from './types'
 
 export default class VoicePayload extends ApiPayload<VoiceParams & {
     json?: boolean

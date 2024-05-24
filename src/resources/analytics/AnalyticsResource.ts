@@ -1,7 +1,7 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import AnalyticsPayload from './AnalyticsPayload'
-import {
+import type {
     AnalyticGroupByCountry,
     AnalyticGroupByDate,
     AnalyticGroupByLabel,

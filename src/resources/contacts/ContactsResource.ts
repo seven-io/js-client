@@ -2,7 +2,7 @@ import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import ContactsPayload from './ContactsPayload'
 import ContactsWritePayload from './ContactsWritePayload'
-import {Contact, ContactsListParams} from './types'
+import type {Contact, ContactsListParams} from './types'
 import emptyPayload from '../../lib/EmptyPayload'
 
 export default class ContactsResource extends AbstractResource {
