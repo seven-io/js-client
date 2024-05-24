@@ -1,9 +1,6 @@
 import {ApiPayload} from '../../lib/ApiPayload'
-import {JOURNAL_TYPES} from './constants'
 
-export default class JournalPayload<T extends {}> extends ApiPayload<{
-    type: (typeof JOURNAL_TYPES)[number]
-} & T> {
+export default class JournalPayload<T extends {}> extends ApiPayload<T> {
     convert(): {
         [p: string]: any
     } {
