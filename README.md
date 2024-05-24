@@ -49,7 +49,6 @@ balanceResource.json()
 2. `cd seven-client && npm install`
 3. `SEVEN_API_KEY=<InsertSevenApiKey> npm run test`
 
-Set `SEVEN_LIVE_TEST=1` for live tests performing actual HTTP requests.
 Set `SEVEN_DEBUG=1` for details printed to `stdout`.
 
 ### Support

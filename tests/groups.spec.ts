@@ -1,50 +1,6 @@
 import client from './lib/client'
-import environment from './lib/environment'
-import type {ResourceMock} from './lib/utils'
-import GroupsResource from '../src/resources/groups/GroupsResource';
-import {DeleteGroupResponse, Group} from '../src/resources/groups/types';
-
-jest.mock('../src', () => ({
-    GroupsResource: jest.fn().mockImplementation((): ResourceMock<GroupsResource> => {
-        return environment.live
-            ? new GroupsResource(client)
-            : {
-                delete: async () => ({success: true}),
-                all: async () => [
-                    {
-                        id: 1,
-                        created: '',
-                        name: 'Name',
-                        members_count: 0,
-                    },
-                    {
-                        id: 1,
-                        created: '',
-                        name: 'Name',
-                        members_count: 0,
-                    },
-                ],
-                create: async () => ({
-                    id: 1,
-                    created: '',
-                    name: 'Name',
-                    members_count: 0,
-                }),
-                one: async (id: number): Promise<Group> => ({
-                    id: 1,
-                    created: '',
-                    name: 'Name',
-                    members_count: 0,
-                }),
-                edit: async () => ({
-                    id: 1,
-                    created: '',
-                    name: 'Name',
-                    members_count: 0,
-                })
-            }
-    }),
-}))
+import GroupsResource from '../src/resources/groups/GroupsResource'
+import {DeleteGroupResponse, Group} from '../src/resources/groups/types'
 
 const resource = new GroupsResource(client)
 

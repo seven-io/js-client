@@ -1,50 +1,6 @@
 import client from './lib/client'
-import environment from './lib/environment'
-import {ResourceMock} from './lib/utils'
 import RcsResource from '../src/resources/rcs/RcsResource'
 import {RcsDispatchParams, RcsEventParams, RcsMessage} from '../src/resources/rcs/types'
-
-jest.mock('../src', () => ({
-    RcsResource: jest.fn().mockImplementation((): ResourceMock<RcsResource> => {
-        return environment.live
-            ? new RcsResource(client)
-            : {
-                async delete() {
-                    return {success: true}
-                },
-                async dispatch() {
-                    return {
-                        balance: 3218.988,
-                        debug: 'false',
-                        messages: [
-                            {
-                                channel: 'RCS',
-                                encoding: 'gsm',
-                                error: null,
-                                error_text: null,
-                                id: '77233319353',
-                                is_binary: false,
-                                label: null,
-                                parts: 0,
-                                price: 0,
-                                recipient: '49176123456789',
-                                sender: 'myfancyagent',
-                                success: true,
-                                text: 'Hello World!',
-                                udh: null,
-                            },
-                        ],
-                        sms_type: 'direct',
-                        success: '100',
-                        total_price: null,
-                    }
-                },
-                async event() {
-                    return {success: true}
-                },
-            }
-    })
-}))
 
 const resource = new RcsResource(client)
 

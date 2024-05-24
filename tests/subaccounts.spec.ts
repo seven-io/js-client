@@ -7,9 +7,8 @@ import {
     SubaccountsTransferCreditsResponse,
 } from '../src'
 import client from './lib/client'
-import environment from './lib/environment'
 
-const resource = jest.mocked(new SubaccountsResource(client))
+const resource = new SubaccountsResource(client)
 
 const assertCreate = (res: SubaccountsCreateResponse): void => res.success
     ? expect.objectContaining<SubaccountsCreateResponse>({
@@ -72,49 +71,11 @@ describe('Subaccounts', () => {
 
     it('should return an array uf subaccounts',
         async () => {
-            if (!environment.live) jest.spyOn(resource, 'read').mockReturnValue(Promise.resolve([
-                {
-                    auto_topup: {
-                        amount: 3,
-                        threshold: 1,
-                    },
-                    balance: 4,
-                    company: '',
-                    contact: {
-                        email: 'tanya.tester@seven.dev',
-                        name: 'Tanya Tester',
-                    },
-                    id: 941955,
-                    total_usage: 0,
-                    username: null,
-                },
-            ]))
-
             expect.arrayContaining<Subaccount>(await resource.read())
         })
 
     it('should create an account',
         async () => {
-            if (!environment.live) jest.spyOn(resource, 'create').mockReturnValue(Promise.resolve({
-                error: null,
-                subaccount: {
-                    auto_topup: {
-                        amount: 0,
-                        threshold: 0,
-                    },
-                    balance: 0,
-                    company: null,
-                    contact: {
-                        email: 'seven@gmail.com',
-                        name: 'Anja Andersson',
-                    },
-                    id: 123,
-                    total_usage: 0,
-                    username: null,
-                },
-                success: true,
-            }))
-
             const res = await resource.create({
                 email: 'js_client_test_subaccount@seven.io',
                 name: 'Anja Andersson',
@@ -125,11 +86,6 @@ describe('Subaccounts', () => {
 
     it('should fail to create an account',
         async () => {
-            if (!environment.live) jest.spyOn(resource, 'create').mockReturnValue(Promise.resolve({
-                error: '',
-                success: false,
-            }))
-
             const res = await resource.create({
                 email: '',
                 name: '',
@@ -139,12 +95,6 @@ describe('Subaccounts', () => {
 
     it('should transfer credits',
         async () => {
-            if (!environment.live) jest.spyOn(resource, 'transferCredits')
-                .mockReturnValue(Promise.resolve({
-                    error: null,
-                    success: true,
-                }))
-
             expect(subaccount).toBeDefined()
 
             const res = await resource.transferCredits({
@@ -156,12 +106,6 @@ describe('Subaccounts', () => {
 
     it('should fail to transfer credits',
         async () => {
-            if (!environment.live) jest.spyOn(resource, 'transferCredits')
-                .mockReturnValue(Promise.resolve({
-                    error: '',
-                    success: false,
-                }))
-
             expect(subaccount).toBeDefined()
 
             const res = await resource.transferCredits({
@@ -173,12 +117,6 @@ describe('Subaccounts', () => {
 
     it('should set up auto charging',
         async () => {
-            if (!environment.live) jest.spyOn(resource, 'autoCharge')
-                .mockReturnValue(Promise.resolve({
-                    error: null,
-                    success: true,
-                }))
-
             expect(subaccount).toBeDefined()
 
             const res = await resource.autoCharge({
@@ -191,12 +129,6 @@ describe('Subaccounts', () => {
 
     it('should fail to set up auto charging',
         async () => {
-            if (!environment.live) jest.spyOn(resource, 'autoCharge')
-                .mockReturnValue(Promise.resolve({
-                    error: '',
-                    success: false,
-                }))
-
             const res = await resource.autoCharge({
                 amount: -1,
                 id: 0,
@@ -207,11 +139,6 @@ describe('Subaccounts', () => {
 
     it('should delete an account',
         async () => {
-            if (!environment.live) jest.spyOn(resource, 'delete').mockReturnValue(Promise.resolve({
-                error: null,
-                success: true,
-            }))
-
             expect(subaccount).toBeDefined()
 
             const res = await resource.delete({id: subaccount!.id})
@@ -220,11 +147,6 @@ describe('Subaccounts', () => {
 
     it('should fail to delete an account',
         async () => {
-            if (!environment.live) jest.spyOn(resource, 'delete').mockReturnValue(Promise.resolve({
-                error: '',
-                success: false,
-            }))
-
             const res = await resource.delete({id: 0})
             await assertDelete(res)
         })

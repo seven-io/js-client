@@ -1,8 +1,7 @@
 import {SMS_TYPES, SmsFile, SmsMessage, SmsParams, SmsResource, SmsResponse} from '../src'
 import STRING_BOOLEAN_VALUES from '../src/lib/StringBooleanValues'
 import client from './lib/client'
-import environment from './lib/environment'
-import {ResourceMock, unionMatcher} from './lib/utils'
+import {unionMatcher} from './lib/utils'
 
 type OptionalSmsParams = Omit<SmsParams, 'text' | 'to'>;
 
@@ -24,38 +23,6 @@ const requiredSmsParams: Pick<SmsParams, 'text' | 'to'> = {
     text: `The current date is: ${Date.now()}.`,
     to: ['4917123456789'],
 }
-
-jest.mock('../src', () => ({
-    SmsResource: jest.fn().mockImplementation((): ResourceMock<SmsResource> => {
-        return environment.live
-            ? new SmsResource(client)
-            : {
-                delete: async (p) => ({
-                    deleted: p.ids,
-                    success: p.ids.length !== 0,
-                }),
-                dispatch: async (p) => ({
-                    balance: 8.42,
-                    debug: p.debug ? 'true' : 'false',
-                    messages: Array(p.to.includes(',') ? p.to.length : 1).fill({
-                        encoding: 'gsm',
-                        error: null,
-                        error_text: null,
-                        id: p.debug ? null : 1,
-                        parts: 1,
-                        price: 0,
-                        recipient: p.to || requiredSmsParams.to,
-                        sender: p.from || 'seven.io',
-                        success: true,
-                        text: p.text || requiredSmsParams.text,
-                    }),
-                    sms_type: 'direct',
-                    success: '100',
-                    total_price: 0,
-                }),
-            }
-    }),
-}))
 
 const resource = new SmsResource(client)
 const smsMatcher = (res: SmsResponse) => ({

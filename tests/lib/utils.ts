@@ -1,7 +1,4 @@
 import {nanoid} from 'nanoid'
-import {AbstractResource} from '../../src/resources/AbstractResource'
-
-export type ResourceMock<Res extends AbstractResource> = Omit<Res, 'client' | 'endpoint'>
 
 export function createRandomURL(): string {
     return `https://my.tld/${nanoid()}`

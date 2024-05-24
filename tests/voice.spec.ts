@@ -1,36 +1,5 @@
 import {VoiceMessage, VoiceParams, VoiceResource, VoiceResponse} from '../src'
 import client from './lib/client'
-import environment from './lib/environment'
-import {ResourceMock} from './lib/utils'
-
-jest.mock('../src', () => ({
-    VoiceResource: jest.fn().mockImplementation((): ResourceMock<VoiceResource> => {
-        return environment.live
-            ? new VoiceResource(client)
-            : {
-                async dispatch(): Promise<VoiceResponse> {
-                    return {
-                        balance: 12.088,
-                        debug: true,
-                        messages: [
-                            {
-                                error: null,
-                                error_text: null,
-                                id: '123456789',
-                                price: 0,
-                                recipient: '491771783130',
-                                sender: '491771783130',
-                                success: true,
-                                text: 'HEY!',
-                            },
-                        ],
-                        success: '100',
-                        total_price: 0,
-                    }
-                },
-            }
-    }),
-}))
 
 const resource = new VoiceResource(client)
 const expectJSON = (o: VoiceResponse) => expect(o).toMatchObject<VoiceResponse>({

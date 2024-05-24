@@ -1,30 +1,12 @@
-import {Hook, HOOK_EVENT_TYPES, HOOK_REQUEST_METHODS, HooksResource, HooksUnsubscribeResponse} from '../src'
+import {HOOK_EVENT_TYPES, HOOK_REQUEST_METHODS, HooksResource, HooksUnsubscribeResponse} from '../src'
 import client from './lib/client'
-import environment from './lib/environment'
 import {createRandomURL, isValidURL} from './lib/utils'
 
 const resource = new HooksResource(client)
 
 describe('Hooks', () => {
     it('should return an object', async () => {
-        const apiCall: HooksResource['read'] = environment.live
-            ? resource.read.bind(resource)
-            : jest.fn(async () => ({
-                hooks: [
-                    {
-                        created: new Date('2020-11-04 13:49:16'),
-                        enabled: true,
-                        event_filter: null,
-                        event_type: 'sms_mo',
-                        id: '23',
-                        request_method: 'POST',
-                        target_url: 'https:\/\/my.tld\/webhook',
-                    } as Hook,
-                ],
-                success: true,
-            }))
-
-        const {hooks, success} = await apiCall()
+        const {hooks, success} = await resource.read()
 
         if (success) {
             expect(hooks).toBeDefined()
@@ -41,11 +23,7 @@ describe('Hooks', () => {
     })
 
     it('should fail to subscribe a webhook', async () => {
-        const subscribe: HooksResource['subscribe'] = environment.live
-            ? resource.subscribe.bind(resource)
-            : jest.fn(async () => ({success: false}))
-
-        const res = await subscribe({
+        const res = await resource.subscribe({
             event_type: 'dlr',
             target_url: 'abc://my.tld/123', // invalid domain
         })
@@ -55,14 +33,7 @@ describe('Hooks', () => {
     })
 
     it('should subscribe a webhook', async () => {
-        const hooks: HooksResource['subscribe'] = environment.live
-            ? resource.subscribe.bind(resource)
-            : jest.fn(async () => ({
-                id: 12345,
-                success: true,
-            }))
-
-        const res = await hooks({
+        const res = await resource.subscribe({
             event_type: 'dlr',
             request_method: 'GET',
             target_url: createRandomURL(),
@@ -76,22 +47,9 @@ describe('Hooks', () => {
         expect(res.success).toBe(true)
     })
 
-    const subscribe = (): HooksResource['subscribe'] => {
-        return environment.live
-            ? resource.subscribe.bind(resource)
-            : jest.fn(async () => ({
-                id: 12345,
-                success: true,
-            }))
-    }
-
     it('should unsubscribe a webhook', async () => {
-        const subscription = await subscribe()({event_type: 'all', target_url: createRandomURL()})
-
-        const unsubscribe: HooksResource['unsubscribe'] = environment.live
-            ? resource.unsubscribe.bind(resource)
-            : jest.fn(async () => ({success: true}))
-        const res = await unsubscribe(subscription.id!)
+        const subscription = await resource.subscribe({event_type: 'all', target_url: createRandomURL()})
+        const res = await resource.unsubscribe(subscription.id!)
         expect(res).toMatchObject<HooksUnsubscribeResponse>({success: expect.any(Boolean)})
     })
 })

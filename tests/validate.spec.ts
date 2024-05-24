@@ -1,34 +1,6 @@
 import {ValidateResponse} from '../src'
 import {ValidateResource} from '../src/resources/validate'
 import client from './lib/client'
-import environment from './lib/environment'
-import {ResourceMock} from './lib/utils'
-
-const dummyValidateForVoice: ValidateResponse = {
-    code: '661951',
-    error: null,
-    success: true,
-}
-
-const dummyValidateForVoiceAllKeys: ValidateResponse = {
-    ...dummyValidateForVoice,
-    formatted_output: null,
-    id: null,
-    sender: '',
-    voice: true,
-}
-
-jest.mock('../src', () => ({
-    ValidateResource: jest.fn().mockImplementation((): ResourceMock<ValidateResource> => {
-        return environment.live
-            ? new ValidateResource(client)
-            : {
-                async start() {
-                    return dummyValidateForVoiceAllKeys
-                },
-            }
-    }),
-}))
 
 const resource = new ValidateResource(client)
 

@@ -5,7 +5,6 @@ describe('Environment', () => {
         expect(environment).toMatchObject<Environment>({
             apiKey: expect.any(String),
             debug: expect.any(Boolean),
-            live: expect.any(Boolean),
         })
     })
 })
