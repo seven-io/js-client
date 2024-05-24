@@ -100,53 +100,56 @@ const lookupFormatMatcher: Format = {
 const resource = new LookupResource(client)
 
 describe('Lookup related', () => {
-    it('should return an array of format objects',
-        async () => {
-            const arr = await resource.format({numbers: ['49179999999999']})
-            expect(arr.length).toEqual(1)
-            arr.forEach(o => expect(o).toMatchObject(lookupFormatMatcher))
-        })
+    it('should return an array of format objects', async () => {
+        const arr = await resource.format({numbers: ['49179999999999']})
+        expect(arr.length).toEqual(1)
+        arr.forEach(o => expect(o).toMatchObject(lookupFormatMatcher))
+    })
 
-    it('should return an array of mnp objects',
-        async () => {
-            const arr = await resource.mnp({
-                numbers: [
-                    '49179999999999',
-                    '49171234567890',
-                ],
-            })
-            expect(arr.length).toEqual(2)
-            arr.forEach(o => expect(o).toMatchObject(lookupMnpMatcher))
+    it('should return an array of rcs capability objects', async () => {
+        const arr = await resource.rcs({numbers: ['49179999999999']})
+        expect(arr.length).toEqual(1)
+        arr.forEach(o => {
+            expect(o).toMatchObject(lookupFormatMatcher)
         })
+    })
 
-    it('should return an array of hlr objects',
-        async () => {
-            const arr = await resource.hlr({
-                numbers: [
-                    '49179999999999',
-                    '49171234567890',
-                ],
-            })
-            expect(arr.length).toEqual(2)
-            arr.forEach(o => expect(o).toMatchObject(lookupHlrMatcher(o)))
+    it('should return an array of mnp objects', async () => {
+        const arr = await resource.mnp({
+            numbers: [
+                '49179999999999',
+                '49171234567890',
+            ],
         })
+        expect(arr.length).toEqual(2)
+        arr.forEach(o => expect(o).toMatchObject(lookupMnpMatcher))
+    })
 
-    it('should return a single cnam object',
-        async () => {
-            const arr = await resource.cnam({numbers: ['49179999999999']})
-            expect(arr.length).toEqual(1)
-            expect(arr[0]).toMatchObject(lookupCnamMatcher)
+    it('should return an array of hlr objects', async () => {
+        const arr = await resource.hlr({
+            numbers: [
+                '49179999999999',
+                '49171234567890',
+            ],
         })
+        expect(arr.length).toEqual(2)
+        arr.forEach(o => expect(o).toMatchObject(lookupHlrMatcher(o)))
+    })
 
-    it('should return an array of cnam objects',
-        async () => {
-            const arr = await resource.cnam({
-                numbers: [
-                    '49179999999999',
-                    '49171234567890',
-                ],
-            })
-            expect(arr.length).toEqual(2)
-            arr.forEach(o => expect(o).toMatchObject(lookupCnamMatcher))
+    it('should return a single cnam object', async () => {
+        const arr = await resource.cnam({numbers: ['49179999999999']})
+        expect(arr.length).toEqual(1)
+        expect(arr[0]).toMatchObject(lookupCnamMatcher)
+    })
+
+    it('should return an array of cnam objects', async () => {
+        const arr = await resource.cnam({
+            numbers: [
+                '49179999999999',
+                '49171234567890',
+            ],
         })
+        expect(arr.length).toEqual(2)
+        arr.forEach(o => expect(o).toMatchObject(lookupCnamMatcher))
+    })
 })

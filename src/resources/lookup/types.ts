@@ -82,6 +82,20 @@ export type MnpResponse = {
     success: boolean
 }
 
+export type RcsCapability = 'FEATURE_UNSPECIFIED' |
+    'REVOCATION' |
+    'RICHCARD_STANDALONE' |
+    'RICHCARD_CAROUSEL' |
+    'ACTION_CREATE_CALENDAR_EVENT' |
+    'ACTION_DIAL' |
+    'ACTION_OPEN_URL' |
+    'ACTION_SHARE_LOCATION' |
+    'ACTION_VIEW_LOCATION'
+
+export type RcsCapabilities = Format & {
+    rcs_capabilities: RcsCapability[]
+}
+
 export type LookupParams = {
     numbers: string[]
 }

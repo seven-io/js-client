@@ -1,7 +1,7 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import LookupPayload from './LookupPayload'
-import type {CnamResponse, Format, HLR, LookupParams, MnpResponse} from './types'
+import {CnamResponse, Format, HLR, LookupParams, MnpResponse, RcsCapabilities} from './types'
 
 export default class LookupResource extends AbstractResource {
     get endpoint(): Endpoint {
@@ -26,5 +26,10 @@ export default class LookupResource extends AbstractResource {
     async mnp(p: LookupParams): Promise<MnpResponse[]> {
         const payload = new LookupPayload(p)
         return this.client.request('post', `${this.endpoint}/mnp`, payload)
+    }
+
+    async rcs(p: LookupParams): Promise<RcsCapabilities[]> {
+        const payload = new LookupPayload(p)
+        return this.client.request('post', `${this.endpoint}/rcs`, payload)
     }
 }
