@@ -2,7 +2,6 @@ import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class LookupPayload<T extends {}> extends ApiPayload<{
     numbers: string[],
-    type: 'cnam' | 'format' | 'hlr' | 'mnp'
 } & T> {
     convert(): {
         [p: string]: any
