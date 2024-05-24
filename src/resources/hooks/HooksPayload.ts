@@ -1,4 +1,4 @@
-import {ApiPayload} from '../../ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class HooksPayload<T extends {}> extends ApiPayload<{
     action: 'read' | 'subscribe' | 'unsubscribe'

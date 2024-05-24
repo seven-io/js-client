@@ -1,7 +1,7 @@
 import {isBefore} from 'date-fns'
-import Util from '../lib/Util'
-import {SmsParams} from '../resources/sms/types'
-import AbstractValidator from './AbstractValidator'
+import Util from '../../lib/Util'
+import {SmsParams} from './types'
+import AbstractValidator from '../../lib/AbstractValidator'
 
 export default class SmsValidator extends AbstractValidator<Partial<SmsParams>> {
     static readonly DEFAULT_PATTERN = /[0-9a-z-@_.]/i

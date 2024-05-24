@@ -1,8 +1,8 @@
-import {ApiPayload} from "./ApiPayload";
+import {ApiPayload} from './ApiPayload'
 
 class EmptyPayload extends ApiPayload {
     convert(): { [p: string]: any } {
-        return {};
+        return {}
     }
 }
 

@@ -1,4 +1,4 @@
-import {ApiPayload} from '../../ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 import {JOURNAL_TYPES} from './constants'
 
 export default class JournalPayload<T extends {}> extends ApiPayload<{

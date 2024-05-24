@@ -1,6 +1,6 @@
-import Util from '../lib/Util'
-import {VoiceParams} from '../resources/voice/types'
-import AbstractValidator from './AbstractValidator'
+import Util from '../../lib/Util'
+import {VoiceParams} from './types'
+import AbstractValidator from '../../lib/AbstractValidator'
 
 export default class VoiceValidator extends AbstractValidator<Partial<VoiceParams>> {
     static readonly FROM_NUMERIC_MAX = 16

@@ -1,8 +1,8 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import {DeleteGroupResponse, Group} from './types'
-import emptyPayload from '../../EmptyPayload';
-import GroupPayload from './GroupPayload';
+import emptyPayload from '../../lib/EmptyPayload'
+import GroupPayload from './GroupPayload'
 
 export default class GroupsResource extends AbstractResource {
     get endpoint(): Endpoint {

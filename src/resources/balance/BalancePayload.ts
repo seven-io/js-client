@@ -1,4 +1,4 @@
-import {ApiPayload} from '../../ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class BalancePayload extends ApiPayload {
     convert(): {

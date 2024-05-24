@@ -1,4 +1,4 @@
-import {ApiPayload} from '../../ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 import {PricingParams} from './types'
 
 export default class PricingPayload<T extends {}> extends ApiPayload<PricingParams & T> {

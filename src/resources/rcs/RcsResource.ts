@@ -8,7 +8,7 @@ import {
     RcsEventParams,
     RcsEventResponse
 } from './types'
-import emptyPayload from '../../EmptyPayload'
+import emptyPayload from '../../lib/EmptyPayload'
 import RcsDispatchPayload from './RcsDispatchPayload'
 import RcsEventPayload from './RcsEventPayload'
 

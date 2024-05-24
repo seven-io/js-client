@@ -1,4 +1,4 @@
-import {ApiPayload} from './ApiPayload'
+import {ApiPayload} from './lib/ApiPayload'
 import {Endpoint, ErrorCode} from './lib'
 import {ClientOptions} from './types'
 

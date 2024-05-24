@@ -1,4 +1,4 @@
-import {ApiPayload} from '../../ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 import {SmsDeleteParams} from './types'
 
 export default class DeleteSmsPayload extends ApiPayload<SmsDeleteParams> {

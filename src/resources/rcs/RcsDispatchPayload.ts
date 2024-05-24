@@ -1,4 +1,4 @@
-import {ApiPayload} from '../../ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 import {RcsDispatchParams} from './types'
 
 export default class RcsDispatchPayload extends ApiPayload<RcsDispatchParams> {

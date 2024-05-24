@@ -1,4 +1,4 @@
-import {ApiPayload} from '../../ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 import {ValidateParams} from './types'
 
 export default class ValidationPayload extends ApiPayload<ValidateParams> {

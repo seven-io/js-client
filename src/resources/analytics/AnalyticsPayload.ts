@@ -1,5 +1,5 @@
 import {format} from 'date-fns'
-import {ApiPayload} from '../../ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 import {AnalyticsParams} from './types'
 
 const ANALYTICS_GROUPS = [

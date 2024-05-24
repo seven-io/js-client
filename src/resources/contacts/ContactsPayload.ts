@@ -1,4 +1,4 @@
-import {ApiPayload} from '../../ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 import {ContactsAction} from './ContactsAction'
 
 export default class ContactsPayload<T extends {}> extends ApiPayload<{
