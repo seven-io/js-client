@@ -15,7 +15,7 @@ const cfg: JestConfigWithTsJest = {
         '^.+\\.ts': [
             'ts-jest',
             {
-                tsconfig: './tsconfig.test.json',
+                tsconfig: './tests/tsconfig.test.json',
             },
         ],
     },

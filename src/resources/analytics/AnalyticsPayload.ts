@@ -22,6 +22,6 @@ export default class AnalyticsPayload extends ApiPayload<AnalyticsParams> {
     }
 
     protected formatDate(date: Date): string {
-        return format(date, 'YYYY-MM-DD')
+        return format(date, 'yyyy-MM-dd')
     }
 }

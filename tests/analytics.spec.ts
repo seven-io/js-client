@@ -1,10 +1,10 @@
 import {subDays} from 'date-fns'
 import {
-    AnalyticBase,
-    AnalyticGroupByCountry,
-    AnalyticGroupByDate,
-    AnalyticGroupByLabel,
-    AnalyticGroupBySubaccount,
+    type AnalyticBase,
+    type AnalyticGroupByCountry,
+    type AnalyticGroupByDate,
+    type AnalyticGroupByLabel,
+    type AnalyticGroupBySubaccount,
     AnalyticsResource,
 } from '../src'
 import client from './lib/client'

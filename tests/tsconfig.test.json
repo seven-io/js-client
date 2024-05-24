@@ -1,22 +1,22 @@
 {
-    "compilerOptions": {
-        "emitDeclarationOnly": false,
-        "noEmit": true,
-        "verbatimModuleSyntax": false,
-        "types": [
-            "expect",
-            "jest",
-            "jest-extended",
-            "jest-matcher-fix",
-            "nanoid",
-            "node",
-            "node-fetch",
-            "tslib"
-        ]
-    },
-    "extends": "../tsconfig.json",
-    "include": [
-        "tests/**/*.spec.ts",
-        "tests/**/*.d.ts"
-    ]
+  "compilerOptions": {
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "types": [
+      "expect",
+      "jest",
+      "jest-extended",
+      "jest-matcher-fix",
+      "nanoid",
+      "node",
+      "node-fetch",
+      "tslib"
+    ],
+    "verbatimModuleSyntax": false
+  },
+  "extends": "../tsconfig.json",
+  "include": [
+    "tests/**/*.spec.ts",
+    "tests/**/*.d.ts"
+  ]
 }

@@ -1,3 +1,4 @@
+import 'cross-fetch/polyfill'
 import * as matchers from 'jest-extended'
 
 expect.extend(matchers)
