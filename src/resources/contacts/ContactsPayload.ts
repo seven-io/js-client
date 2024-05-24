@@ -1,12 +1,9 @@
 import {ApiPayload} from '../../lib/ApiPayload'
-import {ContactsAction} from './ContactsAction'
 
-export default class ContactsPayload<T extends {}> extends ApiPayload<{
-    action: ContactsAction
-} & T> {
+export default class ContactsPayload<T extends {}> extends ApiPayload<T> {
     convert(): {
         [k: string]: any
     } {
-        return {...this.params, json: true}
+        return this.params
     }
 }

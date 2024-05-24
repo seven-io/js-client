@@ -1,12 +1,12 @@
 import ContactsPayload from './ContactsPayload'
-import {ContactWriteParams} from './types'
+import type {Contact} from './types'
 
-export default class ContactsWritePayload extends ContactsPayload<ContactWriteParams> {
+export default class ContactsWritePayload extends ContactsPayload<Contact> {
     convert(): {
         [k: string]: any
     } {
-        const {mobile, ...params} = this.params
+        const {avatar, groups, properties} = this.params
 
-        return {empfaenger: mobile, ...params}
+        return {avatar, groups, ...properties}
     }
 }

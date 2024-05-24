@@ -1,27 +1,47 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
-import {ContactsAction} from './ContactsAction'
 import ContactsPayload from './ContactsPayload'
 import ContactsWritePayload from './ContactsWritePayload'
-import {Contact, ContactDeleteResponse, ContactWriteParams, ContactWriteResponse} from './types'
+import {Contact, ContactsListParams} from './types'
+import emptyPayload from '../../lib/EmptyPayload'
 
 export default class ContactsResource extends AbstractResource {
     get endpoint(): Endpoint {
         return Endpoint.Contacts
     }
 
-    async delete(id: number): Promise<ContactDeleteResponse> {
-        const payload = new ContactsPayload({action: ContactsAction.Delete, id})
-        return await this.client.request('post', this.endpoint, payload)
+    async create(p: Pick<Contact, 'avatar' | 'groups' | 'properties'>): Promise<Contact> {
+        const contact: Contact = {
+            ...p,
+            created: '',
+            id: 0,
+            initials: {
+                color: '',
+                initials: ''
+            },
+            validation: {
+                state: null,
+                timestamp: null
+            }
+        }
+        const payload = new ContactsWritePayload(contact)
+        return await this.client.request('post', this.endpoint, payload, 'application/x-www-form-urlencoded')
     }
 
-    async read(): Promise<Contact[]> {
-        const payload = new ContactsPayload({action: ContactsAction.Read})
-        return await this.client.request('get', this.endpoint, payload)
+    async delete(id: number): Promise<void> {
+        await this.client.request('delete', `${this.endpoint}/${id}`, emptyPayload)
     }
 
-    async write(p: ContactWriteParams): Promise<ContactWriteResponse> {
-        const payload = new ContactsWritePayload({...p, action: ContactsAction.Write})
-        return await this.client.request('get', this.endpoint, payload)
+    async get(id: number): Promise<Contact> {
+        return await this.client.request('get', `${this.endpoint}/${id}`, emptyPayload)
+    }
+
+    async list(p: ContactsListParams = {}): Promise<Contact[]> {
+        return await this.client.request('get', this.endpoint, new ContactsPayload<ContactsListParams>(p))
+    }
+
+    async update(p: Contact): Promise<Contact> {
+        const payload = new ContactsWritePayload(p)
+        return await this.client.request('patch', `${this.endpoint}/${p.id}`, payload, 'application/x-www-form-urlencoded')
     }
 }

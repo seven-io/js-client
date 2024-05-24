@@ -12,12 +12,13 @@ export default class Client {
         method: 'delete' | 'get' | 'post' | 'patch',
         endpoint: Endpoint | string,
         payload: P,
+        contentType: string = 'application/json'
     ): Promise<R> => {
         payload = payload.convert() as any
         let url = `${Client.BASE_URL}/${endpoint}`
         const headers: HeadersInit = {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': contentType,
             SentWith: this.options.sentWith ?? 'js',
         }
 

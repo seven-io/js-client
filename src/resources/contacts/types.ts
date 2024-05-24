@@ -1,22 +1,35 @@
-export type Contact = { readonly [k: string]: any } & {
-    readonly id: number
-    readonly nick: string
-    readonly number: string
-    readonly email: string
-}
-
-export type ContactDeleteResponse = {
-    return: number
-}
-
-export type ContactWriteResponse = {
-    return: number
+export type Contact = {
+    avatar: string
+    created: string
+    groups: number[]
     id: number
+    initials: {
+        color: string
+        initials: string
+    }
+    properties: { [k: string]: any } & {
+        address: string | null
+        birthday: string | null
+        city: string | null
+        email: string | null
+        firstname: string | null
+        home_number: string | null
+        lastname: string | null
+        mobile_number: string | null
+        notes: string | null
+        postal_code: string | null
+    }
+    validation: {
+        state: string | null
+        timestamp: string | null
+    }
 }
 
-export type ContactWriteParams = {
-    email?: string
-    mobile?: string
-    id?: number
-    nick?: string
+export type ContactsListParams = {
+    groupId?: number
+    limit?: number
+    offset?: number
+    orderBy?: string
+    orderDirection?: string
+    search?: string
 }
