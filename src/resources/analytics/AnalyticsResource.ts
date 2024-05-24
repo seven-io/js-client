@@ -14,23 +14,23 @@ export default class AnalyticsResource extends AbstractResource {
         return Endpoint.Analytics
     }
 
-    async byCountry(p?: AnalyticsParams): Promise<AnalyticGroupByCountry[]> {
-        const payload = new AnalyticsPayload({...p, groupBy: 'country'})
-        return await this.client.request('get', this.endpoint, payload)
+    async byCountry(p: AnalyticsParams = {}): Promise<AnalyticGroupByCountry[]> {
+        const payload = new AnalyticsPayload(p)
+        return await this.client.request('get', `${this.endpoint}/country`, payload)
     }
 
-    async byDate(p?: AnalyticsParams): Promise<AnalyticGroupByDate[]> {
-        const payload = new AnalyticsPayload({...p, groupBy: 'date'})
-        return await this.client.request('get', this.endpoint, payload)
+    async byDate(p: AnalyticsParams = {}): Promise<AnalyticGroupByDate[]> {
+        const payload = new AnalyticsPayload(p)
+        return await this.client.request('get', `${this.endpoint}/date`, payload)
     }
 
-    async byLabel(p?: AnalyticsParams): Promise<AnalyticGroupByLabel[]> {
-        const payload = new AnalyticsPayload({...p, groupBy: 'label'})
-        return await this.client.request('get', this.endpoint, payload)
+    async byLabel(p: AnalyticsParams = {}): Promise<AnalyticGroupByLabel[]> {
+        const payload = new AnalyticsPayload(p)
+        return await this.client.request('get', `${this.endpoint}/label`, payload)
     }
 
-    async bySubaccount(p?: AnalyticsParams): Promise<AnalyticGroupBySubaccount[]> {
-        const payload = new AnalyticsPayload({...p, groupBy: 'subaccount'})
-        return await this.client.request('get', this.endpoint, payload)
+    async bySubaccount(p: AnalyticsParams = {}): Promise<AnalyticGroupBySubaccount[]> {
+        const payload = new AnalyticsPayload(p)
+        return await this.client.request('get', `${this.endpoint}/subaccount`, payload)
     }
 }

@@ -1,17 +1,8 @@
 import {format} from 'date-fns'
 import {ApiPayload} from '../../lib/ApiPayload'
-import {AnalyticsParams} from './types'
+import type {AnalyticsParams} from './types'
 
-const ANALYTICS_GROUPS = [
-    'date',
-    'label',
-    'subaccount',
-    'country',
-] as const
-
-export default class AnalyticsPayload extends ApiPayload<AnalyticsParams & {
-    groupBy: typeof ANALYTICS_GROUPS[number]
-}> {
+export default class AnalyticsPayload extends ApiPayload<AnalyticsParams> {
     convert(): {
         [k: string]: any
     } {
