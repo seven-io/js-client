@@ -18,21 +18,21 @@ export type StringBoolean = typeof STRING_BOOLEAN_VALUES[number];
 
 export type Carrier = {
     country: string
-    name: string
+    name: string | null
     network_code: string
-    network_type: NetworkType
+    network_type: NetworkType | null
 }
 
 export type Format = {
-    national: string
-    carrier: string
-    country_code: string
-    country_iso: string
-    country_name: string
+    carrier: string | null
+    country_code: string | false
+    country_iso: string | null
+    country_name: string | null
     international: string
     international_formatted: string
-    network_type: NetworkType
-    success: boolean,
+    national: string | null
+    network_type: NetworkType | null
+    success: boolean
 }
 
 export type HLR = {
@@ -60,10 +60,11 @@ export type HLR = {
 export type MNP = {
     country: string
     international_formatted: string
-    isPorted: boolean
+    isPorted: boolean | null
     mccmnc: string
     national_format: string
-    network: string
+    network: string | null
+    networkType: string | null
     number: string
 }
 
@@ -86,7 +87,7 @@ export type LookupParams = {
 }
 
 export type CnamResponse = {
-    code: number
+    code: number | string
     name?: string
     number?: string
     success?: StringBoolean
