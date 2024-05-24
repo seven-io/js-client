@@ -4,6 +4,7 @@ export type AnalyticBase = {
     hlr: number
     inbound: number
     mnp: number
+    rcs: number
     sms: number
     usage_eur: number
     voice: number
