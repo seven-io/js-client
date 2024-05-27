@@ -1,13 +1,9 @@
 export default class Util {
-    static splitByLine(str: string): string[] {
-        return str.split(/[\r\n]+/)
-    }
-
     static isNumeric(val: any): boolean {
         return Number.isFinite(val) && !Number.isNaN(Number.parseFloat(val))
     }
 
-    /* Thanks Michael @ https://stackoverflow.com/a/25352300/9737058 */
+    /* Thanks, Michael @ https://stackoverflow.com/a/25352300/9737058 */
     static isAlphaNumeric(str: string) {
         for (let i = 0; i < str.length; i++) {
             const code = str.charCodeAt(i)
@@ -18,14 +14,7 @@ export default class Util {
                 return false
             }
         }
+
         return true
-    }
-
-    static csvToArray(csv: string, skipHeader: boolean): (string[])[] {
-        const arr = Util.splitByLine(csv.trim().replace(/"/g, ''))
-
-        if (skipHeader) arr.shift()
-
-        return arr.map(l => l.trim().split(';'))
     }
 }

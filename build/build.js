@@ -15,7 +15,4 @@ browserify(files, opts)
     .plugin(tsify)
     .transform(babelify, {extensions: ['.ts'], presets: ['@babel/preset-env']})
     .bundle()
-    .on('error', e => {
-        throw new Error(e.toString())
-    })
     .pipe(createWriteStream(output))
