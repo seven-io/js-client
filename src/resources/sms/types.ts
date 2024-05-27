@@ -39,23 +39,16 @@ export type SmsMessage = {
 export type SmsType = typeof SMS_TYPES[number]
 
 export type SmsParams = {
-    debug?: boolean
     delay?: Date
-    details?: boolean
     files?: SmsFile[]
     flash?: boolean
     foreign_id?: string
     from?: string
     label?: string
-    json?: boolean
-    no_reload?: boolean
     performance_tracking?: boolean
-    return_msg_id?: boolean
     text: string
     to: string[]
-    unicode?: boolean
     udh?: string
-    utf8?: boolean
     ttl?: number
 }
 

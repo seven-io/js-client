@@ -10,14 +10,10 @@ const fullSmsParams: OptionalSmsParams = {
     flash: true,
     foreign_id: 'TestForeignID',
     from: 'Tom Tester',
-    json: true,
     label: 'TestLabel',
-    no_reload: true,
     performance_tracking: true,
     ttl: 128000,
     udh: 'MyTestHeader',
-    unicode: true,
-    utf8: true,
 }
 
 const requiredSmsParams: Pick<SmsParams, 'text' | 'to'> = {
@@ -78,9 +74,8 @@ describe('SMS', () => {
             text += `TestFile${i}: [[${name}]]\n`
         }
 
-        const {details, json, return_msg_id, ...params} = fullSmsParams
         const res = await resource.dispatch({
-            ...params,
+            ...fullSmsParams,
             ...requiredSmsParams,
             files,
             flash: false,
@@ -98,7 +93,6 @@ describe('SMS', () => {
 
     it('should task a sms and delete it again', async () => {
         const {messages} = await resource.dispatch({
-            debug: false,
             delay: new Date('2035-12-30 23:25:04'),
             text: 'X',
             to: ['+49123456789'],

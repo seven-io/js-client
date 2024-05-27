@@ -4,8 +4,6 @@ import DeleteSmsPayload from './DeleteSmsPayload'
 import SmsPayload from './SmsPayload'
 import type {SmsDeleteParams, SmsDeleteResponse, SmsParams, SmsResponse} from './types'
 
-export type SmsJsonParams = Omit<SmsParams, 'details' | 'json' | 'return_msg_id'>
-
 export default class SmsResource extends AbstractResource {
     get endpoint(): Endpoint {
         return Endpoint.Sms
@@ -16,7 +14,7 @@ export default class SmsResource extends AbstractResource {
         return await this.client.request('delete', this.endpoint, payload)
     }
 
-    dispatch = async (p: SmsJsonParams): Promise<SmsResponse> => {
+    dispatch = async (p: SmsParams): Promise<SmsResponse> => {
         const payload = new SmsPayload(p)
         return await this.client.request('post', this.endpoint, payload)
     }
