@@ -1,7 +1,6 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import {DeleteGroupResponse, Group} from './types'
-import GroupPayload from './GroupPayload'
 import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class GroupsResource extends AbstractResource {
@@ -10,11 +9,11 @@ export default class GroupsResource extends AbstractResource {
     }
 
     async edit(id: number, group: Pick<Group, 'name'>): Promise<Group> {
-        return await this.client.request('patch', `${this.endpoint}/${id}`, new GroupPayload(group))
+        return await this.client.request('patch', `${this.endpoint}/${id}`, new ApiPayload(group))
     }
 
     async create(group: Pick<Group, 'name'>): Promise<Group> {
-        return await this.client.request('post', this.endpoint, new GroupPayload(group))
+        return await this.client.request('post', this.endpoint, new ApiPayload(group))
     }
 
     async delete(id: number, deleteContacts: boolean = false): Promise<DeleteGroupResponse> {

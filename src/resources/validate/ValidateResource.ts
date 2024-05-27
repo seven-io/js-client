@@ -1,7 +1,7 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import type {ValidateParams, ValidateResponse} from './types'
-import ValidationPayload from './ValidationPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class ValidateResource extends AbstractResource {
     get endpoint(): Endpoint {
@@ -9,7 +9,6 @@ export default class ValidateResource extends AbstractResource {
     }
 
     async start(p: ValidateParams): Promise<ValidateResponse> {
-        const payload = new ValidationPayload(p)
-        return await this.client.request('post', this.endpoint, payload)
+        return await this.client.request('post', this.endpoint, new ApiPayload(p))
     }
 }

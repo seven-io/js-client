@@ -24,8 +24,8 @@ describe('Hooks', () => {
 
     it('should fail to subscribe a webhook', async () => {
         const res = await resource.subscribe({
-            event_type: 'dlr',
-            target_url: 'abc://my.tld/123', // invalid domain
+            eventType: 'dlr',
+            targetUrl: 'abc://my.tld/123', // invalid domain
         })
 
         expect('id' in res).toBeFalsy()
@@ -34,9 +34,9 @@ describe('Hooks', () => {
 
     it('should subscribe a webhook', async () => {
         const res = await resource.subscribe({
-            event_type: 'dlr',
-            request_method: 'GET',
-            target_url: createRandomURL(),
+            eventType: 'dlr',
+            requestMethod: 'GET',
+            targetUrl: createRandomURL(),
         })
 
         if ('id' in res && res.id) {
@@ -48,7 +48,7 @@ describe('Hooks', () => {
     })
 
     it('should unsubscribe a webhook', async () => {
-        const subscription = await resource.subscribe({event_type: 'all', target_url: createRandomURL()})
+        const subscription = await resource.subscribe({eventType: 'all', targetUrl: createRandomURL()})
         const res = await resource.unsubscribe(subscription.id!)
         expect(res).toMatchObject<HooksUnsubscribeResponse>({success: expect.any(Boolean)})
     })

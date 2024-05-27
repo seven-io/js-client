@@ -9,7 +9,6 @@ import type {
     RcsEventResponse
 } from './types'
 import RcsDispatchPayload from './RcsDispatchPayload'
-import RcsEventPayload from './RcsEventPayload'
 import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class RcsResource extends AbstractResource {
@@ -27,6 +26,6 @@ export default class RcsResource extends AbstractResource {
     }
 
     async event(p: RcsEventParams): Promise<RcsEventResponse> {
-        return await this.client.request('post', `${this.endpoint}/events`, new RcsEventPayload(p))
+        return await this.client.request('post', `${this.endpoint}/events`, new ApiPayload(p))
     }
 }

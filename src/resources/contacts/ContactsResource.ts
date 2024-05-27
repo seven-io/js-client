@@ -1,9 +1,10 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
-import ContactsPayload from './ContactsPayload'
-import ContactsWritePayload from './ContactsWritePayload'
+import ContactsListPayload from './ContactsListPayload'
+import ContactsUpsertPayload from './ContactsUpsertPayload'
 import type {Contact, ContactsListParams} from './types'
 import {ApiPayload} from '../../lib/ApiPayload'
+import Client from '../../Client'
 
 export default class ContactsResource extends AbstractResource {
     get endpoint(): Endpoint {
@@ -24,8 +25,8 @@ export default class ContactsResource extends AbstractResource {
                 timestamp: null
             }
         }
-        const payload = new ContactsWritePayload(contact)
-        return await this.client.request('post', this.endpoint, payload, 'application/x-www-form-urlencoded')
+        const payload = new ContactsUpsertPayload(contact)
+        return await this.client.request('post', this.endpoint, payload, Client.CONTENT_TYPE_URLENCODED)
     }
 
     async delete(id: number): Promise<void> {
@@ -37,11 +38,12 @@ export default class ContactsResource extends AbstractResource {
     }
 
     async list(p: ContactsListParams = {}): Promise<Contact[]> {
-        return await this.client.request('get', this.endpoint, new ContactsPayload<ContactsListParams>(p))
+        return await this.client.request('get', this.endpoint, new ContactsListPayload(p))
     }
 
     async update(p: Contact): Promise<Contact> {
-        const payload = new ContactsWritePayload(p)
-        return await this.client.request('patch', `${this.endpoint}/${p.id}`, payload, 'application/x-www-form-urlencoded')
+        const payload = new ContactsUpsertPayload(p)
+        const endpoint = `${this.endpoint}/${p.id}`
+        return await this.client.request('patch', endpoint, payload, Client.CONTENT_TYPE_URLENCODED)
     }
 }

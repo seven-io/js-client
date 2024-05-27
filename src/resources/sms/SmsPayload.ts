@@ -6,8 +6,11 @@ export default class SmsPayload extends ApiPayload<SmsParams> {
         [p: string]: any
     } {
         const {delay, to, ...params} = this.params
-        const payload: any = {...params, json: true, to: to.join()}
-        if (delay) payload.delay = delay.valueOf()
-        return payload
+
+        return {
+            ...params,
+            delay: delay ? delay.valueOf() : undefined,
+            to: to.join(',')
+        }
     }
 }

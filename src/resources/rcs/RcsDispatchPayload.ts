@@ -6,8 +6,10 @@ export default class RcsDispatchPayload extends ApiPayload<RcsDispatchParams> {
         [p: string]: any
     } {
         const {delay, ...params} = this.params
-        const payload: { [k: string]: any } = params
-        if (delay) payload.delay = delay.valueOf()
-        return payload
+
+        return {
+            ...params,
+            delay: delay ? delay.valueOf() : undefined
+        }
     }
 }

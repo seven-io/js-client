@@ -1,9 +1,7 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
-import SubaccountsPayload from './SubaccountsPayload'
 import type {
     Subaccount,
-    SubaccountsApiParams,
     SubaccountsAutoChargeParams,
     SubaccountsAutoChargeResponse,
     SubaccountsCreateParams,
@@ -13,53 +11,30 @@ import type {
     SubaccountsTransferCreditsParams,
     SubaccountsTransferCreditsResponse,
 } from './types'
+import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class SubaccountsResource extends AbstractResource {
     get endpoint(): Endpoint {
         return Endpoint.Subaccounts
     }
 
-    read = async (): Promise<Subaccount[]> => {
-        const params: SubaccountsApiParams<'read', {}> = {
-            action: 'read',
-        }
-        const payload = new SubaccountsPayload(params)
-        return await this.client.request('get', this.endpoint, payload)
+    read = async (id?: number): Promise<Subaccount[]> => {
+        return await this.client.request('get', `${this.endpoint}/read`, new ApiPayload({id}))
     }
 
     create = async (p: SubaccountsCreateParams): Promise<SubaccountsCreateResponse> => {
-        const params: SubaccountsApiParams<'create', SubaccountsCreateParams> = {
-            action: 'create',
-            ...p,
-        }
-        const payload = new SubaccountsPayload(params)
-        return await this.client.request('post', this.endpoint, payload)
+        return await this.client.request('post', `${this.endpoint}/create`, new ApiPayload(p))
     }
 
     delete = async (p: SubaccountsDeleteParams): Promise<SubaccountsDeleteResponse> => {
-        const params: SubaccountsApiParams<'delete', SubaccountsDeleteParams> = {
-            action: 'delete',
-            ...p,
-        }
-        const payload = new SubaccountsPayload(params)
-        return await this.client.request('post', this.endpoint, payload)
+        return await this.client.request('post', `${this.endpoint}/delete`, new ApiPayload(p))
     }
 
     transferCredits = async (p: SubaccountsTransferCreditsParams): Promise<SubaccountsTransferCreditsResponse> => {
-        const params: SubaccountsApiParams<'transfer_credits', SubaccountsTransferCreditsParams> = {
-            action: 'transfer_credits',
-            ...p,
-        }
-        const payload = new SubaccountsPayload(params)
-        return await this.client.request('post', this.endpoint, payload)
+        return await this.client.request('post', `${this.endpoint}/transfer_credits`, new ApiPayload(p))
     }
 
     autoCharge = async (p: SubaccountsAutoChargeParams): Promise<SubaccountsAutoChargeResponse> => {
-        const params: SubaccountsApiParams<'update', SubaccountsAutoChargeParams> = {
-            action: 'update',
-            ...p,
-        }
-        const payload = new SubaccountsPayload(params)
-        return await this.client.request('post', this.endpoint, payload)
+        return await this.client.request('post', `${this.endpoint}/update`, new ApiPayload(p))
     }
 }

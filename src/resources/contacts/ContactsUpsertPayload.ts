@@ -1,7 +1,7 @@
-import ContactsPayload from './ContactsPayload'
 import type {Contact} from './types'
+import {ApiPayload} from '../../lib/ApiPayload'
 
-export default class ContactsWritePayload extends ContactsPayload<Contact> {
+export default class ContactsUpsertPayload extends ApiPayload<Contact> {
     convert(): {
         [k: string]: any
     } {

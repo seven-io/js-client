@@ -14,12 +14,6 @@ export type Subaccount = {
     username: null | string
 }
 
-export type SubaccountsAction = 'read' | 'create' | 'delete' | 'update' | 'transfer_credits'
-
-export type SubaccountsApiParams<TAction extends SubaccountsAction, TData> = {
-    action: TAction
-} & TData
-
 export type SubaccountsCreateParams = {
     email: string
     name: string

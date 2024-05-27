@@ -7,6 +7,7 @@ import Util from './lib/Util'
 
 export default class Client {
     public static readonly BASE_URL = 'https://gateway.seven.io/api'
+    public static readonly CONTENT_TYPE_URLENCODED = 'application/x-www-form-urlencoded'
 
     constructor(protected options: ClientOptions) {
     }

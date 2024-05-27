@@ -3,7 +3,7 @@ import {ApiPayload} from '../../lib/ApiPayload'
 import type {AnalyticsParams} from './types'
 
 export default class AnalyticsPayload extends ApiPayload<AnalyticsParams> {
-    convert(): {
+    override convert(): {
         [k: string]: any
     } {
         this.end()

@@ -10,8 +10,8 @@ export type VoiceMessage = {
 }
 
 export type VoiceResponse = {
-    debug: boolean
     balance: number
+    debug: boolean
     messages: VoiceMessage[],
     success: string
     total_price: number

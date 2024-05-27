@@ -1,7 +1,7 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
-import BalancePayload from './BalancePayload'
 import type {Balance} from './types'
+import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class BalanceResource extends AbstractResource {
     get endpoint(): Endpoint {
@@ -9,7 +9,6 @@ export default class BalanceResource extends AbstractResource {
     }
 
     get = async (): Promise<Balance> => {
-        const payload = new BalancePayload({})
-        return await this.client.request('get', this.endpoint, payload)
+        return await this.client.request('get', this.endpoint, new ApiPayload)
     }
 }

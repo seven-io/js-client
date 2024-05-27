@@ -5,10 +5,10 @@ export type HookEventType = (typeof HOOK_EVENT_TYPES)[number]
 export type HookRequestMethod = (typeof HOOK_REQUEST_METHODS)[number]
 
 export type HooksSubscribeParams = {
-    event_filter?: string
-    event_type: HookEventType
-    request_method?: HookRequestMethod
-    target_url: string
+    eventFilter?: string
+    eventType: HookEventType
+    requestMethod?: HookRequestMethod
+    targetUrl: string
 }
 
 export type HooksReadResponse = {
