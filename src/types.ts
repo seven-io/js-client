@@ -17,4 +17,5 @@ export type ClientOptions = {
     apiKey: string
     debug?: boolean
     sentWith?: string
+    signingSecret?: string
 }

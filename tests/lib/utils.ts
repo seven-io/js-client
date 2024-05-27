@@ -1,7 +1,7 @@
-import {nanoid} from 'nanoid'
+import Util from '../../src/lib/Util'
 
 export function createRandomURL(): string {
-    return `https://my.tld/${nanoid()}`
+    return `https://my.tld/${Util.uuid(21)}`
 }
 
 export function getStringEnumValues(Enum: {

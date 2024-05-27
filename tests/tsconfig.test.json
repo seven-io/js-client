@@ -7,7 +7,6 @@
       "jest",
       "jest-extended",
       "jest-matcher-fix",
-      "nanoid",
       "node",
       "node-fetch",
       "tslib"

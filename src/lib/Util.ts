@@ -3,8 +3,7 @@ export default class Util {
         return Number.isFinite(val) && !Number.isNaN(Number.parseFloat(val))
     }
 
-    /* Thanks, Michael @ https://stackoverflow.com/a/25352300/9737058 */
-    static isAlphaNumeric(str: string) {
+    static isAlphaNumeric(str: string): boolean { // Thanks, Michael @ https://stackoverflow.com/a/25352300/9737058
         for (let i = 0; i < str.length; i++) {
             const code = str.charCodeAt(i)
 
@@ -16,5 +15,9 @@ export default class Util {
         }
 
         return true
+    }
+
+    static uuid(length: number = 32): string {
+        return [...Array(length)].map(() => Math.random().toString(36)[2]).join('')
     }
 }

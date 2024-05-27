@@ -1,6 +1,9 @@
 import {ApiPayload} from './lib/ApiPayload'
 import {Endpoint, ErrorCode} from './lib'
 import type {ClientOptions} from './types'
+import md5 from 'md5'
+import SHA from 'jssha'
+import Util from './lib/Util'
 
 export default class Client {
     public static readonly BASE_URL = 'https://gateway.seven.io/api'
@@ -24,6 +27,31 @@ export default class Client {
 
         if (this.options.apiKey.startsWith('Bearer ')) headers.Authorization = this.options.apiKey
         else headers['X-Api-Key'] = this.options.apiKey
+
+        if (this.options.signingSecret) {
+            const timestamp = Number.parseInt((Date.now() / 1000).toString())
+            const nonce = Util.uuid()
+            const httpVerb = method.toUpperCase()
+            const toHash = Object.keys(payload).length ? JSON.stringify(payload) : ''
+            console.log('toHash', toHash)
+            const hashMD5 = md5(toHash)
+            const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n')
+            console.log('toSign', toSign)
+            const hash = new SHA('SHA-256', 'TEXT', {
+                encoding: 'UTF8',
+                hmacKey: {
+                    encoding: 'UTF8',
+                    format: 'TEXT',
+                    value: this.options.signingSecret
+                }
+            })
+                .update(toSign)
+                .getHash('HEX')
+
+            headers['X-Nonce'] = nonce
+            headers['X-Signature'] = hash
+            headers['X-Timestamp'] = timestamp.toString()
+        }
 
         const opts: RequestInit = {
             headers,

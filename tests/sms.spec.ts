@@ -1,11 +1,12 @@
-import {SMS_TYPES, SmsFile, SmsMessage, SmsParams, SmsResource, SmsResponse} from '../src'
+import {SMS_TYPES, type SmsFile, type SmsMessage, type SmsParams, SmsResource, type SmsResponse} from '../src'
 import STRING_BOOLEAN_VALUES from '../src/lib/StringBooleanValues'
 import client from './lib/client'
 import {unionMatcher} from './lib/utils'
 
-type OptionalSmsParams = Omit<SmsParams, 'text' | 'to'>;
+type OptionalSmsParams = Omit<SmsParams, 'text' | 'to'>
 
 const fullSmsParams: OptionalSmsParams = {
+    delay: new Date('2050-12-12 00:00:00'),
     flash: true,
     foreign_id: 'TestForeignID',
     from: 'Tom Tester',
@@ -53,8 +54,15 @@ const assertJSON = (res: SmsResponse) =>
     expect.objectContaining<SmsResponse>(smsMatcher(res))
 
 describe('SMS', () => {
-    it('should return json response',
-        async () => assertJSON(await resource.dispatch({...requiredSmsParams, ...fullSmsParams})))
+    it('should return json response', async () => {
+        const params: SmsParams = {
+            delay: new Date('2050-12-12 00:00:00'),
+            text: `The current UNIX timestamp is: ${Date.now()}.`,
+            to: ['4917123456789'],
+        }
+        const res = await resource.dispatch(params)
+        assertJSON(res)
+    })
 
     it('should send file and return json response', async () => {
         const files: SmsFile[] = []

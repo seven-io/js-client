@@ -47,7 +47,7 @@ balanceResource.json()
 
 1. `git clone https://github.com/seven-io/js-client seven-client`
 2. `cd seven-client && npm install`
-3. `SEVEN_API_KEY=<InsertSevenApiKey> npm run test`
+3. `SEVEN_API_KEY=<ApiKey> SEVEN_SIGNING_SECRET=<SigningSecret> npm run test`
 
 Set `SEVEN_DEBUG=1` for details printed to `stdout`.
 
