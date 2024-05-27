@@ -3,7 +3,7 @@ import {AbstractResource} from '../AbstractResource'
 import ContactsPayload from './ContactsPayload'
 import ContactsWritePayload from './ContactsWritePayload'
 import type {Contact, ContactsListParams} from './types'
-import emptyPayload from '../../lib/EmptyPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class ContactsResource extends AbstractResource {
     get endpoint(): Endpoint {
@@ -29,11 +29,11 @@ export default class ContactsResource extends AbstractResource {
     }
 
     async delete(id: number): Promise<void> {
-        await this.client.request('delete', `${this.endpoint}/${id}`, emptyPayload)
+        await this.client.request('delete', `${this.endpoint}/${id}`, new ApiPayload)
     }
 
     async get(id: number): Promise<Contact> {
-        return await this.client.request('get', `${this.endpoint}/${id}`, emptyPayload)
+        return await this.client.request('get', `${this.endpoint}/${id}`, new ApiPayload)
     }
 
     async list(p: ContactsListParams = {}): Promise<Contact[]> {

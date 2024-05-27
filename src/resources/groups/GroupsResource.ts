@@ -1,8 +1,8 @@
 import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import {DeleteGroupResponse, Group} from './types'
-import emptyPayload from '../../lib/EmptyPayload'
 import GroupPayload from './GroupPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class GroupsResource extends AbstractResource {
     get endpoint(): Endpoint {
@@ -19,14 +19,14 @@ export default class GroupsResource extends AbstractResource {
 
     async delete(id: number, deleteContacts: boolean = false): Promise<DeleteGroupResponse> {
         const endpoint = `${this.endpoint}/${id}?delete_contacts=${deleteContacts}`
-        return await this.client.request('delete', endpoint, emptyPayload)
+        return await this.client.request('delete', endpoint, new ApiPayload)
     }
 
     async all(): Promise<Group[]> {
-        return await this.client.request('get', this.endpoint, emptyPayload)
+        return await this.client.request('get', this.endpoint, new ApiPayload)
     }
 
     async one(id: number): Promise<Group> {
-        return await this.client.request('get', `${this.endpoint}/${id}`, emptyPayload)
+        return await this.client.request('get', `${this.endpoint}/${id}`, new ApiPayload)
     }
 }

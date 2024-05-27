@@ -1,15 +1,15 @@
-export abstract class ApiPayload<T extends {
+export class ApiPayload<T extends {
     [k: string]: any
 } = {}> {
     protected readonly payload: {
         [k in keyof T]: any
     }
 
-    constructor(public readonly params: T) {
+    constructor(public readonly params: T = {} as T) {
         this.payload = params
     }
 
-    public abstract convert(): {
-        [k: string]: any
+    convert(): { [p: string]: any } {
+        return this.payload
     }
 }

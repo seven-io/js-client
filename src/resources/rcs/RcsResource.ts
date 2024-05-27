@@ -8,9 +8,9 @@ import type {
     RcsEventParams,
     RcsEventResponse
 } from './types'
-import emptyPayload from '../../lib/EmptyPayload'
 import RcsDispatchPayload from './RcsDispatchPayload'
 import RcsEventPayload from './RcsEventPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class RcsResource extends AbstractResource {
     get endpoint(): Endpoint {
@@ -18,7 +18,7 @@ export default class RcsResource extends AbstractResource {
     }
 
     async delete(p: RcsDeleteParams): Promise<RcsDeleteResponse> {
-        return await this.client.request('delete', `${this.endpoint}/messages/${p.id}`, emptyPayload)
+        return await this.client.request('delete', `${this.endpoint}/messages/${p.id}`, new ApiPayload)
     }
 
     async dispatch(p: RcsDispatchParams): Promise<RcsDispatchResponse> {
