@@ -1,18 +1,25 @@
 {
-    "$schema": "https://json.schemastore.org/tsconfig",
-    "compilerOptions": {
-        "declaration": true,
-        "esModuleInterop": true,
-        "lib": [
-            "DOM",
-            "DOM.Iterable"
-        ],
-        "module": "CommonJS",
-        "outDir": "dist",
-        "strict": true,
-        "target": "ESNext"
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "lib": [
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "outDir": "dist",
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
     },
-    "include": [
-        "src/**/*"
-    ]
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "ESNext"
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

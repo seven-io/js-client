@@ -1,11 +1,10 @@
 import {ApiPayload} from './lib/ApiPayload'
 import {Endpoint, ErrorCode} from './lib'
 import type {ClientOptions} from './types'
-import md5 from 'md5'
 import SHA from 'jssha'
 import Util from './lib/Util'
 
-export default class Client {
+export class Client {
     public static readonly BASE_URL = 'https://gateway.seven.io/api'
     public static readonly CONTENT_TYPE_URLENCODED = 'application/x-www-form-urlencoded'
 
@@ -35,7 +34,7 @@ export default class Client {
             const httpVerb = method.toUpperCase()
             const toHash = Object.keys(payload).length ? JSON.stringify(payload) : ''
             console.log('toHash', toHash)
-            const hashMD5 = md5(toHash)
+            const hashMD5 = Util.md5(toHash)
             const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n')
             console.log('toSign', toSign)
             const hash = new SHA('SHA-256', 'TEXT', {

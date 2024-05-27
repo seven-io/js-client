@@ -1,4 +1,4 @@
-import Client from '../../src/Client'
+import Client from '../../src'
 import environment from './environment'
 
 export default new Client(environment)

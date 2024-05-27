@@ -7,18 +7,13 @@
   "description": "Official API client for seven",
   "dependencies": {
     "date-fns": "^3.6.0",
-    "jssha": "^3.3.1",
-    "md5": "^2.3.0"
+    "jssha": "^3.3.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@types/jest": "^29.5.12",
-    "@types/md5": "^2.3.5",
     "@types/node": "^18.19.33",
-    "babelify": "^10.0.0",
-    "browserify": "^17.0.0",
-    "core-js": "^3.37.1",
     "cross-env": "^7.0.3",
     "cross-fetch": "^4.0.0",
     "husky": "^9.0.11",
@@ -26,9 +21,9 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-extended": "^4.0.2",
     "rimraf": "^5.0.7",
+    "rollup": "^4.18.0",
     "ts-jest": "^29.1.3",
     "ts-node": "^10.9.2",
-    "tsify": "^5.0.4",
     "tslib": "^2.6.2",
     "typedoc": "^0.25.13",
     "typescript": "^5.4.5"
@@ -48,8 +43,8 @@
     "tts"
   ],
   "license": "MIT",
-  "main": "dist/SevenApi.umd.js",
-  "module": "dist/index.js",
+  "main": "dist/bundle.js",
+  "module": "dist/bundle.js",
   "name": "@seven.io/api",
   "peerDependencies": {
     "node-fetch": "^2.7.0"
@@ -65,11 +60,12 @@
   },
   "scripts": {
     "build": "cross-env rimraf dist && tsc && npm run bundle",
-    "bundle": "node build/build.js",
+    "bundle": "rollup --config",
     "prepare": "husky install",
     "prepublishOnly": "npm run build",
     "test": "jest"
   },
+  "type": "module",
   "types": "dist/types.d.ts",
   "version": "3.0.0"
 }
