@@ -30,24 +30,20 @@ const expectJSON = (o: VoiceResponse) => expect(o).toMatchObject<VoiceResponse>(
 describe('Voice', () => {
     it('should return a json response', async () => {
         const json = await resource.dispatch({
-            debug: false,
             from: 'Tom Tester',
             ringtime: 10,
             text: 'This is a Test!',
             to: '4917123456789',
-            xml: false,
         })
         expectJSON(json)
     })
 
     it('should return a json dummy response', async () => {
         const opts: VoiceParams = {
-            debug: true,
             from: 'Tom Tester',
             ringtime: 10,
             text: 'This is a Test!',
             to: '4917123456789',
-            xml: false,
         }
         const json = await resource.dispatch(opts)
         expectJSON(json)

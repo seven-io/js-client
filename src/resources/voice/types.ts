@@ -18,10 +18,8 @@ export type VoiceResponse = {
 }
 
 export type VoiceParams = {
-    debug?: boolean
     from?: string
     ringtime?: number
     text: string
     to: string
-    xml?: boolean
 }
