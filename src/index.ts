@@ -4,4 +4,4 @@ export {
 
 export * from './lib'
 export * from './resources'
-//export * from './types'
+export * from './types'
