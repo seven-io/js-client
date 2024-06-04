@@ -10,8 +10,6 @@
     "jssha": "^3.3.1"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^11.1.6",
     "@types/jest": "^29.5.12",
     "@types/node": "^18.19.33",
     "cross-env": "^7.0.3",
@@ -21,15 +19,22 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-extended": "^4.0.2",
     "rimraf": "^5.0.7",
-    "rollup": "^4.18.0",
     "ts-jest": "^29.1.3",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
     "typedoc": "^0.25.13",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vite": "^5.2.12",
+    "vite-plugin-dts": "^3.9.1"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/seven-client.js",
+      "require": "./dist/seven-client.umd.cjs"
+    }
   },
   "files": [
-    "dist/**/*"
+    "dist"
   ],
   "homepage": "https://github.com/seven-io/js-client",
   "keywords": [
@@ -43,8 +48,8 @@
     "tts"
   ],
   "license": "MIT",
-  "main": "dist/bundle.js",
-  "module": "dist/bundle.js",
+  "main": "dist/seven-client.umd.cjs",
+  "module": "dist/seven-client.js",
   "name": "@seven.io/api",
   "peerDependencies": {
     "node-fetch": "^2.7.0"
@@ -59,10 +64,11 @@
     "url": "git+https://github.com/seven-io/js-client.git"
   },
   "scripts": {
-    "build": "cross-env rimraf dist && tsc && npm run bundle",
-    "bundle": "rollup --config",
+    "build": "cross-env rimraf dist && tsc && vite build",
+    "dev": "vite",
     "prepare": "husky install",
     "prepublishOnly": "npm run build",
+    "preview": "vite preview",
     "test": "jest"
   },
   "type": "module",

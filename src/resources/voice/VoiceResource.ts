@@ -1,7 +1,7 @@
-import {Endpoint} from '~/lib'
+import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import type {VoiceParams, VoiceResponse} from './types'
-import {ApiPayload} from '~/lib/ApiPayload'
+import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class VoiceResource extends AbstractResource {
     get endpoint(): Endpoint {
