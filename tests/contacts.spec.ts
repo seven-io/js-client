@@ -1,6 +1,5 @@
 import client from './lib/client'
-import {ContactsResource} from '../src/resources'
-import type {Contact} from '../src/resources/contacts/types'
+import {type Contact, ContactsResource} from '../src'
 
 const resource = new ContactsResource(client)
 const contactMatcher: Contact = {
@@ -31,29 +30,28 @@ const contactMatcher: Contact = {
 }
 
 describe('Contacts', () => {
-    it('should return a json list of contacts',
-        async () => {
-            await resource.create({
-                avatar: '',
-                groups: [],
-                properties: {
-                    address: null,
-                    birthday: null,
-                    city: null,
-                    email: null,
-                    firstname: null,
-                    home_number: null,
-                    lastname: null,
-                    mobile_number: null,
-                    notes: null,
-                    postal_code: null,
-                },
-            }) // make sure we receive some data...
-            const res = await resource.list()
-            expect.arrayContaining<Contact>(Array(res.length).fill(contactMatcher))
-        })
+    it('should return a list of contacts', async () => {
+        await resource.create({
+            avatar: '',
+            groups: [],
+            properties: {
+                address: null,
+                birthday: null,
+                city: null,
+                email: null,
+                firstname: null,
+                home_number: null,
+                lastname: null,
+                mobile_number: null,
+                notes: null,
+                postal_code: null,
+            },
+        }) // make sure we receive some data...
+        const res = await resource.list()
+        expect.arrayContaining<Contact>(Array(res.length).fill(contactMatcher))
+    })
 
-    it('should create a new contact and delete it again', async () => {
+    it('should create a contact and delete it again', async () => {
         const params: Pick<Contact, 'avatar' | 'groups' | 'properties'> = {
             avatar: '',
             groups: [],

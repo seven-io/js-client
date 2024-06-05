@@ -1,6 +1,7 @@
+import SHA from 'jssha'
+import {md5} from 'js-md5'
 import {ApiPayload} from './lib/ApiPayload'
 import {Endpoint, ErrorCode} from './lib'
-import SHA from 'jssha'
 import Util from './lib/Util'
 
 export type ClientOptions = {
@@ -34,39 +35,12 @@ export class Client {
         if (this.options.apiKey.startsWith('Bearer ')) headers.Authorization = this.options.apiKey
         else headers['X-Api-Key'] = this.options.apiKey
 
-        if (this.options.signingSecret) {
-            const timestamp = Number.parseInt((Date.now() / 1000).toString())
-            const nonce = Util.uuid()
-            const httpVerb = method.toUpperCase()
-            const toHash = Object.keys(payload).length ? JSON.stringify(payload) : ''
-            console.log('toHash', toHash)
-            const hashMD5 = Util.md5(toHash)
-            const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n')
-            console.log('toSign', toSign)
-            const hash = new SHA('SHA-256', 'TEXT', {
-                encoding: 'UTF8',
-                hmacKey: {
-                    encoding: 'UTF8',
-                    format: 'TEXT',
-                    value: this.options.signingSecret
-                }
-            })
-                .update(toSign)
-                .getHash('HEX')
-
-            headers['X-Nonce'] = nonce
-            headers['X-Signature'] = hash
-            headers['X-Timestamp'] = timestamp.toString()
-        }
-
         const opts: RequestInit = {
-            headers,
             method,
         }
 
+        const params = new URLSearchParams
         if (payload && Object.keys(payload).length) {
-            const params = new URLSearchParams
-
             Object.entries(payload).forEach((([k, v]) => {
                 if (Array.isArray(v)) {
                     v.forEach((i, n) => {
@@ -75,10 +49,8 @@ export class Client {
 
                             params.set(`${prepend}[contents]`, i.contents)
                             params.set(`${prepend}[name]`, i.name)
-                            if ('password' in i)
-                                params.set(`${prepend}[password]`, i.password)
-                            if ('validity' in i)
-                                params.set(`${prepend}[validity]`, i.validity)
+                            if ('password' in i) params.set(`${prepend}[password]`, i.password)
+                            if ('validity' in i) params.set(`${prepend}[validity]`, i.validity)
                         } else params.append(k, i)
                     })
                 } else params.set(k, v)
@@ -93,7 +65,32 @@ export class Client {
             }
         }
 
-        const res = await fetch(url, opts)
+        if (this.options.signingSecret) {
+            const timestamp = Number.parseInt((Date.now() / 1000).toString())
+            const nonce = Util.uuid()
+            const httpVerb = method.toUpperCase()
+            const toHash = Object.keys(payload).length
+                ? contentType === Client.CONTENT_TYPE_URLENCODED
+                    ? params.toString()
+                    : JSON.stringify(payload)
+                : ''
+            const hashMD5 = md5(toHash)
+            const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n').trim()
+            const hash = new SHA('SHA-256', 'TEXT', {
+                hmacKey: {
+                    format: 'TEXT',
+                    value: this.options.signingSecret
+                }
+            })
+                .update(toSign)
+                .getHash('HEX')
+
+            headers['X-Nonce'] = nonce
+            headers['X-Signature'] = hash
+            headers['X-Timestamp'] = timestamp.toString()
+        }
+
+        const res = await fetch(url, {...opts, headers})
         let body = await res.text()
         let apiCode: ErrorCode | null = null
 
@@ -112,9 +109,9 @@ export class Client {
         if (this.options.debug) console.debug({
             request: {
                 ...opts,
-                url,
                 body: opts.body instanceof URLSearchParams
                     ? Object.fromEntries(opts.body) : opts.body,
+                url,
             },
             response: {
                 apiCode,

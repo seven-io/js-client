@@ -1,6 +1,5 @@
 import client from './lib/client'
-import {BalanceResource} from '../src/resources'
-import type {Balance} from '../src/resources/balance/types'
+import {type Balance, BalanceResource} from '../src'
 
 const resource = new BalanceResource(client)
 

@@ -2,7 +2,7 @@ import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import ContactsListPayload from './ContactsListPayload'
 import ContactsUpsertPayload from './ContactsUpsertPayload'
-import type {Contact, ContactsListParams} from './types'
+import {Contact, ContactsDeleteResponse, ContactsListParams} from './types'
 import {ApiPayload} from '../../lib/ApiPayload'
 import {Client} from '../../Client'
 
@@ -29,8 +29,8 @@ export default class ContactsResource extends AbstractResource {
         return await this.client.request('post', this.endpoint, payload, Client.CONTENT_TYPE_URLENCODED)
     }
 
-    async delete(id: number): Promise<void> {
-        await this.client.request('delete', `${this.endpoint}/${id}`, new ApiPayload)
+    async delete(id: number): Promise<ContactsDeleteResponse> {
+        return await this.client.request('delete', `${this.endpoint}/${id}`, new ApiPayload)
     }
 
     async get(id: number): Promise<Contact> {

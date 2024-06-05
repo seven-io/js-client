@@ -33,3 +33,7 @@ export type ContactsListParams = {
     orderDirection?: string
     search?: string
 }
+
+export type ContactsDeleteResponse = {
+    success: boolean
+}
