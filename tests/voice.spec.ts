@@ -1,6 +1,5 @@
 import client from './lib/client'
-import {VoiceResource} from '../src/resources'
-import type {VoiceMessage, VoiceParams, VoiceResponse} from '../src/resources/voice/types'
+import {type VoiceMessage, type VoiceParams, VoiceResource, type VoiceResponse} from '../src'
 
 const resource = new VoiceResource(client)
 const expectJSON = (o: VoiceResponse) => expect(o).toMatchObject<VoiceResponse>({

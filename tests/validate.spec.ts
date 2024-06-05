@@ -1,6 +1,5 @@
-import {ValidateResource} from '../src/resources/validate'
 import client from './lib/client'
-import type {ValidateResponse} from '../src/resources/validate/types'
+import {ValidateResource, type ValidateResponse} from '../src'
 
 const resource = new ValidateResource(client)
 

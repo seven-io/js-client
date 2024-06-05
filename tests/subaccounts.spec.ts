@@ -1,12 +1,12 @@
 import client from './lib/client'
-import {SubaccountsResource} from '../src/resources'
-import type {
-    Subaccount,
-    SubaccountsAutoChargeResponse,
-    SubaccountsCreateResponse,
-    SubaccountsDeleteResponse,
-    SubaccountsTransferCreditsResponse
-} from '../src/resources/subaccounts/types'
+import {
+    type Subaccount,
+    type SubaccountsAutoChargeResponse,
+    type SubaccountsCreateResponse,
+    type SubaccountsDeleteResponse,
+    SubaccountsResource,
+    type SubaccountsTransferCreditsResponse
+} from '../src'
 
 const resource = new SubaccountsResource(client)
 

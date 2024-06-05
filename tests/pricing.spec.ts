@@ -1,6 +1,11 @@
 import client from './lib/client'
-import type {CountryNetwork, CountryPricing, PricingParams, PricingResponse} from '../src/resources/pricing/types'
-import {PricingResource} from '../src/resources'
+import {
+    type CountryNetwork,
+    type CountryPricing,
+    type PricingParams,
+    PricingResource,
+    type PricingResponse
+} from '../src'
 
 const pricingCountryNetworkMatcher: CountryNetwork = {
     comment: expect.any(String),

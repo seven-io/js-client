@@ -1,7 +1,6 @@
 import client from './lib/client'
 import {getStringEnumValues, unionMatcher} from './lib/utils'
-import {StatusReportCode, StatusResource} from '../src/resources'
-import {StatusResponse} from '../src/resources/status/types'
+import {StatusReportCode, StatusResource, type StatusResponse} from '../src'
 
 const resource = new StatusResource(client)
 

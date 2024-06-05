@@ -1,8 +1,7 @@
 import STRING_BOOLEAN_VALUES from '../src/lib/StringBooleanValues'
 import client from './lib/client'
 import {unionMatcher} from './lib/utils'
-import type {SmsFile, SmsMessage, SmsParams, SmsResponse} from '../src/resources/sms/types'
-import {SMS_TYPES, SmsResource} from '../src/resources'
+import {SMS_TYPES, type SmsFile, type SmsMessage, type SmsParams, SmsResource, type SmsResponse} from '../src'
 
 const resource = new SmsResource(client)
 const smsMatcher = (res: SmsResponse) => ({

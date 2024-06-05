@@ -10,12 +10,10 @@ export default class SmsResource extends AbstractResource {
     }
 
     delete = async (p: SmsDeleteParams): Promise<SmsDeleteResponse> => {
-        const payload = new DeleteSmsPayload(p)
-        return await this.client.request('delete', this.endpoint, payload)
+        return await this.client.request('delete', this.endpoint, new DeleteSmsPayload(p))
     }
 
     dispatch = async (p: SmsParams): Promise<SmsResponse> => {
-        const payload = new SmsPayload(p)
-        return await this.client.request('post', this.endpoint, payload)
+        return await this.client.request('post', this.endpoint, new SmsPayload(p))
     }
 }

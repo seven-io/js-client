@@ -1,6 +1,5 @@
 import client from './lib/client'
-import RcsResource from '../src/resources/rcs/RcsResource'
-import {RcsDispatchParams, RcsEventParams, RcsMessage} from '../src/resources/rcs/types'
+import {type RcsDispatchParams, type RcsEventParams, type RcsMessage, RcsResource} from '../src'
 
 const resource = new RcsResource(client)
 
