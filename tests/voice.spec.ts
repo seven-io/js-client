@@ -1,5 +1,6 @@
-import {VoiceMessage, VoiceParams, VoiceResource, VoiceResponse} from '../src'
 import client from './lib/client'
+import {VoiceResource} from '../src/resources'
+import type {VoiceMessage, VoiceParams, VoiceResponse} from '../src/resources/voice/types'
 
 const resource = new VoiceResource(client)
 const expectJSON = (o: VoiceResponse) => expect(o).toMatchObject<VoiceResponse>({
@@ -7,14 +8,8 @@ const expectJSON = (o: VoiceResponse) => expect(o).toMatchObject<VoiceResponse>(
     debug: expect.any(Boolean),
     messages: expect.arrayContaining<VoiceMessage>([
         {
-            error: expect.toBeOneOf([
-                String,
-                null,
-            ]),
-            error_text: expect.toBeOneOf([
-                String,
-                null,
-            ]),
+            error: expect.nilOrAny(String),
+            error_text: expect.nilOrAny(String),
             id: expect.any(String),
             price: expect.any(Number),
             recipient: expect.any(String),

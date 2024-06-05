@@ -1,13 +1,13 @@
 import {subDays} from 'date-fns'
-import {
-    type AnalyticBase,
-    type AnalyticGroupByCountry,
-    type AnalyticGroupByDate,
-    type AnalyticGroupByLabel,
-    type AnalyticGroupBySubaccount,
-    AnalyticsResource,
-} from '../src'
 import client from './lib/client'
+import {AnalyticsResource} from '../src/resources'
+import type {
+    AnalyticBase,
+    AnalyticGroupByCountry,
+    AnalyticGroupByDate,
+    AnalyticGroupByLabel,
+    AnalyticGroupBySubaccount
+} from '../src/resources/analytics/types'
 
 const resource = new AnalyticsResource(client)
 

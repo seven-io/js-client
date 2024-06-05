@@ -1,6 +1,6 @@
 import client from './lib/client'
 import GroupsResource from '../src/resources/groups/GroupsResource'
-import {DeleteGroupResponse, Group} from '../src/resources/groups/types'
+import type {DeleteGroupResponse, Group} from '../src/resources/groups/types'
 
 const resource = new GroupsResource(client)
 

@@ -1,4 +1,4 @@
-import Client from '../index'
+import {Client} from '../Client.ts'
 import {Endpoint} from '../lib'
 
 export abstract class AbstractResource {

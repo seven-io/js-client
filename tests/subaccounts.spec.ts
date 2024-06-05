@@ -1,12 +1,12 @@
-import {
+import client from './lib/client'
+import {SubaccountsResource} from '../src/resources'
+import type {
     Subaccount,
     SubaccountsAutoChargeResponse,
     SubaccountsCreateResponse,
     SubaccountsDeleteResponse,
-    SubaccountsResource,
-    SubaccountsTransferCreditsResponse,
-} from '../src'
-import client from './lib/client'
+    SubaccountsTransferCreditsResponse
+} from '../src/resources/subaccounts/types'
 
 const resource = new SubaccountsResource(client)
 
@@ -124,7 +124,7 @@ describe('Subaccounts', () => {
                 id: subaccount!.id,
                 threshold: 2,
             })
-            await assertAutoCharge(res)
+            assertAutoCharge(res)
         })
 
     it('should fail to set up auto charging',
@@ -134,7 +134,7 @@ describe('Subaccounts', () => {
                 id: 0,
                 threshold: -2,
             })
-            await assertAutoCharge(res)
+            assertAutoCharge(res)
         })
 
     it('should delete an account',

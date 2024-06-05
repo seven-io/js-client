@@ -1,8 +1,8 @@
+import STRING_BOOLEAN_VALUES from '../src/lib/StringBooleanValues'
+import client from './lib/client'
+import {getStringEnumValues, unionMatcher} from './lib/utils'
+import type {Carrier, CnamResponse, Format, HLR, MnpResponse, Roaming} from '../src/resources/lookup/types'
 import {
-    type Carrier,
-    type CnamResponse,
-    type Format,
-    type HLR,
     HLR_PORTED_CODES,
     HLR_REACHABLE_CODES,
     HLR_ROAMING_CODES,
@@ -10,15 +10,10 @@ import {
     HLR_VALID_NUMBER_CODES,
     LOOKUP_GSM_CODES,
     LookupResource,
-    type MnpResponse,
     NetworkType,
-    type Roaming,
     ROAMING_STATUS_CODES,
-    STRING_RESPONSE_CODES,
-} from '../src'
-import STRING_BOOLEAN_VALUES from '../src/lib/StringBooleanValues'
-import client from './lib/client'
-import {getStringEnumValues, unionMatcher} from './lib/utils'
+    STRING_RESPONSE_CODES
+} from '../src/resources'
 
 const lookupCnamMatcher: CnamResponse = {
     code: expect.stringMatching(unionMatcher(STRING_RESPONSE_CODES)),

@@ -1,4 +1,4 @@
-import {ClientOptions} from '../../src'
+import type {ClientOptions} from '../../src/Client'
 
 const {
     SEVEN_API_KEY: apiKey,

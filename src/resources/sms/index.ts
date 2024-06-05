@@ -5,3 +5,4 @@ export {
 export {
     default as SmsValidator,
 } from './SmsValidator'
+export * from './types'

@@ -26,7 +26,7 @@ yarn add @seven.io/client
 
 ```html
 
-<script src='https://unpkg.com/browse/@seven.io/client/dist/SevenApi.umd.js'></script>
+<script src='https://unpkg.com/browse/@seven.io/client/dist/´seven-client.umd.cjs'></script>
 ```
 
 ## Example
@@ -36,9 +36,11 @@ yarn add @seven.io/client
 // globalThis.fetch = require('node-fetch').default; // uncomment in NodeJS environments
 // const SevenApi = require('@seven.io/api'); // uncomment in NodeJS environments
 
-const client = new SevenApi.Client('MY_SUPER_SECRET_SEVEN_IO_API_KEY!')
-const balanceResource = new SevenApi.BalanceResource(client)
-balanceResource.json()
+import SevenClient, {BalanceResource} from '@seven.io/api'
+
+const client = new SevenClient({apiKey: 'MY_SUPER_SECRET_SEVEN_IO_API_KEY!'})
+const balanceResource = new BalanceResource(client)
+balanceResource.get()
     .then(console.log)
     .catch(console.error);
 ```

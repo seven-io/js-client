@@ -1,6 +1,7 @@
-import {HOOK_EVENT_TYPES, HOOK_REQUEST_METHODS, HooksResource, HooksUnsubscribeResponse} from '../src'
 import client from './lib/client'
 import {createRandomURL, isValidURL} from './lib/utils'
+import {HOOK_EVENT_TYPES, HOOK_REQUEST_METHODS, HooksResource} from '../src/resources'
+import type {HooksUnsubscribeResponse} from '../src/resources/hooks/types'
 
 const resource = new HooksResource(client)
 

@@ -1,4 +1,4 @@
-import environment, {Environment} from './lib/environment'
+import environment, {type Environment} from './lib/environment'
 
 describe('Environment', () => {
     it('should have environment variables set', () => {

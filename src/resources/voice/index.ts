@@ -4,3 +4,4 @@ export {
 export {
     default as VoiceValidator,
 } from './VoiceValidator'
+export * from './types'

@@ -50,7 +50,7 @@
   "license": "MIT",
   "main": "dist/seven-client.umd.cjs",
   "module": "dist/seven-client.js",
-  "name": "@seven.io/api",
+  "name": "@seven.io/client",
   "peerDependencies": {
     "node-fetch": "^2.7.0"
   },
@@ -72,6 +72,6 @@
     "test": "jest"
   },
   "type": "module",
-  "types": "dist/types.d.ts",
+  "types": "./dist/index.d.ts",
   "version": "3.0.0"
 }

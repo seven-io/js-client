@@ -1,8 +1,14 @@
 import {ApiPayload} from './lib/ApiPayload'
 import {Endpoint, ErrorCode} from './lib'
-import type {ClientOptions} from './types'
 import SHA from 'jssha'
 import Util from './lib/Util'
+
+export type ClientOptions = {
+    apiKey: string
+    debug?: boolean
+    sentWith?: string
+    signingSecret?: string
+}
 
 export class Client {
     public static readonly BASE_URL = 'https://gateway.seven.io/api'

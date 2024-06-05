@@ -1,5 +1,12 @@
-import {JournalBase, JournalInbound, JournalOutbound, JournalParams, JournalResource, JournalVoice,} from '../src'
 import client from './lib/client'
+import {JournalResource} from '../src/resources'
+import type {
+    JournalBase,
+    JournalInbound,
+    JournalOutbound,
+    JournalParams,
+    JournalVoice
+} from '../src/resources/journal/types'
 
 const resource = new JournalResource(client)
 

@@ -1,5 +1,6 @@
-import {Contact, ContactsResource} from '../src'
 import client from './lib/client'
+import {ContactsResource} from '../src/resources'
+import type {Contact} from '../src/resources/contacts/types'
 
 const resource = new ContactsResource(client)
 const contactMatcher: Contact = {

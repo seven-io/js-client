@@ -1,25 +1,8 @@
-import {SMS_TYPES, type SmsFile, type SmsMessage, type SmsParams, SmsResource, type SmsResponse} from '../src'
 import STRING_BOOLEAN_VALUES from '../src/lib/StringBooleanValues'
 import client from './lib/client'
 import {unionMatcher} from './lib/utils'
-
-type OptionalSmsParams = Omit<SmsParams, 'text' | 'to'>
-
-const fullSmsParams: OptionalSmsParams = {
-    delay: new Date('2050-12-12 00:00:00'),
-    flash: true,
-    foreign_id: 'TestForeignID',
-    from: 'Tom Tester',
-    label: 'TestLabel',
-    performance_tracking: true,
-    ttl: 128000,
-    udh: 'MyTestHeader',
-}
-
-const requiredSmsParams: Pick<SmsParams, 'text' | 'to'> = {
-    text: `The current date is: ${Date.now()}.`,
-    to: ['4917123456789'],
-}
+import type {SmsFile, SmsMessage, SmsParams, SmsResponse} from '../src/resources/sms/types'
+import {SMS_TYPES, SmsResource} from '../src/resources'
 
 const resource = new SmsResource(client)
 const smsMatcher = (res: SmsResponse) => ({
@@ -75,11 +58,17 @@ describe('SMS', () => {
         }
 
         const res = await resource.dispatch({
-            ...fullSmsParams,
-            ...requiredSmsParams,
+            delay: new Date('2050-12-12 00:00:00'),
             files,
             flash: false,
+            foreign_id: 'TestForeignID',
+            from: 'Tom Tester',
+            label: 'TestLabel',
+            performance_tracking: true,
             text,
+            to: ['4917123456789'],
+            ttl: 128000,
+            udh: 'MyTestHeader',
         })
         await assertJSON(res)
     })

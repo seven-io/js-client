@@ -4,7 +4,7 @@ import ContactsListPayload from './ContactsListPayload'
 import ContactsUpsertPayload from './ContactsUpsertPayload'
 import type {Contact, ContactsListParams} from './types'
 import {ApiPayload} from '../../lib/ApiPayload'
-import Client from '../..'
+import {Client} from '../../Client'
 
 export default class ContactsResource extends AbstractResource {
     get endpoint(): Endpoint {
