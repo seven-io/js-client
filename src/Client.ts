@@ -1,6 +1,6 @@
 import SHA from 'jssha'
 import {md5} from 'js-md5'
-import {Endpoint, ErrorCode} from './lib'
+import {ErrorCode} from './lib'
 import Util from './lib/Util'
 
 export type ClientOptions = {
@@ -19,7 +19,7 @@ export class Client {
 
     request = async <R extends any, P extends { [p: string]: any } = {}>(
         method: 'delete' | 'get' | 'post' | 'patch',
-        endpoint: Endpoint | string,
+        endpoint: string,
         payload: P,
         contentType: string = 'application/json'
     ): Promise<R> => {

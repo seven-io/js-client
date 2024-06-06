@@ -1,30 +1,21 @@
-import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import JournalPayload from './JournalPayload'
 import type {JournalInbound, JournalOutbound, JournalParams, JournalReply, JournalVoice} from './types'
 
 export default class JournalResource extends AbstractResource {
-    get endpoint(): Endpoint {
-        return Endpoint.Journal
-    }
-
     async inbound(p: JournalParams = {}): Promise<JournalInbound[]> {
-        const payload = new JournalPayload(p).convert()
-        return this.client.request('get', `${this.endpoint}/inbound`, payload)
+        return this.client.request('get', 'journal/inbound', new JournalPayload(p).convert())
     }
 
     async outbound(p: JournalParams = {}): Promise<JournalOutbound[]> {
-        const payload = new JournalPayload(p).convert()
-        return this.client.request('get', `${this.endpoint}/outbound`, payload)
+        return this.client.request('get', 'journal/outbound', new JournalPayload(p).convert())
     }
 
     replies = async (p: JournalParams = {}): Promise<JournalReply[]> => {
-        const payload = new JournalPayload(p).convert()
-        return this.client.request('get', `${this.endpoint}/replies`, payload)
+        return this.client.request('get', 'journal/replies', new JournalPayload(p).convert())
     }
 
     voice = async (p: JournalParams = {}): Promise<JournalVoice[]> => {
-        const payload = new JournalPayload(p).convert()
-        return this.client.request('get', `${this.endpoint}/voice`, payload)
+        return this.client.request('get', 'journal/voice', new JournalPayload(p).convert())
     }
 }

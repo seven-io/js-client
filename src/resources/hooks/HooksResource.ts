@@ -1,17 +1,12 @@
-import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import type {HooksReadResponse, HooksSubscribeParams, HooksSubscribeResponse, HooksUnsubscribeResponse,} from './types'
 import {ApiPayload} from '../../lib/ApiPayload'
 import HooksSubscribePayload from './HooksSubscribePayload'
 
 export default class HooksResource extends AbstractResource {
-    get endpoint(): Endpoint {
-        return Endpoint.Hooks
-    }
-
     async read(): Promise<HooksReadResponse> {
         const payload = (new ApiPayload).convert()
-        const res = await this.client.request<HooksReadResponse, typeof payload>('get', this.endpoint, payload)
+        const res = await this.client.request<HooksReadResponse, typeof payload>('get', 'hooks', payload)
         if (res.hooks) {
             res.hooks = res.hooks.map(hook => {
                 hook.created = new Date(hook.created)
@@ -22,12 +17,10 @@ export default class HooksResource extends AbstractResource {
     }
 
     async subscribe(p: HooksSubscribeParams): Promise<HooksSubscribeResponse> {
-        const payload = new HooksSubscribePayload(p).convert()
-        return await this.client.request('post', this.endpoint, payload)
+        return await this.client.request('post', 'hooks', new HooksSubscribePayload(p).convert())
     }
 
     async unsubscribe(id: number): Promise<HooksUnsubscribeResponse> {
-        const payload = new ApiPayload({id}).convert()
-        return await this.client.request('delete', this.endpoint, payload)
+        return await this.client.request('delete', 'hooks', new ApiPayload({id}).convert())
     }
 }
