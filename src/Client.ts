@@ -36,8 +36,9 @@ export class Client {
         const opts: RequestInit = {
             method,
         }
-
+        const isUrlencoded = contentType === Client.CONTENT_TYPE_URLENCODED
         const params = new URLSearchParams
+
         if (payload && Object.keys(payload).length) {
             Object.entries(payload).forEach((([k, v]) => {
                 if (Array.isArray(v)) {
@@ -59,7 +60,7 @@ export class Client {
                     url += `?${params.toString()}`
                     break
                 default:
-                    opts.body = params
+                    opts.body = isUrlencoded ? params.toString() : JSON.stringify(payload)
             }
         }
 
@@ -67,13 +68,7 @@ export class Client {
             const toHash = (): string => {
                 if (!Object.keys(payload).length) return ''
 
-                const isUrlencoded = contentType === Client.CONTENT_TYPE_URLENCODED
-                console.log('isUrlencoded', isUrlencoded)
-
-                const value = isUrlencoded ? params.toString() : JSON.stringify(payload)
-                console.log('toHash', value)
-
-                return value
+                return isUrlencoded ? params.toString() : JSON.stringify(payload)
             }
 
             const timestamp = Number.parseInt((Date.now() / 1000).toString())
@@ -81,8 +76,6 @@ export class Client {
             const httpVerb = method.toUpperCase()
             const hashMD5 = md5(toHash())
             const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n')//.trim()
-            console.log('toSign', toSign)
-            console.log(this.options.signingSecret)
 
             const hash = new SHA('SHA-256', 'TEXT', {
                 hmacKey: {
@@ -91,7 +84,6 @@ export class Client {
                 }
             })
                 .update(toSign)
-                //.update(Buffer.from(toSign, 'utf-8'))
                 .getHash('HEX')
 
             headers['X-Nonce'] = nonce
