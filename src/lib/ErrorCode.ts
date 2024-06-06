@@ -10,6 +10,7 @@ export enum ErrorCode {
     InvalidType = 400,
     ParameterLongExceedsCharLimit = 401,
     PreventedByReloadLock = 402,
+    DailyLimitReachedForNumber = 403,
     InsufficientCredits = 500,
     CarrierFailed = 600,
     UnknownError = 700,
