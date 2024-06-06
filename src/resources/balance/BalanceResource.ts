@@ -9,6 +9,6 @@ export default class BalanceResource extends AbstractResource {
     }
 
     get = async (): Promise<Balance> => {
-        return await this.client.request('get', this.endpoint, new ApiPayload)
+        return await this.client.request('get', this.endpoint, (new ApiPayload).convert())
     }
 }

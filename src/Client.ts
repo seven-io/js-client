@@ -1,6 +1,5 @@
 import SHA from 'jssha'
 import {md5} from 'js-md5'
-import {ApiPayload} from './lib/ApiPayload'
 import {Endpoint, ErrorCode} from './lib'
 import Util from './lib/Util'
 
@@ -18,13 +17,12 @@ export class Client {
     constructor(protected options: ClientOptions) {
     }
 
-    request = async <R extends any, P extends ApiPayload>(
+    request = async <R extends any, P extends { [p: string]: any } = {}>(
         method: 'delete' | 'get' | 'post' | 'patch',
         endpoint: Endpoint | string,
         payload: P,
         contentType: string = 'application/json'
     ): Promise<R> => {
-        payload = payload.convert() as any
         let url = `${Client.BASE_URL}/${endpoint}`
         const headers: HeadersInit = {
             Accept: 'application/json',
@@ -66,16 +64,26 @@ export class Client {
         }
 
         if (this.options.signingSecret) {
+            const toHash = (): string => {
+                if (!Object.keys(payload).length) return ''
+
+                const isUrlencoded = contentType === Client.CONTENT_TYPE_URLENCODED
+                console.log('isUrlencoded', isUrlencoded)
+
+                const value = isUrlencoded ? params.toString() : JSON.stringify(payload)
+                console.log('toHash', value)
+
+                return value
+            }
+
             const timestamp = Number.parseInt((Date.now() / 1000).toString())
             const nonce = Util.uuid()
             const httpVerb = method.toUpperCase()
-            const toHash = Object.keys(payload).length
-                ? contentType === Client.CONTENT_TYPE_URLENCODED
-                    ? params.toString()
-                    : JSON.stringify(payload)
-                : ''
-            const hashMD5 = md5(toHash)
-            const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n').trim()
+            const hashMD5 = md5(toHash())
+            const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n')//.trim()
+            console.log('toSign', toSign)
+            console.log(this.options.signingSecret)
+
             const hash = new SHA('SHA-256', 'TEXT', {
                 hmacKey: {
                     format: 'TEXT',
@@ -83,6 +91,7 @@ export class Client {
                 }
             })
                 .update(toSign)
+                //.update(Buffer.from(toSign, 'utf-8'))
                 .getHash('HEX')
 
             headers['X-Nonce'] = nonce

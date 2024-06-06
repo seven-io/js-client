@@ -17,15 +17,16 @@ export default class RcsResource extends AbstractResource {
     }
 
     async delete(p: RcsDeleteParams): Promise<RcsDeleteResponse> {
-        return await this.client.request('delete', `${this.endpoint}/messages/${p.id}`, new ApiPayload)
+        const payload = (new ApiPayload).convert()
+        return await this.client.request('delete', `${this.endpoint}/messages/${p.id}`, payload)
     }
 
     async dispatch(p: RcsDispatchParams): Promise<RcsDispatchResponse> {
-        const payload = new RcsDispatchPayload(p)
+        const payload = new RcsDispatchPayload(p).convert()
         return await this.client.request('post', `${this.endpoint}/messages`, payload)
     }
 
     async event(p: RcsEventParams): Promise<RcsEventResponse> {
-        return await this.client.request('post', `${this.endpoint}/events`, new ApiPayload(p))
+        return await this.client.request('post', `${this.endpoint}/events`, new ApiPayload(p).convert())
     }
 }

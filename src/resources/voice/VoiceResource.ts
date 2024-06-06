@@ -9,6 +9,6 @@ export default class VoiceResource extends AbstractResource {
     }
 
     async dispatch(p: VoiceParams): Promise<VoiceResponse> {
-        return await this.client.request('post', this.endpoint, new ApiPayload(p))
+        return await this.client.request('post', this.endpoint, new ApiPayload(p).convert())
     }
 }

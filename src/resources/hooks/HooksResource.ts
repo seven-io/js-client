@@ -10,7 +10,7 @@ export default class HooksResource extends AbstractResource {
     }
 
     async read(): Promise<HooksReadResponse> {
-        const payload = new ApiPayload
+        const payload = (new ApiPayload).convert()
         const res = await this.client.request<HooksReadResponse, typeof payload>('get', this.endpoint, payload)
         if (res.hooks) {
             res.hooks = res.hooks.map(hook => {
@@ -22,12 +22,12 @@ export default class HooksResource extends AbstractResource {
     }
 
     async subscribe(p: HooksSubscribeParams): Promise<HooksSubscribeResponse> {
-        const payload = new HooksSubscribePayload(p)
+        const payload = new HooksSubscribePayload(p).convert()
         return await this.client.request('post', this.endpoint, payload)
     }
 
     async unsubscribe(id: number): Promise<HooksUnsubscribeResponse> {
-        const payload = new ApiPayload({id})
+        const payload = new ApiPayload({id}).convert()
         return await this.client.request('delete', this.endpoint, payload)
     }
 }

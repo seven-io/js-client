@@ -9,8 +9,8 @@ export default class StatusResource extends AbstractResource {
     }
 
     get = async (ids: number[]): Promise<StatusResponse[]> => {
-        const payload = new StatusPayload({ids})
-        const res = await this.client.request<StatusResponse[], StatusPayload>('get', this.endpoint, payload)
+        const payload = new StatusPayload({ids}).convert()
+        const res = await this.client.request<StatusResponse[]>('get', this.endpoint, payload)
 
         console.log('res', res)
 

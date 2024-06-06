@@ -9,23 +9,24 @@ export default class GroupsResource extends AbstractResource {
     }
 
     async edit(id: number, group: Pick<Group, 'name'>): Promise<Group> {
-        return await this.client.request('patch', `${this.endpoint}/${id}`, new ApiPayload(group))
+        const payload = new ApiPayload(group).convert()
+        return await this.client.request('patch', `${this.endpoint}/${id}`, payload)
     }
 
     async create(group: Pick<Group, 'name'>): Promise<Group> {
-        return await this.client.request('post', this.endpoint, new ApiPayload(group))
+        return await this.client.request('post', this.endpoint, new ApiPayload(group).convert())
     }
 
     async delete(id: number, deleteContacts: boolean = false): Promise<DeleteGroupResponse> {
         const endpoint = `${this.endpoint}/${id}?delete_contacts=${deleteContacts}`
-        return await this.client.request('delete', endpoint, new ApiPayload)
+        return await this.client.request('delete', endpoint, (new ApiPayload).convert())
     }
 
     async all(): Promise<Group[]> {
-        return await this.client.request('get', this.endpoint, new ApiPayload)
+        return await this.client.request('get', this.endpoint, (new ApiPayload).convert())
     }
 
     async one(id: number): Promise<Group> {
-        return await this.client.request('get', `${this.endpoint}/${id}`, new ApiPayload)
+        return await this.client.request('get', `${this.endpoint}/${id}`, (new ApiPayload).convert())
     }
 }

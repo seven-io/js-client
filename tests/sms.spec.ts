@@ -28,14 +28,13 @@ const smsMatcher = (res: SmsResponse) => ({
     success: expect.any(String),
     total_price: expect.any(Number),
 })
-const assertJSON = (res: SmsResponse) =>
-    expect.objectContaining<SmsResponse>(smsMatcher(res))
+const assertJSON = (res: SmsResponse) => expect.objectContaining<SmsResponse>(smsMatcher(res))
 
 describe('SMS', () => {
     it('should return json response', async () => {
         const params: SmsParams = {
             delay: new Date('2050-12-12 00:00:00'),
-            text: `The current UNIX timestamp is: ${Date.now()}.`,
+            text: 'Hello',
             to: ['4917123456789'],
         }
         const res = await resource.dispatch(params)

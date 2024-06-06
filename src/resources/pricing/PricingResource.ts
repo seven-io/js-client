@@ -9,7 +9,6 @@ export default class PricingResource extends AbstractResource {
     }
 
     get = async (p?: PricingParams): Promise<PricingResponse> => {
-        const payload = new ApiPayload(p)
-        return await this.client.request('get', this.endpoint, payload)
+        return await this.client.request('get', this.endpoint, new ApiPayload(p).convert())
     }
 }

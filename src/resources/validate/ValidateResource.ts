@@ -9,6 +9,6 @@ export default class ValidateResource extends AbstractResource {
     }
 
     async start(p: ValidateParams): Promise<ValidateResponse> {
-        return await this.client.request('post', this.endpoint, new ApiPayload(p))
+        return await this.client.request('post', this.endpoint, new ApiPayload(p).convert())
     }
 }
