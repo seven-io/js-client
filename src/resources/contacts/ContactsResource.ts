@@ -2,7 +2,7 @@ import {Endpoint} from '../../lib'
 import {AbstractResource} from '../AbstractResource'
 import ContactsListPayload from './ContactsListPayload'
 import ContactsUpsertPayload from './ContactsUpsertPayload'
-import {Contact, ContactsDeleteResponse, ContactsListParams} from './types'
+import type {Contact, ContactsCreateParams, ContactsDeleteResponse, ContactsListParams} from './types'
 import {ApiPayload} from '../../lib/ApiPayload'
 import {Client} from '../../Client'
 
@@ -11,15 +11,20 @@ export default class ContactsResource extends AbstractResource {
         return Endpoint.Contacts
     }
 
-    async create(p: Pick<Contact, 'avatar' | 'groups' | 'properties'>): Promise<Contact> {
+    async create({avatar, groups, properties}: ContactsCreateParams): Promise<Contact> {
         const contact: Contact = {
-            ...p,
+            avatar,
             created: '',
+            groups,
             id: 0,
             initials: {
                 color: '',
                 initials: ''
             },
+            properties: {
+                ...properties,
+                fullname: '',
+            } as Contact['properties'],
             validation: {
                 state: null,
                 timestamp: null

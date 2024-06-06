@@ -1,5 +1,5 @@
 import client from './lib/client'
-import {type Contact, ContactsResource} from '../src'
+import {type Contact, type ContactsCreateParams, ContactsResource} from '../src'
 
 const resource = new ContactsResource(client)
 const contactMatcher: Contact = {
@@ -17,6 +17,7 @@ const contactMatcher: Contact = {
         city: expect.nilOrAny(String),
         email: expect.nilOrAny(String),
         firstname: expect.nilOrAny(String),
+        fullname: expect.nilOrAny(String),
         home_number: expect.nilOrAny(String),
         lastname: expect.nilOrAny(String),
         mobile_number: expect.nilOrAny(String),
@@ -51,8 +52,8 @@ describe('Contacts', () => {
         expect.arrayContaining<Contact>(Array(res.length).fill(contactMatcher))
     })
 
-    it('should create a contact and delete it again', async () => {
-        const params: Pick<Contact, 'avatar' | 'groups' | 'properties'> = {
+    it('should create a contact, update and delete it again', async () => {
+        const params: ContactsCreateParams = {
             avatar: '',
             groups: [],
             properties: {
@@ -68,9 +69,13 @@ describe('Contacts', () => {
                 postal_code: '24103',
             },
         }
-        const res = await resource.create(params)
-        expect(res.properties).toMatchObject(params.properties)
+        const created = await resource.create(params)
+        expect(created.properties).toMatchObject(params.properties)
 
-        await resource.delete(res.id)
+        const notes = 'The best CPaaS'
+        const updated = await resource.update({...created, properties: {...created.properties, notes}})
+        expect(updated.properties.notes).toEqual(notes)
+
+        await resource.delete(created.id)
     })
 })

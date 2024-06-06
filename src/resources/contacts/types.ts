@@ -13,6 +13,7 @@ export type Contact = {
         city: string | null
         email: string | null
         firstname: string | null
+        fullname: string | null
         home_number: string | null
         lastname: string | null
         mobile_number: string | null
@@ -24,6 +25,9 @@ export type Contact = {
         timestamp: string | null
     }
 }
+
+export type ContactsCreateParams = Pick<Contact, 'avatar' | 'groups'>
+    & { properties: Omit<Contact['properties'], 'fullname'> }
 
 export type ContactsListParams = {
     groupId?: number

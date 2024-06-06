@@ -6,7 +6,13 @@ export default class ContactsUpsertPayload extends ApiPayload<Contact> {
         [k: string]: any
     } {
         const {avatar, groups, properties} = this.params
+        const {fullname, ...remainingProperties} = properties
+        const cleanProperties: { [k: string]: any } = {}
+        Object.entries(remainingProperties).forEach(([k, v]) => {
+            if (v === null) return
+            cleanProperties[k] = v
+        })
 
-        return {avatar, groups, ...properties}
+        return {avatar, groups, ...cleanProperties}
     }
 }

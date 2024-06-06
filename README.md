@@ -34,11 +34,11 @@ yarn add @seven.io/client
 ```javascript
 // const globalThis = require('globalthis')(); // uncomment if NodeJS < NodeJS versions < 12
 // globalThis.fetch = require('node-fetch').default; // uncomment in NodeJS environments
-// const SevenApi = require('@seven.io/api'); // uncomment in NodeJS environments
+// const {BalanceResource, Client} = require('@seven.io/client'); // uncomment in NodeJS environments
 
-import SevenClient, {BalanceResource} from '@seven.io/api'
+import {BalanceResource, Client} from '@seven.io/client'
 
-const client = new SevenClient({apiKey: 'MY_SUPER_SECRET_SEVEN_IO_API_KEY!'})
+const client = new Client({apiKey: 'MY_SUPER_SECRET_SEVEN_IO_API_KEY!'})
 const balanceResource = new BalanceResource(client)
 balanceResource.get()
     .then(console.log)

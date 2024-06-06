@@ -1,3 +1,3 @@
 export * from './Client'
-export * from './lib'
+export {ErrorCode} from './lib'
 export * from './resources'
