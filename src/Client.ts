@@ -41,18 +41,8 @@ export class Client {
 
         if (payload && Object.keys(payload).length) {
             Object.entries(payload).forEach((([k, v]) => {
-                if (Array.isArray(v)) {
-                    v.forEach((i, n) => {
-                        if (typeof i === 'object' && 'contents' in i && 'name' in i) { // is likely SmsFile
-                            const prepend = `files[${n}]`
-
-                            params.set(`${prepend}[contents]`, i.contents)
-                            params.set(`${prepend}[name]`, i.name)
-                            if ('password' in i) params.set(`${prepend}[password]`, i.password)
-                            if ('validity' in i) params.set(`${prepend}[validity]`, i.validity)
-                        } else params.append(k, i)
-                    })
-                } else params.set(k, v)
+                if (Array.isArray(v)) v.forEach(i => params.append(k, i))
+                else params.set(k, v)
             }))
 
             switch (method) {
