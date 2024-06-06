@@ -4,6 +4,7 @@ import {
     type JournalInbound,
     type JournalOutbound,
     type JournalParams,
+    JournalReply,
     JournalResource,
     type JournalVoice
 } from '../src'
@@ -45,6 +46,11 @@ describe('Journal related', () => {
     it('should return an array of inbound objects', async () => {
         const entries = await resource.inbound({})
         assertEach<JournalInbound>(entries, {}, baseMatcher)
+    })
+
+    it('should return an array of reply objects', async () => {
+        const entries = await resource.replies({})
+        assertEach<JournalReply>(entries, {}, baseMatcher)
     })
 
     it('should return an array of voice objects', async () => {
