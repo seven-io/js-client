@@ -1,4 +1,3 @@
-import STRING_BOOLEAN_VALUES from '../../lib/StringBooleanValues'
 import {
     API_RESPONSE_CODES,
     HLR_LOOKUP_OUTCOME_CODES,
@@ -14,7 +13,6 @@ import {
 
 export type ApiResponseCode = typeof API_RESPONSE_CODES[number];
 export type GsmCode = typeof LOOKUP_GSM_CODES[number]
-export type StringBoolean = typeof STRING_BOOLEAN_VALUES[number];
 
 export type Carrier = {
     country: string
@@ -104,5 +102,5 @@ export type CnamResponse = {
     code: number | string
     name?: string
     number?: string
-    success?: StringBoolean
+    success?: 'false' | 'true'
 }

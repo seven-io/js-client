@@ -10,26 +10,28 @@ export default class LookupResource extends AbstractResource {
 
     async cnam(p: LookupParams): Promise<CnamResponse[]> {
         const payload = new LookupPayload(p).convert()
-        return this.client.request('post', `${this.endpoint}/cnam`, payload)
+        const res = await this.client.request('post', `${this.endpoint}/cnam`, payload)
+
+        return (Array.isArray(res) ? res : [res]) as CnamResponse[]
     }
 
     async format(p: LookupParams): Promise<Format[]> {
         const payload = new LookupPayload(p).convert()
-        return this.client.request('post', `${this.endpoint}/format`, payload)
+        return await this.client.request('post', `${this.endpoint}/format`, payload)
     }
 
     async hlr(p: LookupParams): Promise<HLR[]> {
         const payload = new LookupPayload(p).convert()
-        return this.client.request('post', `${this.endpoint}/hlr`, payload)
+        return await this.client.request('post', `${this.endpoint}/hlr`, payload)
     }
 
     async mnp(p: LookupParams): Promise<MnpResponse[]> {
         const payload = new LookupPayload(p).convert()
-        return this.client.request('post', `${this.endpoint}/mnp`, payload)
+        return await this.client.request('post', `${this.endpoint}/mnp`, payload)
     }
 
     async rcs(p: LookupParams): Promise<RcsCapabilities[]> {
         const payload = new LookupPayload(p).convert()
-        return this.client.request('post', `${this.endpoint}/rcs`, payload)
+        return await this.client.request('post', `${this.endpoint}/rcs`, payload)
     }
 }

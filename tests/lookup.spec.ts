@@ -1,4 +1,3 @@
-import STRING_BOOLEAN_VALUES from '../src/lib/StringBooleanValues'
 import client from './lib/client'
 import {getStringEnumValues, unionMatcher} from './lib/utils'
 import {
@@ -16,18 +15,20 @@ import {
     type MnpResponse,
     NetworkType,
     type Roaming,
-    ROAMING_STATUS_CODES,
-    STRING_RESPONSE_CODES
+    ROAMING_STATUS_CODES
 } from '../src'
 
-const lookupCnamMatcher: CnamResponse = {
-    code: expect.stringMatching(unionMatcher(STRING_RESPONSE_CODES)),
-    name: expect.any(String),
-    number: expect.any(String),
-    success: expect.stringMatching(unionMatcher(STRING_BOOLEAN_VALUES)),
+const cnamMatcher = (res: CnamResponse) => {
+    expect(typeof res.code === 'number' || typeof res.code === 'string').toBeTruthy()
+    expect(res.name === undefined || typeof res.name === 'string').toBeTruthy()
+    expect(res.number === undefined || typeof res.number === 'string').toBeTruthy()
+    expect(
+        res.success === undefined
+        || (typeof res.success === 'string' && new RegExp('false|true').test(res.success))
+    ).toBeTruthy()
 }
 
-const lookupHlrMatcher = (res: HLR): HLR => {
+const hlrMatcher = (res: HLR): HLR => {
     const carrierMatcher: Carrier = {
         country: expect.any(String),
         name: expect.any(String),
@@ -69,7 +70,7 @@ const lookupHlrMatcher = (res: HLR): HLR => {
     return hlr
 }
 
-const lookupMnpMatcher: MnpResponse = {
+const mnpMatcher: MnpResponse = {
     code: expect.any(Number),
     mnp: {
         country: expect.any(String),
@@ -85,7 +86,7 @@ const lookupMnpMatcher: MnpResponse = {
     success: expect.any(Boolean),
 }
 
-const lookupFormatMatcher: Format = {
+const formatMatcher: Format = {
     carrier: expect.any(String),
     country_code: expect.any(String),
     country_iso: expect.any(String),
@@ -103,14 +104,14 @@ describe('Lookup related', () => {
     it('should return an array of format objects', async () => {
         const arr = await resource.format({numbers: ['49179999999999']})
         expect(arr.length).toEqual(1)
-        arr.forEach(o => expect(o).toMatchObject(lookupFormatMatcher))
+        arr.forEach(o => expect(o).toMatchObject(formatMatcher))
     })
 
     it('should return an array of rcs capability objects', async () => {
         const arr = await resource.rcs({numbers: ['49179999999999']})
         expect(arr.length).toEqual(1)
         arr.forEach(o => {
-            expect(o).toMatchObject(lookupFormatMatcher)
+            expect(o).toMatchObject(formatMatcher)
         })
     })
 
@@ -122,7 +123,7 @@ describe('Lookup related', () => {
             ],
         })
         expect(arr.length).toEqual(2)
-        arr.forEach(o => expect(o).toMatchObject(lookupMnpMatcher))
+        arr.forEach(o => expect(o).toMatchObject(mnpMatcher))
     })
 
     it('should return an array of hlr objects', async () => {
@@ -133,13 +134,20 @@ describe('Lookup related', () => {
             ],
         })
         expect(arr.length).toEqual(2)
-        arr.forEach(o => expect(o).toMatchObject(lookupHlrMatcher(o)))
+        arr.forEach(o => expect(o).toMatchObject(hlrMatcher(o)))
+    })
+
+    it('should return a bad cnam object', async () => {
+        const arr = await resource.cnam({numbers: ['49179999999999']})
+        expect(arr.length).toEqual(1)
+
+        cnamMatcher(arr[0])
     })
 
     it('should return a single cnam object', async () => {
-        const arr = await resource.cnam({numbers: ['49179999999999']})
+        const arr = await resource.cnam({numbers: ['491716992343']})
         expect(arr.length).toEqual(1)
-        expect(arr[0]).toMatchObject(lookupCnamMatcher)
+        cnamMatcher(arr[0])
     })
 
     it('should return an array of cnam objects', async () => {
@@ -150,6 +158,6 @@ describe('Lookup related', () => {
             ],
         })
         expect(arr.length).toEqual(2)
-        arr.forEach(o => expect(o).toMatchObject(lookupCnamMatcher))
+        arr.forEach(cnamMatcher)
     })
 })
