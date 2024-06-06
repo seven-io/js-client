@@ -23,23 +23,4 @@ expect.extend({
             pass,
         }
     },
-    undefinedOrAny(received: any, expected: any) {
-        const receivedType = typeof received
-        const expectedType = typeof expected
-        let pass = received instanceof expected
-
-        if (undefined === received) pass = true
-        else {
-            if (Number === expected) pass = receivedType === 'number' || received instanceof Number
-            else if (String === expected) pass = receivedType === 'string' || received instanceof String
-            else if (Array === expected) pass = Array.isArray(received) || received instanceof Array
-            else if (RegExp === expected) pass = (new expected as RegExp).test(received)
-        }
-
-        return {
-            message: () => `expected undefined or instance of ${expectedType} and` +
-                ` received ${receivedType === 'object' ? 'null' : receivedType}`,
-            pass,
-        }
-    },
 })
