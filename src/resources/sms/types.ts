@@ -1,4 +1,3 @@
-import STRING_BOOLEAN_VALUES from '../../lib/StringBooleanValues'
 import {SMS_ENCODINGS, SMS_TYPES} from './constants'
 
 export type SmsDeleteParams = {
@@ -53,7 +52,7 @@ export type SmsParams = {
 }
 
 export type SmsResponse = {
-    debug: typeof STRING_BOOLEAN_VALUES[number]
+    debug: 'false' | 'true'
     balance: number
     messages: SmsMessage[],
     sms_type: SmsType

@@ -1,4 +1,3 @@
-import STRING_BOOLEAN_VALUES from '../src/lib/StringBooleanValues'
 import client from './lib/client'
 import {unionMatcher} from './lib/utils'
 import {SMS_TYPES, type SmsFile, type SmsMessage, type SmsParams, SmsResource, type SmsResponse} from '../src'
@@ -6,7 +5,7 @@ import {SMS_TYPES, type SmsFile, type SmsMessage, type SmsParams, SmsResource, t
 const resource = new SmsResource(client)
 const smsMatcher = (res: SmsResponse) => ({
     balance: expect.any(Number),
-    debug: expect.stringMatching(unionMatcher(STRING_BOOLEAN_VALUES)),
+    debug: expect.stringMatching(new RegExp('false|true')),
     messages: expect.arrayContaining(Array(res.messages.length)
         .fill(expect.objectContaining<SmsMessage>({
             encoding: expect.any(String),
