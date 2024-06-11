@@ -32,7 +32,7 @@ const contactMatcher: Contact = {
 
 describe('Contacts', () => {
     it('should return a list of contacts', async () => {
-        await resource.create({
+        const contact = await resource.create({
             avatar: '',
             groups: [],
             properties: {
@@ -50,6 +50,8 @@ describe('Contacts', () => {
         }) // make sure we receive some data...
         const res = await resource.list()
         expect.arrayContaining<Contact>(Array(res.length).fill(contactMatcher))
+
+        await resource.delete(contact.id)
     })
 
     it('should create a contact, update and delete it again', async () => {

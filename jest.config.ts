@@ -1,6 +1,6 @@
 import type {JestConfigWithTsJest} from 'ts-jest'
 
-const cfg: JestConfigWithTsJest = {
+export default {
     bail: 1,
     collectCoverage: true,
     clearMocks: true,
@@ -20,6 +20,4 @@ const cfg: JestConfigWithTsJest = {
         ],
     },
     verbose: true,
-}
-
-export default cfg
+} satisfies JestConfigWithTsJest

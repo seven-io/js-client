@@ -5,7 +5,7 @@
 ## Installation
 
 **This library relies on the global fetch API. To use this library with
-Node.js, [node-fetch](https://github.com/node-fetch/node-fetch) is required.**
+Node.js < 18, [node-fetch](https://github.com/node-fetch/node-fetch) is required.**
 
 For compatibility with Node.js versions < 12, please also install
 the [globalThis polyfill](https://github.com/es-shims/globalThis).
@@ -26,7 +26,7 @@ yarn add @seven.io/client
 
 ```html
 
-<script src='https://unpkg.com/browse/@seven.io/client/dist/´seven-client.umd.cjs'></script>
+<script src='https://unpkg.com/browse/@seven.io/client/dist/seven-client.umd.cjs'></script>
 ```
 
 ## Example
