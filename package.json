@@ -23,7 +23,8 @@
     "ts-jest": "^29.1.4",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.3",
-    "typedoc": "^0.25.13",
+    "typedoc": "^0.26.11",
+    "typedoc-plugin-markdown": "^4.2.10",
     "typescript": "^5.4.5",
     "vite": "^5.2.12",
     "vite-plugin-dts": "^3.9.1"
@@ -67,6 +68,7 @@
   "scripts": {
     "build": "cross-env rimraf dist && tsc && vite build",
     "dev": "vite",
+    "document": "typedoc --plugin typedoc-plugin-markdown --out ./md",
     "prepare": "husky install",
     "prepublishOnly": "npm run build",
     "preview": "vite preview",
