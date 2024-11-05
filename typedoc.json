@@ -2,5 +2,6 @@
     "entryPoints": [
         "src/index.ts"
     ],
+    "hideGenerator": true,
     "out": "docs"
 }
