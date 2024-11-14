@@ -6,6 +6,7 @@
   },
   "description": "Official API client for seven",
   "dependencies": {
+    "browser-or-node": "^3.0.0",
     "date-fns": "^4.1.0",
     "js-md5": "^0.8.3",
     "jssha": "^3.3.1"

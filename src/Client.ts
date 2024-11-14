@@ -1,5 +1,5 @@
 import SHA from 'jssha'
-import {md5} from 'js-md5'
+import * as jsEnv from "browser-or-node";
 import {ErrorCode} from './lib'
 import Util from './lib/Util'
 
@@ -64,7 +64,19 @@ export class Client {
             const timestamp = Number.parseInt((Date.now() / 1000).toString())
             const nonce = Util.uuid()
             const httpVerb = method.toUpperCase()
-            const hashMD5 = md5(toHash())
+            const data = toHash()
+            let hashMD5
+            if (jsEnv.isBrowser) {
+                const {md5} = await import('js-md5')
+                hashMD5 = md5(data)
+            }
+            else {
+                const {createHash} = await import('node:crypto')
+                const hashFunc = createHash('md5');
+                hashFunc.update(data);
+                hashMD5 = hashFunc.digest('hex');
+            }
+
             const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n')//.trim()
 
             const hash = new SHA('SHA-256', 'TEXT', {
