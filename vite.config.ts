@@ -1,6 +1,7 @@
 import {resolve} from 'node:path'
 import {defineConfig} from 'vite'
 import dts from 'vite-plugin-dts'
+import {nodePolyfills} from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
     build: {
@@ -10,7 +11,21 @@ export default defineConfig({
             name: 'SevenClient',
         },
     },
+    optimizeDeps: {
+        esbuildOptions: {
+            // Node.js global to browser globalThis
+            define: {
+                global: 'globalThis',
+            },
+        },
+    },
     plugins: [
-        dts()
+        dts(),
+        nodePolyfills({
+            globals: {
+                Buffer: true,
+            },
+            protocolImports: true,
+        }),
     ]
 })
