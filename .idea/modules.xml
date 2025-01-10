@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$USER_HOME$/WebstormProjects/js-client-playground/.idea/js-client-playground.iml" filepath="$USER_HOME$/WebstormProjects/js-client-playground/.idea/js-client-playground.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/sms77-js-client.iml" filepath="$PROJECT_DIR$/.idea/sms77-js-client.iml" />
     </modules>
   </component>

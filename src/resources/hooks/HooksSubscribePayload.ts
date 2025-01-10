@@ -11,7 +11,7 @@ export default class HooksSubscribePayload extends ApiPayload<HooksSubscribePara
             request_method: requestMethod,
             event_filter: eventFilter,
             event_type: eventType,
-            target_url_: targetUrl,
+            target_url: targetUrl,
         }
     }
 }
