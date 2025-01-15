@@ -27,6 +27,7 @@ export type Hook = {
 }
 
 export type HooksSubscribeResponse = {
+    error_message?: string
     id?: number
     success: boolean
 }
