@@ -21,7 +21,7 @@ export type Contact = {
         postal_code: string | null
     }
     validation: {
-        state: string | null
+        state: 'valid' | 'invalid' | 'absent' | 'unknown' | null
         timestamp: string | null
     }
 }
