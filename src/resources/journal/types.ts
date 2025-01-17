@@ -34,6 +34,6 @@ export type JournalVoice = JournalBase & {
     xml: boolean
 }
 
-export type JournalInbound = JournalBase
-
-export type JournalReply = JournalBase
+export type JournalInbound = JournalBase & {
+    reply_to_message_id: string|null
+}

@@ -1,6 +1,6 @@
 import {AbstractResource} from '../AbstractResource'
 import JournalPayload from './JournalPayload'
-import type {JournalInbound, JournalOutbound, JournalParams, JournalReply, JournalVoice} from './types'
+import type {JournalInbound, JournalOutbound, JournalParams, JournalVoice} from './types'
 
 export default class JournalResource extends AbstractResource {
     async inbound(p: JournalParams = {}): Promise<JournalInbound[]> {
@@ -9,10 +9,6 @@ export default class JournalResource extends AbstractResource {
 
     async outbound(p: JournalParams = {}): Promise<JournalOutbound[]> {
         return this.client.request('get', 'journal/outbound', new JournalPayload(p).convert())
-    }
-
-    replies = async (p: JournalParams = {}): Promise<JournalReply[]> => {
-        return this.client.request('get', 'journal/replies', new JournalPayload(p).convert())
     }
 
     voice = async (p: JournalParams = {}): Promise<JournalVoice[]> => {
