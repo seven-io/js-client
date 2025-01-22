@@ -1,3 +1,5 @@
 export * from './Client'
 export * from './lib'
 export * from './resources'
+export type OauthScope = 'analytics' | 'balance' | 'contacts' | 'hooks' | 'journal' | 'lookup' | 'pricing' | 'sms'
+    | 'status' | 'subaccounts' | 'validate_for_voice' | 'voice'
