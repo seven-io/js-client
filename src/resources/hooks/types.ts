@@ -146,3 +146,84 @@ export function isHookRcsStatusUpdate(hook: HookRcsPayload): hook is HookRcsStat
 export function isHookRcsLocation(hook: HookRcsPayload): hook is HookRcsLocationPayload {
     return (hook as HookRcsLocationPayload).location !== undefined
 }
+
+export type InboundSmsPayload = {
+    data: {
+        id: string
+        message_type: 'SMS'
+        sender: string
+        system: string
+        text: string
+        time: string
+    },
+    webhook_event: 'sms_mo'
+    webhook_timestamp: '2020-12-02 11:55:44'
+}
+
+export type SmsStatusChangePayload = {
+    data: {
+        msg_id: string
+        status: string
+        timestamp: string
+    },
+    webhook_event: 'dlr'
+    webhook_timestamp: string
+}
+
+export type PerformanceTrackingPayload = {
+    data: {
+        final_url: string
+        sms_id: string
+        sms_label: null|string
+        total_clicks: number
+        total_views: number
+        tracking_url: string
+        type: 'click' | string
+    },
+    'webhook_event': 'tracking'
+    'webhook_timestamp': string
+}
+
+export type VoiceStatusChangePayload = {
+    data: {
+        callerId: string
+        duration: string
+        id: string
+        pricePerMinute: number
+        recipient: string
+        status: 'completed' | string
+        timestamp: number
+    },
+    webhook_event: 'voice_status'
+    webhook_timestamp: string
+}
+
+export type InboundCallPayload = {
+    data: {
+        caller: string
+        id: number
+        system: string
+        time: number
+    },
+    webhook_event: "voice_call"
+    webhook_timestamp: string
+}
+
+export type DtmfPayload = {
+    data: {
+        callerId: string
+        dtmf_digit: number
+        duration: number
+        id: number
+        pricePerMinute: number
+        recipient: string
+        status: 'completed' | string
+        system: string
+        timestamp: number
+        total_price: number
+    },
+    webhook_event: "voice_dtmf"
+    webhook_timestamp: string
+}
+
+
