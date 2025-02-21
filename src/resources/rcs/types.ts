@@ -33,6 +33,7 @@ export type RcsMessage = {
     encoding: SmsEncoding
     error: string | null
     error_text: string | null
+    fallback: string | null
     id: string | null
     is_binary: boolean
     label: string | null
