@@ -1,7 +1,7 @@
 import {AbstractResource} from '../AbstractResource'
 import ContactsListPayload from './ContactsListPayload'
 import ContactsUpsertPayload from './ContactsUpsertPayload'
-import type {Contact, ContactsCreateParams, ContactsDeleteResponse, ContactsListParams} from './types'
+import {Contact, ContactsCreateParams, ContactsDeleteResponse, ContactsListParams, ContactsListResponse} from './types'
 import {ApiPayload} from '../../lib/ApiPayload'
 import {Client} from '../../Client'
 
@@ -37,7 +37,7 @@ export default class ContactsResource extends AbstractResource {
         return await this.client.request('get', `contacts/${id}`, (new ApiPayload).convert())
     }
 
-    async list(p: ContactsListParams = {}): Promise<Contact[]> {
+    async list(p: ContactsListParams = {}): Promise<ContactsListResponse> {
         return await this.client.request('get', 'contacts', new ContactsListPayload(p).convert())
     }
 

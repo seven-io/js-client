@@ -49,7 +49,7 @@ describe('Contacts', () => {
             },
         }) // make sure we receive some data...
         const res = await resource.list()
-        expect.arrayContaining<Contact>(Array(res.length).fill(contactMatcher))
+        expect.arrayContaining<Contact>(Array(res.data.length).fill(contactMatcher))
 
         await resource.delete(contact.id)
     })

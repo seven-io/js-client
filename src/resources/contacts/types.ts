@@ -1,3 +1,14 @@
+export type ContactsListResponse = {
+    data: Contact[]
+    pagingMetadata: {
+        count: number
+        has_more: boolean
+        limit: number
+        offset: number
+        total: number
+    }
+}
+
 export type Contact = {
     avatar: string
     created: string

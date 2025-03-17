@@ -56,15 +56,18 @@ export class Client {
 
         if (this.options.signingSecret) {
             const toHash = (): string => {
-                if (!Object.keys(payload).length) return ''
+                if (!Object.keys(payload).length) {
+                    return ''
+                }
 
                 return isUrlencoded ? params.toString() : JSON.stringify(payload)
             }
 
             const timestamp = Number.parseInt((Date.now() / 1000).toString())
-            const nonce = Util.uuid()
+            const nonce = Util.uuid(32)
             const httpVerb = method.toUpperCase()
             const data = toHash()
+
             let hashMD5
             if (jsEnv.isBrowser) {
                 const {md5} = await import('js-md5')
@@ -77,7 +80,8 @@ export class Client {
                 hashMD5 = hashFunc.digest('hex');
             }
 
-            const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n')//.trim()
+            //const signUrl = url.split('?')[0]
+            const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n')
 
             const hash = new SHA('SHA-256', 'TEXT', {
                 hmacKey: {
