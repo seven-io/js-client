@@ -9,7 +9,7 @@ const expectJSON = (o: VoiceResponse) => expect(o).toMatchObject<VoiceResponse>(
         {
             error: expect.nilOrAny(String),
             error_text: expect.nilOrAny(String),
-            id: expect.any(String),
+            id: expect.any(Number),
             price: expect.any(Number),
             recipient: expect.any(String),
             sender: expect.any(String),
@@ -22,6 +22,16 @@ const expectJSON = (o: VoiceResponse) => expect(o).toMatchObject<VoiceResponse>(
 })
 
 describe('Voice', () => {
+    it('should dispatch to multiple recipients', async () => {
+        const json = await resource.dispatch({
+            from: 'Tom Tester',
+            ringtime: 10,
+            text: 'This is a Test!',
+            to: ['4915156154869', '491716992343'],
+        })
+        expectJSON(json)
+    })
+
     it('should return a json response', async () => {
         const json = await resource.dispatch({
             from: 'Tom Tester',

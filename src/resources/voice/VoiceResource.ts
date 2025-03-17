@@ -4,6 +4,8 @@ import {ApiPayload} from '../../lib/ApiPayload'
 
 export default class VoiceResource extends AbstractResource {
     async dispatch(p: VoiceParams): Promise<VoiceResponse> {
-        return await this.client.request('post', 'voice', new ApiPayload(p).convert())
+        const payload = new ApiPayload(p).convert()
+        payload.to  = Array.isArray(p.to) ? p.to.join(',') : p.to
+        return await this.client.request('post', 'voice', payload)
     }
 }

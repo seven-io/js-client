@@ -21,5 +21,5 @@ export type VoiceParams = {
     from?: string
     ringtime?: number
     text: string
-    to: string
+    to: string|string[]
 }
