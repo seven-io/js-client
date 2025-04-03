@@ -60,7 +60,15 @@ export class Client {
                     return ''
                 }
 
-                return isUrlencoded ? params.toString() : JSON.stringify(payload)
+                if (isUrlencoded) {
+                    return params.toString()
+                }
+
+                if (method === 'get') {
+                    return ''
+                }
+
+                return JSON.stringify(payload)
             }
 
             const timestamp = Number.parseInt((Date.now() / 1000).toString())
@@ -80,7 +88,6 @@ export class Client {
                 hashMD5 = hashFunc.digest('hex');
             }
 
-            //const signUrl = url.split('?')[0]
             const toSign = [timestamp, nonce, httpVerb, url, hashMD5].join('\n')
 
             const hash = new SHA('SHA-256', 'TEXT', {
