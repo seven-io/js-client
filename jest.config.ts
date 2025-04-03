@@ -15,7 +15,7 @@ export default {
         '^.+\\.ts': [
             'ts-jest',
             {
-                tsconfig: './tests/tsconfig.test.json',
+                tsconfig: './tests/tsconfig.json',
             },
         ],
     },

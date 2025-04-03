@@ -44,14 +44,14 @@ export type AvailableNumbersResponse = {
 }
 
 export type OrderNumberParams = {
-    number: string
+    number: string|AvailableNumber
     payment_interval?: PaymentInterval
 }
 
 export type UpdateNumberParams = {
     email_forward?: string[]
     friendly_name?: string
-    number: string
+    number: string|ActiveNumber
     sms_forward?: string[]
 }
 
@@ -61,7 +61,7 @@ export type DeleteNumberResponse = {
 
 export type DeleteNumberParams = {
     delete_immediately?: boolean
-    number: string
+    number: string|ActiveNumber
 }
 
 export type GetNumberParams = {

@@ -1,5 +1,6 @@
 import client from './lib/client'
-import {ActiveNumber, AvailableNumber, NumbersResource} from '../src/resources/numbers'
+import {ActiveNumber, AvailableNumber, AvailableNumbersParams, NumbersResource} from '../src/resources/numbers'
+import Util from '../src/lib/Util'
 
 const resource = new NumbersResource(client)
 const availableNumberMatcher: AvailableNumber = {
@@ -64,13 +65,26 @@ describe('Numbers', () => {
         expect.arrayContaining<AvailableNumber>(Array(res.availableNumbers.length).fill(availableNumberMatcher))
     })
 
-    it('should return a list of available numbers in Germany', async () => {
-        const country = 'DE'
-        const res = await resource.listAvailable({country})
+    it('should return a list of available numbers in Germany, order one and delete it again', async () => {
+        const params: AvailableNumbersParams = {country: 'DE', features_sms: true}
+        const res = await resource.listAvailable(params)
 
         expect.arrayContaining<AvailableNumber>(Array(res.availableNumbers.length).fill(availableNumberMatcher))
 
-        res.availableNumbers.forEach((availableNumber) => availableNumber.country === country)
+        res.availableNumbers.forEach((availableNumber) => availableNumber.country === params.country)
+        expect(res.availableNumbers.length).toBeTruthy()
+
+        const availableNumber = res.availableNumbers[0]
+
+        const ordered = await resource.order({number: availableNumber, payment_interval: 'monthly'})
+        expect(ordered.success).toBeTruthy()
+        expect(ordered.error).toBeNull()
+
+        const activeNumber = await resource.getActive({number: availableNumber.number})
+        expect(activeNumber).toMatchObject(activeNumberMatcher)
+
+        const deleted = await resource.delete({delete_immediately: true, number: activeNumber})
+        expect(deleted.success).toBeTruthy()
     })
 
     it('should return a list of active numbers', async () => {
@@ -83,6 +97,20 @@ describe('Numbers', () => {
             ...activeNumberMatcher,
             number: res.activeNumbers[0].number,
             friendly_name: res.activeNumbers[0].friendly_name,
+        })
+    })
+
+    it('should return a list of active numbers', async () => {
+        const res = await resource.listActive()
+        expect(res.activeNumbers.length).toBeTruthy()
+
+        const activeNumber = res.activeNumbers[0]
+        const updatedNumber = await resource.update({number: activeNumber, friendly_name: Util.uuid(24)})
+
+        expect(updatedNumber).toMatchObject<ActiveNumber>({
+            ...activeNumberMatcher,
+            number: activeNumber.number,
+            friendly_name: updatedNumber.friendly_name,
         })
     })
 })

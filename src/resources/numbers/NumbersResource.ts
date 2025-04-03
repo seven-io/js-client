@@ -1,5 +1,6 @@
 import {AbstractResource} from '../AbstractResource'
 import {
+    ActiveNumber,
     ActiveNumbersResponse,
     AvailableNumbersParams,
     AvailableNumbersResponse, DeleteNumberParams, DeleteNumberResponse,
@@ -9,7 +10,7 @@ import {
 } from './types'
 
 export default class NumbersResource extends AbstractResource {
-    getActive = async (p: GetNumberParams): Promise<Number> => {
+    getActive = async (p: GetNumberParams): Promise<ActiveNumber> => {
         return await this.client.request('get', `numbers/active/${p.number}`, {})
     }
 
@@ -22,14 +23,17 @@ export default class NumbersResource extends AbstractResource {
     }
 
     order = async (p: OrderNumberParams): Promise<OrderNumberResponse> => {
+        if (typeof p.number === 'object') p.number = p.number.number
         return await this.client.request('post', 'numbers/order', p)
     }
 
-    update = async ({number, ...p}: UpdateNumberParams): Promise<Number> => {
-        return await this.client.request('patch', `numbers/active/${number}`, p)
+    update = async ({number, ...p}: UpdateNumberParams): Promise<ActiveNumber> => {
+        const phone =  typeof number === 'object' ? number.number : number
+        return await this.client.request('patch', `numbers/active/${phone}`, p)
     }
 
     delete = async ({number, ...p}: DeleteNumberParams): Promise<DeleteNumberResponse> => {
-        return await this.client.request('delete', `numbers/active/${number}`, p)
+        const phone =  typeof number === 'object' ? number.number : number
+        return await this.client.request('delete', `numbers/active/${phone}`, p)
     }
 }
