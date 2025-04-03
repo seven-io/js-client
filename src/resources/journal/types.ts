@@ -3,6 +3,7 @@ export type JournalParams = {
     dateTo?: string
     id?: number
     limit?: number
+    offset?: number
     state?: string
     to?: string
 }
