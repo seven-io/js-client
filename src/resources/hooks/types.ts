@@ -7,6 +7,7 @@ export type HookRequestMethod = (typeof HOOK_REQUEST_METHODS)[number]
 export type HooksSubscribeParams = {
     eventFilter?: string
     eventType: HookEventType
+    headers?: string
     requestMethod?: HookRequestMethod
     targetUrl: string
 }
@@ -21,6 +22,7 @@ export type Hook = {
     created: Date
     event_filter: null | string
     event_type: HookEventType
+    headers: string
     id: string
     request_method: HookRequestMethod
     target_url: string

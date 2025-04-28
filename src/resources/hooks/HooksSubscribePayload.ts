@@ -5,9 +5,10 @@ export default class HooksSubscribePayload extends ApiPayload<HooksSubscribePara
     convert(): {
         [p: string]: any
     } {
-        const {eventFilter, eventType, requestMethod, targetUrl,} = this.params
+        const {eventFilter, eventType, requestMethod, targetUrl, ...params} = this.params
 
         return {
+            ...params,
             request_method: requestMethod,
             event_filter: eventFilter,
             event_type: eventType,
