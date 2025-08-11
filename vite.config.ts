@@ -20,7 +20,11 @@ export default defineConfig({
         },
     },
     plugins: [
-        dts(),
+        dts({
+            insertTypesEntry: true,
+            include: ['src/**/*'],
+            outDir: 'dist'
+        }),
         nodePolyfills({
             globals: {
                 Buffer: true,
