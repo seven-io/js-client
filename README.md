@@ -318,6 +318,168 @@ const allWebhooks = await hooks.read()
 console.log('Active webhooks:', allWebhooks)
 ```
 
+### Webhook Verification
+
+Verify the authenticity of incoming webhooks from seven.io:
+
+```javascript
+import { WebhookVerifier } from '@seven.io/client'
+
+const verifier = new WebhookVerifier({
+  signingSecret: 'YOUR_SIGNING_SECRET',
+  maxAgeSeconds: 300 // Optional: reject webhooks older than 5 minutes
+})
+
+// Express.js example
+app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const result = await verifier.verify({
+    headers: req.headers,
+    body: req.body,
+    url: req.originalUrl,
+    method: req.method
+  })
+
+  if (result.valid) {
+    console.log('Webhook verified successfully')
+    // Process the webhook payload
+    const payload = JSON.parse(req.body.toString())
+    console.log('Webhook event:', payload.webhook_event)
+    res.status(200).send('OK')
+  } else {
+    console.error('Webhook verification failed:', result.error)
+    res.status(401).send('Unauthorized')
+  }
+})
+
+// Next.js API route example
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' })
+  }
+
+  const result = await verifier.verify({
+    headers: req.headers,
+    body: req.body,
+    url: req.url,
+    method: req.method
+  })
+
+  if (result.valid) {
+    // Process webhook
+    res.status(200).json({ success: true })
+  } else {
+    res.status(401).json({ error: result.error })
+  }
+}
+
+// Fastify example
+fastify.post('/webhook', {
+  config: {
+    rawBody: true
+  }
+}, async (request, reply) => {
+  const result = await verifier.verify({
+    headers: request.headers,
+    body: request.body,
+    url: request.url,
+    method: request.method
+  })
+
+  if (result.valid) {
+    // Process webhook
+    reply.code(200).send('OK')
+  } else {
+    reply.code(401).send({ error: result.error })
+  }
+})
+
+// AWS Lambda example
+export const handler = async (event) => {
+  const result = await verifier.verify({
+    headers: event.headers,
+    body: event.body,
+    url: event.path,
+    method: event.httpMethod
+  })
+
+  if (result.valid) {
+    // Process webhook
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: true })
+    }
+  } else {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ error: result.error })
+    }
+  }
+}
+```
+
+### Webhook Security Best Practices
+
+1. **Always verify signatures**: Never trust webhook data without verification
+2. **Check timestamp**: Prevent replay attacks by validating webhook age
+3. **Use HTTPS**: Ensure webhooks are delivered over secure connections
+4. **Store secrets securely**: Keep signing secrets in environment variables
+5. **Handle failures gracefully**: Return appropriate HTTP status codes
+
+```javascript
+import { WebhookVerifier } from '@seven.io/client'
+
+const verifier = new WebhookVerifier({
+  signingSecret: process.env.SEVEN_SIGNING_SECRET,
+  maxAgeSeconds: 300 // 5 minutes
+})
+
+// Comprehensive webhook handler
+async function handleWebhook(req, res) {
+  try {
+    const result = await verifier.verify({
+      headers: req.headers,
+      body: req.body,
+      url: req.originalUrl || req.url,
+      method: req.method
+    })
+
+    if (!result.valid) {
+      console.warn('Invalid webhook received:', {
+        error: result.error,
+        ip: req.ip,
+        userAgent: req.get('User-Agent')
+      })
+      return res.status(401).json({ error: 'Webhook verification failed' })
+    }
+
+    // Parse webhook payload
+    const payload = typeof req.body === 'string'
+      ? JSON.parse(req.body)
+      : req.body
+
+    // Process different webhook types
+    switch (payload.webhook_event) {
+      case 'sms_mo':
+        await handleInboundSms(payload.data)
+        break
+      case 'dlr':
+        await handleDeliveryReport(payload.data)
+        break
+      case 'voice_status':
+        await handleVoiceStatus(payload.data)
+        break
+      default:
+        console.log('Unknown webhook event:', payload.webhook_event)
+    }
+
+    res.status(200).json({ success: true })
+  } catch (error) {
+    console.error('Webhook processing error:', error)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+```
+
 ### Request Signing Example
 
 ```javascript
