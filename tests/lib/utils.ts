@@ -25,3 +25,7 @@ export function isValidURL(url: string): boolean {
 export function unionMatcher(arr: readonly any[], prepend: string = ''): RegExp {
     return new RegExp(`${prepend}${arr.join('|')}`)
 }
+
+export function timeout(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
