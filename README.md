@@ -612,7 +612,7 @@ export SEVEN_DEBUG="1"  # optional, enables debug output
 ## API Reference
 
 - [seven.io API Documentation](https://docs.seven.io/)
-- [TypeDoc Generated Documentation](./docs/)
+- [TypeDoc Generated Documentation](./docs/index.html)
 
 ## Development & Contributing
 

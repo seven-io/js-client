@@ -47,7 +47,7 @@ export type RcsMessage = {
     udh: string | null
 }
 
-type RcsEvent = 'IS_TYPING' | 'READ'
+export type RcsEvent = 'IS_TYPING' | 'READ'
 
 export type RcsEventParamsBase = {
     event: RcsEvent
