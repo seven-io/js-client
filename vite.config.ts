@@ -23,7 +23,8 @@ export default defineConfig({
         dts({
             insertTypesEntry: true,
             include: ['src/**/*'],
-            outDir: 'dist'
+            outDir: 'dist',
+            rollupTypes: true,
         }),
         nodePolyfills({
             globals: {
