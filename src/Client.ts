@@ -34,7 +34,7 @@ export class Client {
         else headers['X-Api-Key'] = this.options.apiKey
 
         const opts: RequestInit = {
-            method,
+            method: method.toUpperCase(),
         }
         const isUrlencoded = contentType === Client.CONTENT_TYPE_URLENCODED
         const params = new URLSearchParams
