@@ -155,6 +155,7 @@ All seven.io services are organized into resource classes. Each resource provide
 - **`SmsResource`** - Send and manage SMS messages
 - **`VoiceResource`** - Text-to-speech voice calls
 - **`RcsResource`** - Rich Communication Services messaging
+- **`AgentsResource`** - List RCS/RBM agents and generic messaging services
 
 ### 🔍 Lookup & Validation
 - **`LookupResource`** - Phone number lookup (HLR, MNP, CNAM)
@@ -219,6 +220,28 @@ const scheduled = await sms.dispatch({
   text: 'Scheduled message',
   from: 'YourApp',
   delay: '2024-12-25 10:00:00' // Christmas morning
+})
+```
+
+### List RCS Agents
+
+```javascript
+import { Client, AgentsResource } from '@seven.io/client'
+
+const client = new Client({ apiKey: 'YOUR_API_KEY' })
+const agents = new AgentsResource(client)
+
+const { agents: list } = await agents.all()
+
+list.forEach(agent => {
+  console.log(agent.id, agent.display_name, agent.status)
+
+  if (agent.is_generic) {
+    // Generic Messaging Service: status is 'wait' | 'approved' | 'denied'
+  } else {
+    // RBM Agent: status is 'test' | 'pending' | 'launched'
+    console.log('Logo:', agent.logo_url)
+  }
 })
 ```
 
