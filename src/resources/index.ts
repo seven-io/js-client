@@ -1,3 +1,4 @@
+export * from './agents'
 export * from './analytics'
 export * from './balance'
 export * from './contacts'

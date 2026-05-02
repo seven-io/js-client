@@ -39,6 +39,7 @@ This is the official JavaScript/TypeScript API client for seven.io, a communicat
 
 **Resource Pattern**
 Each API endpoint is organized into resource modules under `src/resources/`:
+- `agents/` - RCS/RBM agents and generic messaging services
 - `analytics/` - Usage analytics and reporting
 - `balance/` - Account balance queries
 - `contacts/` - Contact management 
